@@ -1,0 +1,235 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  news      News[]
+  publications Publication[]
+}
+
+enum Role {
+  USER
+  EDITOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+model News {
+  id          String   @id @default(cuid())
+  titleAr     String
+  titleEn     String
+  titleFr     String
+  slug        String   @unique
+  excerptAr   String?
+  excerptEn   String?
+  excerptFr   String?
+  contentAr   String
+  contentEn   String
+  contentFr   String
+  category    NewsCategory @default(NEWS)
+  coverImage  String?
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  seoTitle    String?
+  seoDesc     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum NewsCategory {
+  NEWS
+  REPORTS
+  STUDIES
+  ANALYSIS
+}
+
+model Publication {
+  id          String   @id @default(cuid())
+  titleAr     String
+  titleEn     String
+  titleFr     String
+  slug        String   @unique
+  summaryAr   String?
+  summaryEn   String?
+  summaryFr   String?
+  category    PublicationCategory @default(REPORT)
+  coverImage  String?
+  pdfUrl      String?
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  downloads   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum PublicationCategory {
+  REPORT
+  STUDY
+  ANALYSIS
+  POLICY_BRIEF
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  titleAr     String
+  titleEn     String
+  titleFr     String
+  slug        String   @unique
+  descriptionAr String?
+  descriptionEn String?
+  descriptionFr String?
+  date        DateTime
+  endDate     DateTime?
+  location    String?
+  speakers    String?
+  coverImage  String?
+  registrationLink String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  registrations Registration[]
+}
+
+model Registration {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  phone     String?
+  organization String?
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+model MembershipRequest {
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  phone        String?
+  organization String?
+  position     String?
+  reason       String?
+  status       RequestStatus @default(PENDING)
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ConsultationRequest {
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  phone        String?
+  organization String?
+  subject      String
+  message      String
+  status       RequestStatus @default(PENDING)
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum RequestStatus {
+  PENDING
+  CONTACTED
+  COMPLETED
+  CANCELLED
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Partner {
+  id          String   @id @default(cuid())
+  nameAr      String
+  nameEn      String
+  nameFr      String
+  slug        String   @unique
+  descriptionAr String?
+  descriptionEn String?
+  descriptionFr String?
+  category    PartnerCategory @default(INSTITUTIONAL)
+  logo        String?
+  website     String?
+  order       Int      @default(0)
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum PartnerCategory {
+  INSTITUTIONAL
+  GOVERNMENT
+  INTERNATIONAL
+  UNIVERSITY
+  PRIVATE
+}
+
+model MediaGallery {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  url         String
+  type        MediaType @default(IMAGE)
+  eventId     String?
+  createdAt   DateTime @default(now())
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+model ContactMessage {
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  phone        String?
+  organization String?
+  subject      String
+  message      String
+  read         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model SEO {
+  id         String @id @default(cuid())
+  page       String @unique
+  titleAr    String?
+  titleEn    String?
+  titleFr    String?
+  descAr     String?
+  descEn     String?
+  descFr     String?
+  ogImage    String?
+  updatedAt  DateTime @updatedAt
+}

@@ -1,0 +1,198 @@
+{
+  "site": {
+    "title": "Centre Algérien de Prospective Économique, de Développement de l'Investissement et de l'Entrepreneuriat",
+    "shortTitle": "ACEFIDE",
+    "description": "Façonner l'avenir économique de l'Algérie à travers la prospective, l'investissement et l'entrepreneuriat"
+  },
+  "nav": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "president": "Mot du Président",
+    "projects": "Projets & Initiatives",
+    "events": "Événements",
+    "news": "Actualités",
+    "publications": "Publications",
+    "partners": "Partenaires",
+    "contact": "Contact",
+    "admin": "Tableau de Bord"
+  },
+  "hero": {
+    "title": "Façonner l'avenir économique de l'Algérie à travers la prospective, l'investissement et l'entrepreneuriat",
+    "subtitle": "Un centre de réflexion économique indépendant dédié au développement économique durable en Algérie",
+    "becomeMember": "Devenir Membre",
+    "registerEvents": "S'inscrire aux Événements",
+    "requestConsultation": "Demander une Consultation",
+    "explorePublications": "Explorer les Publications"
+  },
+  "president": {
+    "name": "Akram Zaidi",
+    "title": "Président du ACEFIDE",
+    "shortBio": "Expert en économie et prospective économique, il porte la vision du centre vers un avenir économique durable pour l'Algérie.",
+    "readMore": "Lire la Suite",
+    "message": "Message du Président",
+    "vision": "Ma Vision",
+    "timeline": "Parcours Professionnel",
+    "fullBio": "M. Akram Zaidi est le Président du Centre Algérien de Prospective Économique, de Développement de l'Investissement et de l'Entrepreneuriat (ACEFIDE). Il possède une vaste expérience en économie et en prospective économique. À travers le centre, il s'efforce de fournir des études et recherches économiques de haute qualité pour soutenir les décideurs, les investisseurs et les entrepreneurs. Il croit en l'importance du travail institutionnel et des partenariats stratégiques pour réaliser un développement économique durable en Algérie."
+  },
+  "impact": {
+    "title": "Notre Impact",
+    "studies": "Études Économiques",
+    "events": "Événements Organisés",
+    "partnerships": "Partenariats Stratégiques",
+    "members": "Membres"
+  },
+  "mission": {
+    "title": "Notre Mission",
+    "foresight": {
+      "title": "Prospective Économique",
+      "desc": "Réaliser des études prospectives pour identifier les défis et opportunités économiques futurs"
+    },
+    "investment": {
+      "title": "Développement de l'Investissement",
+      "desc": "Fournir des solutions pratiques et des recommandations aux investisseurs et institutions"
+    },
+    "entrepreneurship": {
+      "title": "Soutien à l'Entrepreneuriat",
+      "desc": "Accompagner les entrepreneurs et startups à travers des programmes de mentorat et de formation"
+    },
+    "policy": {
+      "title": "Recommandations Politiques",
+      "desc": "Formuler des recommandations politiques pour les décideurs et les institutions gouvernementales"
+    }
+  },
+  "about": {
+    "title": "À Propos du Centre",
+    "history": "Notre Histoire",
+    "historyDesc": "Le Centre Algérien de Prospective Économique, de Développement de l'Investissement et de l'Entrepreneuriat (ACEFIDE) a été fondé en 2020 en tant que centre de réflexion économique indépendant, visant à contribuer au développement économique durable de l'Algérie à travers des études prospectives et des recherches appliquées.",
+    "vision": "Notre Vision",
+    "visionDesc": "Être un centre de référence en prospective économique, développement de l'investissement et entrepreneuriat en Algérie et dans la région, contribuant à bâtir une économie de la connaissance compétitive et durable.",
+    "mission": "Notre Mission",
+    "missionDesc": "Mener des études prospectives approfondies, identifier les défis et opportunités économiques, développer des solutions et recommandations pratiques, et les communiquer aux décideurs, ministères, institutions, investisseurs et acteurs économiques pour contribuer au développement économique durable de l'Algérie.",
+    "values": "Nos Valeurs",
+    "values_list": {
+      "innovation": "Innovation",
+      "excellence": "Excellence",
+      "transparency": "Transparence",
+      "development": "Développement Économique",
+      "impact": "Impact National"
+    },
+    "structure": "Structure Organisationnelle",
+    "registration": "Informations d'Enregistrement",
+    "registrationInfo": "Numéro d'enregistrement : XXXXXXXX (en attente) | Wilaya : Alger | Fondation : 2020"
+  },
+  "projects": {
+    "title": "Projets & Initiatives",
+    "categories": {
+      "research": "Recherche Économique",
+      "investment": "Développement de l'Investissement",
+      "entrepreneurship": "Programmes d'Entrepreneuriat",
+      "policy": "Recommandations de Politiques Publiques",
+      "partnerships": "Partenariats Stratégiques"
+    },
+    "viewDetails": "Voir les Détails"
+  },
+  "events": {
+    "title": "Événements",
+    "upcoming": "Événements à Venir",
+    "past": "Événements Passés",
+    "register": "S'inscrire",
+    "details": "Détails",
+    "date": "Date",
+    "location": "Lieu",
+    "speakers": "Intervenants",
+    "noUpcoming": "Aucun événement à venir pour le moment",
+    "viewAll": "Voir tous les Événements"
+  },
+  "news": {
+    "title": "Actualités & Publications",
+    "latest": "Dernières Actualités",
+    "categories": {
+      "news": "Actualités",
+      "reports": "Rapports",
+      "studies": "Études Économiques",
+      "analysis": "Analyses Stratégiques"
+    },
+    "readMore": "Lire Plus",
+    "downloadPdf": "Télécharger PDF",
+    "publishedOn": "Publié le",
+    "viewAll": "Voir Tout"
+  },
+  "partners": {
+    "title": "Nos Partenaires",
+    "institutional": "Partenaires Institutionnels",
+    "government": "Partenaires Gouvernementaux",
+    "international": "Organisations Internationales",
+    "universities": "Universités",
+    "private": "Secteur Privé"
+  },
+  "contact": {
+    "title": "Nous Contacter",
+    "form": {
+      "name": "Nom Complet",
+      "email": "Adresse Email",
+      "phone": "Numéro de Téléphone",
+      "organization": "Organisation",
+      "subject": "Sujet",
+      "message": "Message",
+      "send": "Envoyer",
+      "success": "Votre message a été envoyé avec succès. Nous vous répondrons bientôt.",
+      "error": "Une erreur est survenue lors de l'envoi. Veuillez réessayer."
+    },
+    "info": {
+      "address": "Alger, Algérie",
+      "phone": "Téléphone : En attente",
+      "email": "Email : contact@ACEFIDE.dz"
+    }
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "desc": "Abonnez-vous à notre newsletter pour recevez les dernières études et événements",
+    "placeholder": "Entrez votre adresse email",
+    "button": "S'abonner",
+    "success": "Inscrit avec succès !",
+    "error": "Une erreur est survenue. Veuillez réessayer."
+  },
+  "footer": {
+    "description": "Un centre de réflexion économique indépendant œuvrant pour le développement économique durable en Algérie à travers la prospective, l'investissement et l'entrepreneuriat.",
+    "quickLinks": "Liens Rapides",
+    "contact": "Informations de Contact",
+    "followUs": "Suivez-Nous",
+    "copyright": "© {year} ACEFIDE. Tous droits réservés.",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation"
+  },
+  "admin": {
+    "title": "Tableau de Bord",
+    "dashboard": "Tableau de Bord",
+    "news": "Gérer les Actualités",
+    "events": "Gérer les Événements",
+    "studies": "Études Économiques",
+    "publications": "Publications",
+    "partners": "Partenaires",
+    "members": "Demandes d'Adhésion",
+    "consultations": "Demandes de Consultation",
+    "subscribers": "Abonnés",
+    "content": "Gestion de Contenu",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "notFound": "Page non trouvée",
+    "backToHome": "Retour à l'Accueil",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher sur le site..."
+  },
+  "auth": {
+    "email": "Adresse Email",
+    "password": "Mot de Passe",
+    "login": "Se Connecter",
+    "loginError": "Email ou mot de passe incorrect"
+  }
+}

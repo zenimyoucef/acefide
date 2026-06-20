@@ -1,0 +1,198 @@
+{
+  "site": {
+    "title": "Algerian Center for Economic Foresight, Investment Development and Entrepreneurship",
+    "shortTitle": "ACEFIDE",
+    "description": "Shaping Algeria's Economic Future Through Foresight, Investment and Entrepreneurship"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "president": "President's Message",
+    "projects": "Projects & Initiatives",
+    "events": "Events",
+    "news": "News",
+    "publications": "Publications",
+    "partners": "Partners",
+    "contact": "Contact Us",
+    "admin": "Admin Dashboard"
+  },
+  "hero": {
+    "title": "Shaping Algeria's Economic Future Through Foresight, Investment and Entrepreneurship",
+    "subtitle": "An independent economic think tank dedicated to supporting sustainable economic development in Algeria",
+    "becomeMember": "Become a Member",
+    "registerEvents": "Register for Events",
+    "requestConsultation": "Request a Consultation",
+    "explorePublications": "Explore Publications"
+  },
+  "president": {
+    "name": "Akram Zaidi",
+    "title": "President of ACEFIDE",
+    "shortBio": "An expert in economics and economic foresight, leading the center's vision towards a sustainable economic future for Algeria.",
+    "readMore": "Read More",
+    "message": "President's Message",
+    "vision": "My Vision",
+    "timeline": "Career Timeline",
+    "fullBio": "Mr. Akram Zaidi is the President of the Algerian Center for Economic Foresight, Investment Development and Entrepreneurship (ACEFIDE). He has extensive experience in economics and economic foresight, and through the center, he strives to deliver high-quality economic studies and research that support decision-makers, investors, and entrepreneurs. He believes in the importance of institutional work and strategic partnerships to achieve sustainable economic development in Algeria."
+  },
+  "impact": {
+    "title": "Our Impact",
+    "studies": "Economic Studies",
+    "events": "Events Organized",
+    "partnerships": "Strategic Partnerships",
+    "members": "Members"
+  },
+  "mission": {
+    "title": "Our Mission",
+    "foresight": {
+      "title": "Economic Foresight",
+      "desc": "Conducting foresight studies to identify future economic challenges and opportunities"
+    },
+    "investment": {
+      "title": "Investment Development",
+      "desc": "Providing practical solutions and recommendations for investors and institutions"
+    },
+    "entrepreneurship": {
+      "title": "Entrepreneurship Support",
+      "desc": "Supporting entrepreneurs and startups through mentorship and training programs"
+    },
+    "policy": {
+      "title": "Policy Recommendations",
+      "desc": "Providing policy recommendations to decision-makers and government institutions"
+    }
+  },
+  "about": {
+    "title": "About the Center",
+    "history": "Our History",
+    "historyDesc": "The Algerian Center for Economic Foresight, Investment Development and Entrepreneurship (ACEFIDE) was founded in 2020 as an independent economic think tank, aiming to contribute to Algeria's sustainable economic development through foresight studies and applied research.",
+    "vision": "Our Vision",
+    "visionDesc": "To be a leading center in economic foresight, investment development and entrepreneurship in Algeria and the region, contributing to building a competitive and sustainable knowledge-based economy.",
+    "mission": "Our Mission",
+    "missionDesc": "Conducting in-depth foresight studies, identifying economic challenges and opportunities, developing practical solutions and recommendations, and communicating them to decision-makers, ministries, institutions, investors and economic stakeholders to contribute to Algeria's sustainable economic development.",
+    "values": "Our Values",
+    "values_list": {
+      "innovation": "Innovation",
+      "excellence": "Excellence",
+      "transparency": "Transparency",
+      "development": "Economic Development",
+      "impact": "National Impact"
+    },
+    "structure": "Organizational Structure",
+    "registration": "Registration Information",
+    "registrationInfo": "Registration Number: XXXXXXXX (pending) | Wilaya: Algiers | Founded: 2020"
+  },
+  "projects": {
+    "title": "Projects & Initiatives",
+    "categories": {
+      "research": "Economic Research",
+      "investment": "Investment Development",
+      "entrepreneurship": "Entrepreneurship Programs",
+      "policy": "Public Policy Recommendations",
+      "partnerships": "Strategic Partnerships"
+    },
+    "viewDetails": "View Details"
+  },
+  "events": {
+    "title": "Events",
+    "upcoming": "Upcoming Events",
+    "past": "Past Events",
+    "register": "Register Now",
+    "details": "Details",
+    "date": "Date",
+    "location": "Location",
+    "speakers": "Speakers",
+    "noUpcoming": "No upcoming events at this time",
+    "viewAll": "View All Events"
+  },
+  "news": {
+    "title": "News & Publications",
+    "latest": "Latest News",
+    "categories": {
+      "news": "News",
+      "reports": "Reports",
+      "studies": "Economic Studies",
+      "analysis": "Strategic Analysis"
+    },
+    "readMore": "Read More",
+    "downloadPdf": "Download PDF",
+    "publishedOn": "Published on",
+    "viewAll": "View All"
+  },
+  "partners": {
+    "title": "Our Partners",
+    "institutional": "Institutional Partners",
+    "government": "Government Partners",
+    "international": "International Organizations",
+    "universities": "Universities",
+    "private": "Private Sector"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "organization": "Organization",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message",
+      "success": "Your message has been sent successfully. We will get back to you soon.",
+      "error": "An error occurred while sending. Please try again."
+    },
+    "info": {
+      "address": "Algiers, Algeria",
+      "phone": "Phone: Pending",
+      "email": "Email: contact@ACEFIDE.dz"
+    }
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "desc": "Subscribe to our newsletter to receive the latest studies and events",
+    "placeholder": "Enter your email address",
+    "button": "Subscribe",
+    "success": "Successfully subscribed!",
+    "error": "An error occurred. Please try again."
+  },
+  "footer": {
+    "description": "An independent economic think tank working to support sustainable economic development in Algeria through foresight, investment and entrepreneurship.",
+    "quickLinks": "Quick Links",
+    "contact": "Contact Information",
+    "followUs": "Follow Us",
+    "copyright": "© {year} ACEFIDE. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "dashboard": "Dashboard",
+    "news": "Manage News",
+    "events": "Manage Events",
+    "studies": "Economic Studies",
+    "publications": "Publications",
+    "partners": "Partners",
+    "members": "Membership Requests",
+    "consultations": "Consultation Requests",
+    "subscribers": "Subscribers",
+    "content": "Content Management",
+    "login": "Login",
+    "logout": "Logout",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "notFound": "Page not found",
+    "backToHome": "Back to Home",
+    "search": "Search",
+    "searchPlaceholder": "Search the site..."
+  },
+  "auth": {
+    "email": "Email Address",
+    "password": "Password",
+    "login": "Sign In",
+    "loginError": "Invalid email or password"
+  }
+}
