@@ -1,53 +1,36 @@
-import { PrismaClient } from "@prisma/client";
-import * as bcrypt from "bcryptjs";
+import { PrismaClient, EventCategory } from "@prisma/client";
+import { hash } from "bcryptjs";
 
 const prisma = new PrismaClient();
 
+const events = [
+  { slug: "networking-economic-reforms-2024", category: "ORGANIZED", date: "2024-07-28", titleAr: "التشبيك كآلية لدعم الإصلاحات الاقتصادية في الجزائر", titleEn: "Networking as a Mechanism to Support Economic Reforms in Algeria", titleFr: "Le réseautage comme mécanisme de soutien aux réformes économiques en Algérie", descriptionAr: "لقاء اقتصادي حول تعزيز التشبيك بين الفاعلين الاقتصاديين ودعم الإصلاحات الاقتصادية.", descriptionEn: "An economic meeting on strengthening networks between economic actors and supporting economic reforms.", descriptionFr: "Une rencontre économique sur le renforcement des réseaux entre acteurs économiques et l’appui aux réformes.", locationAr: "كلية الطب، جامعة الجزائر 1", locationEn: "Faculty of Medicine, University of Algiers 1", locationFr: "Faculté de médecine, Université d’Alger 1" },
+  { slug: "media-digital-investment-forum-2024", category: "ORGANIZED", date: "2024-02-18", titleAr: "الملتقى الوطني للإعلام والإعلام الرقمي من أجل الاستثمار والإقلاع الاقتصادي", titleEn: "National Media and Digital Media Forum for Investment and Economic Takeoff", titleFr: "Forum national des médias et médias numériques pour l’investissement et le décollage économique", descriptionAr: "دور الإعلام الوطني والرقمي في نشر ثقافة الاستثمار ودعم النمو الاقتصادي.", descriptionEn: "The role of national and digital media in promoting investment culture and economic growth.", descriptionFr: "Le rôle des médias nationaux et numériques dans la promotion de la culture de l’investissement.", locationAr: "الجزائر", locationEn: "Algiers, Algeria", locationFr: "Alger, Algérie" },
+  { slug: "legislation-institutional-reform-2026", category: "ORGANIZED", date: "2026-03-12", titleAr: "من التشريع إلى الإصلاح القانوني والمؤسساتي", titleEn: "From Legislation to Legal and Institutional Reform", titleFr: "De la législation à la réforme juridique et institutionnelle", descriptionAr: "ملتقى حول الإصلاح القانوني والحوكمة والتنمية الاقتصادية.", descriptionEn: "A forum on legal reform, governance, and economic development.", descriptionFr: "Un forum consacré à la réforme juridique, à la gouvernance et au développement économique.", locationAr: "قصر الثقافة مفدي زكريا، الجزائر", locationEn: "Palace of Culture Moufdi Zakaria, Algiers", locationFr: "Palais de la culture Moufdi Zakaria, Alger" },
+  { slug: "development-culture-forum-2026", category: "ORGANIZED", date: "2026-03-02", titleAr: "منتدى الجزائر لثقافة التنمية", titleEn: "Algeria Forum for Development Culture", titleFr: "Forum algérien de la culture du développement", descriptionAr: "ثقافة التنمية كاستثمار ذكي لمستقبل مستدام، يجمع الاستثمار والابتكار والرقمنة والمقاولاتية.", descriptionEn: "Development culture as a smart investment for a sustainable future, including investment, innovation, digitalization, and entrepreneurship.", descriptionFr: "La culture du développement comme investissement intelligent pour un avenir durable.", locationAr: "الجزائر", locationEn: "Algeria", locationFr: "Algérie" },
+  { slug: "agri-tech-expo-2025", category: "PARTICIPATION", date: "2025-10-09", titleAr: "المشاركة في AGRI TECH EXPO 2025", titleEn: "Participation in AGRI TECH EXPO 2025", titleFr: "Participation à AGRI TECH EXPO 2025", descriptionAr: "مشاركة حول الاستثمار الفلاحي والأمن الغذائي والتنويع الاقتصادي.", descriptionEn: "Participation focused on agricultural investment, food security, and economic diversification.", descriptionFr: "Participation consacrée à l’investissement agricole, la sécurité alimentaire et la diversification économique.", locationAr: "الجزائر", locationEn: "Algeria", locationFr: "Algérie" },
+  { slug: "aapi-information-day-2026", category: "MEETING", date: "2026-05-11", titleAr: "يوم إعلامي مع الوكالة الجزائرية لترقية الاستثمار", titleEn: "Information Day with the Algerian Investment Promotion Agency", titleFr: "Journée d’information avec l’Agence algérienne de promotion de l’investissement", descriptionAr: "عرض مسار الشباك الوحيد للاستثمار من الفكرة إلى التجسيد.", descriptionEn: "A session on the investment one-stop shop, from idea to implementation.", descriptionFr: "Une session sur le guichet unique de l’investissement, de l’idée à la réalisation.", locationAr: "الجزائر", locationEn: "Algeria", locationFr: "Algérie" },
+  { slug: "algiers-stock-exchange-meeting-2025", category: "MEETING", date: "2025-06-01", titleAr: "لقاء مع المدير العام لبورصة الجزائر", titleEn: "Meeting with the Director General of the Algiers Stock Exchange", titleFr: "Rencontre avec le Directeur général de la Bourse d’Alger", descriptionAr: "مباحثات حول تعبئة الادخار وتمويل المؤسسات وتطوير السوق المالية.", descriptionEn: "Discussions on mobilizing savings, financing companies, and developing the financial market.", descriptionFr: "Échanges sur la mobilisation de l’épargne, le financement des entreprises et le développement du marché financier.", locationAr: "الجزائر", locationEn: "Algiers", locationFr: "Alger" },
+  { slug: "iatf-2025-ifrikya-radio", category: "MEDIA", date: "2025-09-01", titleAr: "تغطية إعلامية حول معرض التجارة البينية الإفريقية 2025", titleEn: "Media Coverage on IATF 2025", titleFr: "Couverture médiatique de l’IATF 2025", descriptionAr: "مداخلة عبر إذاعة إفريقيا FM حول المعرض الإفريقي للتجارة البينية الذي احتضنته الجزائر.", descriptionEn: "An Ifrikya Radio FM appearance about the Intra-African Trade Fair hosted by Algeria.", descriptionFr: "Une intervention sur Ifrikya Radio FM consacrée à la Foire commerciale intra-africaine accueillie par l’Algérie.", locationAr: "إذاعة إفريقيا FM", locationEn: "Ifrikya Radio FM", locationFr: "Ifrikya Radio FM" },
+] as const;
+
 async function main() {
-  // Create admin user
-  const adminPassword = await bcrypt.hash("admin123", 12);
-  
-  const admin = await prisma.user.upsert({
-    where: { email: "admin@ACEFIDE.dz" },
-    update: {},
-    create: {
-      email: "admin@ACEFIDE.dz",
-      password: adminPassword,
-      name: "Admin ACEFIDE",
-      role: "SUPER_ADMIN",
-    },
-  });
+  let admin = null;
+  if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+    if (process.env.ADMIN_PASSWORD.length < 12) throw new Error("ADMIN_PASSWORD must contain at least 12 characters");
+    admin = await prisma.user.upsert({ where: { email: process.env.ADMIN_EMAIL.toLowerCase() }, update: { active: true }, create: { email: process.env.ADMIN_EMAIL.toLowerCase(), password: await hash(process.env.ADMIN_PASSWORD, 12), name: process.env.ADMIN_NAME || "ACEFIDE Administrator", role: "SUPER_ADMIN" } });
+  } else console.warn("ADMIN_EMAIL/ADMIN_PASSWORD not set; administrator creation skipped.");
 
-  console.log({ admin });
-
-  // Create site settings
-  const settings = [
-    { key: "site_name_ar", value: "المركز الجزائري للاستشراف الاقتصادي و تطوير الاستثمار و المقاولاتية" },
-    { key: "site_name_en", value: "Algerian Center for Economic Foresight, Investment Development and Entrepreneurship" },
-    { key: "site_name_fr", value: "Centre Algérien de Prospective Économique, de Développement de l'Investissement et de l'Entrepreneuriat" },
-    { key: "contact_email", value: "contact@ACEFIDE.dz" },
-    { key: "contact_phone", value: "+213 (0) XXX XX XX XX" },
-    { key: "contact_address_ar", value: "الجزائر العاصمة، الجزائر" },
-    { key: "contact_address_en", value: "Algiers, Algeria" },
-    { key: "contact_address_fr", value: "Alger, Algérie" },
-  ];
-
-  for (const setting of settings) {
-    await prisma.siteSetting.upsert({
-      where: { key: setting.key },
-      update: { value: setting.value },
-      create: setting,
-    });
+  for (const event of events) {
+    const data = { ...event, category: event.category as EventCategory, date: new Date(`${event.date}T12:00:00Z`), published: true };
+    await prisma.event.upsert({ where: { slug: event.slug }, update: data, create: data });
   }
-
-  console.log("Seed completed successfully");
+  const settings = [
+    ["site_name_ar", "المركز الجزائري للاستشراف الاقتصادي وتطوير الاستثمار والمقاولاتية"], ["site_name_en", "Algerian Center for Economic Foresight, Investment Development and Entrepreneurship"], ["site_name_fr", "Centre Algérien de Prospective Économique, de Développement de l’Investissement et de l’Entrepreneuriat"],
+    ["contact_email", ""], ["contact_phone", ""], ["contact_address_ar", "الجزائر العاصمة، الجزائر"], ["contact_address_en", "Algiers, Algeria"], ["contact_address_fr", "Alger, Algérie"], ["facebook_url", "https://www.facebook.com/ACEFIDEAlgeria"], ["linkedin_url", ""], ["youtube_url", ""], ["map_embed_url", ""],
+  ];
+  for (const [key, value] of settings) await prisma.siteSetting.upsert({ where: { key }, update: {}, create: { key, value } });
+  console.log(`Seeded ${events.length} ACEFIDE activities${admin ? " and the configured administrator" : ""}.`);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((error) => { console.error(error); process.exit(1); }).finally(() => prisma.$disconnect());

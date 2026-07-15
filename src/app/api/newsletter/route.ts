@@ -1,16 +1,19 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { rateLimit, requestKey } from "@/lib/rate-limit";
+import { z } from "zod";
 
 export async function POST(request: Request) {
   try {
-    const { email } = await request.json();
-
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!rateLimit(requestKey(request, "newsletter"))) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    const parsed = z.object({ email: z.string().trim().email().max(254) }).safeParse(await request.json());
+    if (!parsed.success) {
       return NextResponse.json(
         { error: "Invalid email address" },
         { status: 400 }
       );
     }
+    const { email } = parsed.data;
 
     const existing = await prisma.newsletterSubscriber.findUnique({
       where: { email },

@@ -1,38 +1,11 @@
-"use client";
+import { prisma } from "@/lib/prisma";
+import { EventForm } from "@/components/admin/PublishingForms";
+import { deleteEvent } from "../actions";
 
-import { useTranslations, useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Plus, Search } from "lucide-react";
-
-export default function AdminEventsPage() {
-  const t = useTranslations("admin");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-
-  return (
-    <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">{t("events")}</h1>
-        <Button className="rounded-full">
-          <Plus className="h-4 w-4" />
-          {t("add")}
-        </Button>
-      </div>
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="relative flex-1 max-w-md">
-              <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input placeholder={locale === "ar" ? "بحث..." : "Search..."} className="w-full h-10 pl-10 pr-4 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-turquoise" />
-            </div>
-          </div>
-          <div className="text-center py-16 text-muted-foreground">
-            <p>{locale === "ar" ? "لا توجد فعاليات بعد" : locale === "fr" ? "Pas encore d'événements" : "No events yet"}</p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+export default async function AdminEventsPage({ params, searchParams }: { params: Promise<{ locale: string }>;searchParams:Promise<{edit?:string}> }) {
+  const { locale } = await params;
+  const {edit}=await searchParams;
+  const items = await prisma.event.findMany({ orderBy: { date: "desc" } });
+  const initial=edit?items.find(x=>x.id===edit):null;
+  return <div className="mx-auto max-w-5xl space-y-10"><header><h1 className="text-3xl font-bold">{initial?"Edit event":"Events"}</h1><p className="mt-2 text-sm text-slate-500">Create activities, meetings, participations, and media appearances.</p></header><EventForm locale={locale} initial={initial}/><section><h2 className="mb-4 text-xl font-bold">Saved events</h2><div className="overflow-hidden rounded-xl border bg-white">{items.length?items.map(x=><div key={x.id} className="flex flex-col gap-3 border-b p-4 last:border-0 sm:flex-row sm:items-center sm:justify-between"><div><p className="font-semibold">{locale==="ar"?x.titleAr:locale==="fr"?x.titleFr:x.titleEn}</p><p className="mt-1 text-xs text-slate-500">{x.date.toLocaleString()} · {x.category.replaceAll("_"," ")} · {x.published?"Published":"Draft"}</p></div><div className="flex items-center gap-4"><a href={`/${locale}/admin/events?edit=${x.id}`} className="text-sm font-semibold text-primary">Edit</a><form action={deleteEvent.bind(null,locale,x.id)}><button className="text-sm font-semibold text-red-700">Delete</button></form></div></div>):<p className="p-8 text-center text-sm text-slate-500">No events saved yet.</p>}</div></section></div>;
 }

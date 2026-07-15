@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
     default: "ACEFIDE | Algerian Center for Economic Foresight",
     template: "%s | ACEFIDE",
@@ -22,7 +23,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "ACEFIDE",
+    images: ["/images/algiers-hero.png"],
   },
+  twitter: { card: "summary_large_image", images: ["/images/algiers-hero.png"] },
 };
 
 export default function RootLayout({

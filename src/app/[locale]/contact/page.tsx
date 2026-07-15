@@ -14,7 +14,14 @@ export default function ContactPage() {
   const t = useTranslations("contact");
   const locale = useLocale();
   const isRtl = locale === "ar";
+  const officialContact = {
+    address: isRtl ? "المبنى رقم 60، دالي إبراهيم، العاشور، درارية، الجزائر العاصمة" : locale === "fr" ? "Bâtiment 60, Dely Ibrahim, El Achour, Draria, Alger" : "Building 60, Dely Ibrahim, El Achour, Draria, Algiers",
+    phone: "023 29 88 88",
+    email: "acefidedz@gmail.com",
+  };
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,6 +33,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true); setError("");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -35,10 +43,10 @@ export default function ContactPage() {
       if (res.ok) {
         setSubmitted(true);
         setFormData({ name: "", email: "", phone: "", organization: "", subject: "", message: "" });
-      }
+      } else setError(locale === "ar" ? "تعذر إرسال الرسالة. يرجى مراجعة البيانات والمحاولة مجدداً." : locale === "fr" ? "Impossible d’envoyer le message. Vérifiez les informations et réessayez." : "Unable to send the message. Please check your information and try again.");
     } catch {
-      // silent
-    }
+      setError(locale === "ar" ? "تعذر الاتصال بالخادم." : locale === "fr" ? "Connexion au serveur impossible." : "Unable to connect to the server.");
+    } finally { setLoading(false); }
   };
 
   return (
@@ -124,9 +132,10 @@ export default function ContactPage() {
                           required
                         />
                       </div>
-                      <Button type="submit" size="lg" className="rounded-full w-full md:w-auto">
+                      {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
+                      <Button type="submit" size="lg" disabled={loading} className="rounded-full w-full md:w-auto">
                         <Send className="h-4 w-4" />
-                        {t("form.send")}
+                        {loading ? "…" : t("form.send")}
                       </Button>
                     </form>
                   )}
@@ -146,7 +155,7 @@ export default function ContactPage() {
                       <h3 className="font-semibold text-foreground mb-1">
                         {locale === "ar" ? "العنوان" : locale === "fr" ? "Adresse" : "Address"}
                       </h3>
-                      <p className="text-sm text-muted-foreground">{t("info.address")}</p>
+                      <p className="text-sm text-muted-foreground">{officialContact.address}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -157,7 +166,7 @@ export default function ContactPage() {
                       <h3 className="font-semibold text-foreground mb-1">
                         {locale === "ar" ? "الهاتف" : locale === "fr" ? "Téléphone" : "Phone"}
                       </h3>
-                      <p className="text-sm text-muted-foreground">{t("info.phone")}</p>
+                      <a href="tel:+21323298888" className="text-sm text-muted-foreground hover:text-primary">{officialContact.phone}</a>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -166,7 +175,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                      <p className="text-sm text-muted-foreground">{t("info.email")}</p>
+                      <a href={`mailto:${officialContact.email}`} className="text-sm text-muted-foreground hover:text-primary">{officialContact.email}</a>
                     </div>
                   </div>
                 </CardContent>

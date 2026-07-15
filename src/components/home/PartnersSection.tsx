@@ -1,55 +1,61 @@
-"use client";
+import Image from "next/image";
+import { ArrowLeft, ArrowRight, Building2 } from "lucide-react";
+import { Link } from "@/lib/navigation";
+import { prisma } from "@/lib/prisma";
 
-import { useTranslations, useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
-import { Building2, GraduationCap, Globe, Landmark, Briefcase } from "lucide-react";
+type Locale = "ar" | "fr" | "en";
 
-const partnerCategories = [
-  { key: "institutional", icon: Building2 },
-  { key: "government", icon: Landmark },
-  { key: "international", icon: Globe },
-  { key: "universities", icon: GraduationCap },
-  { key: "private", icon: Briefcase },
-];
-
-export function PartnersSection() {
-  const t = useTranslations("partners");
-  const locale = useLocale();
+export async function PartnersSection({ locale }: { locale: Locale }) {
+  const partners = await prisma.partner.findMany({
+    where: { published: true },
+    orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+  }).catch(() => []);
   const isRtl = locale === "ar";
+  const copy = isRtl
+    ? { title: "شركاؤنا", intro: "المؤسسات والشركات التي نتعاون معها لتحقيق أثر اقتصادي مشترك.", details: "اكتشف أهداف تعاوننا", all: "عرض جميع الشركاء" }
+    : locale === "fr"
+      ? { title: "Nos partenaires", intro: "Les institutions et entreprises avec lesquelles nous collaborons pour créer un impact économique commun.", details: "Découvrir notre collaboration", all: "Voir tous les partenaires" }
+      : { title: "Our partners", intro: "Organizations and companies we collaborate with to create shared economic impact.", details: "Explore our collaboration", all: "View all partners" };
+  const Arrow = isRtl ? ArrowLeft : ArrowRight;
+
+  if (!partners.length) return null;
 
   return (
-    <section
-      className={cn(
-        "py-20 bg-muted/50",
-        isRtl && "font-arabic"
-      )}
-      dir={isRtl ? "rtl" : "ltr"}
-    >
+    <section className="bg-muted/50 py-20" dir={isRtl ? "rtl" : "ltr"}>
       <div className="container-content scroll-reveal">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            {t("title")}
-          </h2>
-          <div className="w-16 h-1 bg-turquoise mx-auto rounded-full" />
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">{copy.title}</h2>
+          <p className="mt-4 leading-7 text-muted-foreground">{copy.intro}</p>
+          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-turquoise" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {partnerCategories.map((cat) => (
-            <div
-              key={cat.key}
-              className="pressable flex flex-col items-center p-5 rounded-xl bg-card border border-border/50 hover:shadow-md transition-all hover:-translate-y-1 group sm:p-6"
-            >
-              <div className="h-12 w-12 rounded-full bg-primary/5 flex items-center justify-center mb-3 group-hover:bg-primary/10 transition-colors">
-                <cat.icon className="h-6 w-6 text-primary" />
-              </div>
-              <span className="text-sm font-medium text-center text-muted-foreground group-hover:text-foreground transition-colors">
-                {t(cat.key)}
-              </span>
-              <span className="text-xs text-muted-foreground mt-1">
-                {locale === "ar" ? "قيد الإضافة" : locale === "fr" ? "À venir" : "Coming soon"}
-              </span>
-            </div>
-          ))}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {partners.map((partner) => {
+            const name = locale === "ar" ? partner.nameAr : locale === "fr" ? partner.nameFr : partner.nameEn;
+            const description = locale === "ar" ? partner.descriptionAr : locale === "fr" ? partner.descriptionFr : partner.descriptionEn;
+            return (
+              <Link key={partner.id} href={`/partners/${partner.slug}`} className="group surface-card flex min-h-72 flex-col p-6 transition-all hover:-translate-y-1 hover:shadow-xl">
+                <div className="flex h-28 items-center justify-center rounded-xl border bg-white p-4">
+                  {partner.logo ? (
+                    <Image src={partner.logo} alt={`${name} logo`} width={180} height={96} className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105" />
+                  ) : (
+                    <Building2 className="h-10 w-10 text-primary" />
+                  )}
+                </div>
+                <h3 className="mt-5 text-lg font-bold text-[#0b1f33]">{name}</h3>
+                {description && <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">{description}</p>}
+                <span className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-primary">
+                  {copy.details}<Arrow className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link href="/partners" className="inline-flex items-center gap-2 rounded-full border border-primary px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary hover:text-white">
+            {copy.all}<Arrow className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>

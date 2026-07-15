@@ -17,8 +17,11 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  Languages,
 } from "lucide-react";
 import { useState } from "react";
+import { usePathname, useRouter } from "@/lib/navigation";
+import type { SessionUser } from "@/lib/auth";
 import Image from "next/image";
 import logo from "../../../assets/acefide.png";
 
@@ -29,22 +32,36 @@ const sidebarItems = [
   { key: "studies", icon: FileText, href: "/admin/studies" },
   { key: "publications", icon: BookOpen, href: "/admin/publications" },
   { key: "partners", icon: Handshake, href: "/admin/partners" },
+  { key: "team", icon: Users, href: "/admin/team" },
   { key: "members", icon: Users, href: "/admin/members" },
   { key: "consultations", icon: MessageSquare, href: "/admin/consultations" },
+  { key: "messages", icon: MessageSquare, href: "/admin/messages" },
   { key: "subscribers", icon: Mail, href: "/admin/subscribers" },
   { key: "content", icon: Settings, href: "/admin/content" },
 ];
 
-export function AdminLayout({ children }: { children: React.ReactNode }) {
+export function AdminLayout({ children, user }: { children: React.ReactNode; user: SessionUser }) {
   const t = useTranslations("admin");
   const locale = useLocale();
   const isRtl = locale === "ar";
   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  function changeLanguage(nextLocale: string) {
+    router.replace(pathname, { locale: nextLocale });
+  }
+
+  async function logout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.replace("/login");
+    router.refresh();
+  }
 
   return (
     <div
       className={cn(
-        "min-h-screen bg-muted/30 flex",
+        "admin-shell min-h-screen bg-muted/30 flex",
         isRtl && "font-arabic"
       )}
       dir={isRtl ? "rtl" : "ltr"}
@@ -87,27 +104,43 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               )}
             >
               <item.icon className="h-5 w-5 shrink-0" />
-              {!collapsed && <span>{t(item.key)}</span>}
+              {!collapsed && <span>{item.key === "team" ? (locale === "ar" ? "فريق العمل" : locale === "fr" ? "Équipe" : "Team") : t(item.key)}</span>}
             </Link>
           ))}
         </nav>
         <div className="p-2 border-t border-border/50">
-          <Link
-            href="/"
+          <button
+            type="button"
+            onClick={logout}
             className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors",
+              "flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors",
               collapsed && "justify-center px-0"
             )}
           >
             <LogOut className="h-5 w-5 shrink-0" />
             {!collapsed && <span>{t("logout")}</span>}
-          </Link>
+          </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        <div className="p-6">{children}</div>
+      <main className="min-w-0 flex-1 overflow-auto">
+        <header className="flex items-center justify-between gap-4 border-b bg-white px-6 py-4">
+          <div><p className="font-semibold text-foreground">{user.name}</p><p className="text-xs text-muted-foreground">{user.role}</p></div>
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-600">
+              <Languages className="h-4 w-4 text-primary" />
+              <span className="sr-only">Interface language</span>
+              <select value={locale} onChange={(event) => changeLanguage(event.target.value)} className="h-9 cursor-pointer bg-transparent font-semibold outline-none" aria-label="Interface language">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="ar">العربية</option>
+              </select>
+            </label>
+            <button onClick={logout} className="text-sm text-muted-foreground hover:text-foreground">{t("logout")}</button>
+          </div>
+        </header>
+        <div className="p-4 sm:p-6">{children}</div>
       </main>
     </div>
   );

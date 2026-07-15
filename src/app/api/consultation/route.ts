@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { contactSchema, validationError } from "@/lib/validation";
+import { rateLimit, requestKey } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, phone, organization, subject, message } =
-      await request.json();
-
-    if (!name || !email || !subject || !message) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
+    if (!rateLimit(requestKey(request, "consultation"))) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    const parsed = contactSchema.safeParse(await request.json());
+    if (!parsed.success) return NextResponse.json(validationError(parsed.error), { status: 400 });
+    const { name, email, phone, organization, subject, message } = parsed.data;
 
     const consultation = await prisma.consultationRequest.create({
       data: {

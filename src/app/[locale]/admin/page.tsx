@@ -1,160 +1,17 @@
-"use client";
-
-import { useTranslations, useLocale } from "next-intl";
+import { prisma } from "@/lib/prisma";
 import { Link } from "@/lib/navigation";
-import { cn } from "@/lib/utils";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import {
-  Newspaper,
-  Calendar,
-  FileText,
-  BookOpen,
-  Handshake,
-  Users,
-  MessageSquare,
-  Mail,
-  Settings,
-  BarChart3,
-  ArrowRight,
-  ArrowLeft,
-} from "lucide-react";
+import { CalendarDays, Handshake, Mail, MessageSquare, Newspaper, Users, FileText, Inbox } from "lucide-react";
 
-const adminCards = [
-  { key: "news", icon: Newspaper, href: "/admin/news", count: 0 },
-  { key: "events", icon: Calendar, href: "/admin/events", count: 0 },
-  { key: "studies", icon: FileText, href: "/admin/studies", count: 0 },
-  { key: "publications", icon: BookOpen, href: "/admin/publications", count: 0 },
-  { key: "partners", icon: Handshake, href: "/admin/partners", count: 0 },
-  { key: "members", icon: Users, href: "/admin/members", count: 0 },
-  { key: "consultations", icon: MessageSquare, href: "/admin/consultations", count: 0 },
-  { key: "subscribers", icon: Mail, href: "/admin/subscribers", count: 0 },
-];
-
-export default function AdminDashboard() {
-  const t = useTranslations("admin");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-  const Arrow = isRtl ? ArrowLeft : ArrowRight;
-
-  return (
-    <div className={cn(isRtl && "font-arabic", "min-h-screen bg-muted/30")} dir={isRtl ? "rtl" : "ltr"}>
-      <div className="gradient-primary py-12">
-        <div className="container-content">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-                <BarChart3 className="h-8 w-8" />
-                {t("dashboard")}
-              </h1>
-            </div>
-            <Link
-              href="/"
-              className="text-white/70 hover:text-white text-sm flex items-center gap-2 transition-colors"
-            >
-              {locale === "ar" ? "العودة للموقع" : locale === "fr" ? "Retour au site" : "Back to site"}
-              <Arrow className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="container-content py-8">
-        {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-gradient-to-br from-primary/5 to-turquoise/5 border-primary/10">
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Users className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">{t("members")}</p>
-                <p className="text-2xl font-bold text-foreground">0</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-10 w-10 rounded-lg bg-turquoise/10 flex items-center justify-center">
-                <MessageSquare className="h-5 w-5 text-turquoise" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">{t("consultations")}</p>
-                <p className="text-2xl font-bold text-foreground">0</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Newspaper className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">{t("news")}</p>
-                <p className="text-2xl font-bold text-foreground">0</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-10 w-10 rounded-lg bg-turquoise/10 flex items-center justify-center">
-                <Calendar className="h-5 w-5 text-turquoise" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">{t("events")}</p>
-                <p className="text-2xl font-bold text-foreground">0</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Management Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {adminCards.map((card) => (
-            <Link key={card.key} href={card.href}>
-              <Card className="group hover:shadow-md transition-all hover:-translate-y-0.5 cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/10 to-turquoise/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <card.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <Arrow className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <h3 className="font-semibold text-foreground">{t(card.key)}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {card.count} {locale === "ar" ? "عنصر" : locale === "fr" ? "éléments" : "items"}
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
-
-        {/* Content Management */}
-        <div className="mt-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Settings className="h-5 w-5 text-primary" />
-                <CardTitle className="text-lg">{t("content")}</CardTitle>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href="/admin/content"
-                  className="px-4 py-2 rounded-lg bg-muted text-sm text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors"
-                >
-                  {locale === "ar" ? "الصفحة الرئيسية" : locale === "fr" ? "Page d'accueil" : "Home Page"}
-                </Link>
-                <Link
-                  href="/admin/content"
-                  className="px-4 py-2 rounded-lg bg-muted text-sm text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors"
-                >
-                  {locale === "ar" ? "SEO" : "SEO"}
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+async function dashboardData() {
+  try {
+    const [news, events, publications, partners, contacts, members, consultations, subscribers, recentContacts, recentMembers] = await prisma.$transaction([
+      prisma.news.count(), prisma.event.count(), prisma.publication.count(), prisma.partner.count(), prisma.contactMessage.count(), prisma.membershipRequest.count(), prisma.consultationRequest.count(), prisma.newsletterSubscriber.count({ where: { active: true } }), prisma.contactMessage.findMany({ take: 5, orderBy: { createdAt: "desc" } }), prisma.membershipRequest.findMany({ take: 5, orderBy: { createdAt: "desc" } }),
+    ]); return { counts: { news, events, publications, partners, contacts, members, consultations, subscribers }, recentContacts, recentMembers };
+  } catch { return { counts: { news:0, events:0, publications:0, partners:0, contacts:0, members:0, consultations:0, subscribers:0 }, recentContacts: [], recentMembers: [] }; }
+}
+export default async function AdminDashboard({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params; const data = await dashboardData(); const cards = [
+    ["news", data.counts.news, Newspaper, "/admin/news"], ["events", data.counts.events, CalendarDays, "/admin/events"], ["publications", data.counts.publications, FileText, "/admin/publications"], ["partners", data.counts.partners, Handshake, "/admin/partners"], ["contact messages", data.counts.contacts, Inbox, "/admin/messages"], ["membership requests", data.counts.members, Users, "/admin/members"], ["consultations", data.counts.consultations, MessageSquare, "/admin/consultations"], ["subscribers", data.counts.subscribers, Mail, "/admin/subscribers"],
+  ] as const;
+  return <div dir={locale === "ar" ? "rtl" : "ltr"}><div className="mb-8"><p className="text-sm font-bold uppercase tracking-wider text-primary">ACEFIDE</p><h1 className="mt-2 text-3xl font-bold text-[#0b1f33]">{locale === "ar" ? "لوحة التحكم" : locale === "fr" ? "Tableau de bord" : "Dashboard"}</h1></div><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{cards.map(([label,count,Icon,href]) => <Link href={href} key={label} className="rounded-xl border bg-white p-5 shadow-sm transition hover:shadow-md"><div className="flex items-center justify-between"><div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"><Icon className="h-5 w-5"/></div><span className="text-3xl font-bold text-[#0b1f33]">{count}</span></div><p className="mt-5 text-sm font-semibold capitalize text-muted-foreground">{label}</p></Link>)}</div><div className="mt-8 grid gap-6 lg:grid-cols-2"><section className="rounded-xl border bg-white p-6"><h2 className="font-bold">{locale === "ar" ? "أحدث رسائل الاتصال" : "Recent contact messages"}</h2><div className="mt-4 divide-y">{data.recentContacts.map(item => <div key={item.id} className="py-3"><p className="font-semibold">{item.name}</p><p className="truncate text-sm text-muted-foreground">{item.subject}</p></div>)}{!data.recentContacts.length && <p className="py-8 text-sm text-muted-foreground">No submissions yet.</p>}</div></section><section className="rounded-xl border bg-white p-6"><h2 className="font-bold">{locale === "ar" ? "أحدث طلبات العضوية" : "Recent membership requests"}</h2><div className="mt-4 divide-y">{data.recentMembers.map(item => <div key={item.id} className="py-3"><p className="font-semibold">{item.name}</p><p className="text-sm text-muted-foreground">{item.email}</p></div>)}{!data.recentMembers.length && <p className="py-8 text-sm text-muted-foreground">No submissions yet.</p>}</div></section></div></div>;
 }

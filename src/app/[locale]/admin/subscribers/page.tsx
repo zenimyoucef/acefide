@@ -1,17 +1,3 @@
-"use client";
-
-import { useTranslations, useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
-import { Card, CardContent } from "@/components/ui/card";
-
-export default function AdminSubscribersPage() {
-  const t = useTranslations("admin");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-  return (
-    <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
-      <h1 className="text-2xl font-bold text-foreground mb-6">{t("subscribers")}</h1>
-      <Card><CardContent className="p-6"><div className="text-center py-16 text-muted-foreground"><p>{locale === "ar" ? "لا يوجد مشتركون بعد" : "No subscribers yet"}</p></div></CardContent></Card>
-    </div>
-  );
-}
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+export default async function SubscribersPage() { const items = await prisma.newsletterSubscriber.findMany({ orderBy:{createdAt:"desc"},take:500 }); return <div><div className="mb-6 flex items-center justify-between"><h1 className="text-2xl font-bold">Newsletter subscribers</h1><Link href="/api/admin/subscribers/export" className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white">Export CSV</Link></div><div className="rounded-xl border bg-white">{items.map(x=><div key={x.id} className="flex items-center justify-between border-b px-5 py-4 last:border-0"><span>{x.email}</span><span className="text-xs font-bold text-primary">{x.active?"ACTIVE":"INACTIVE"}</span></div>)}{!items.length&&<p className="p-10 text-center text-muted-foreground">No subscribers yet.</p>}</div></div>; }

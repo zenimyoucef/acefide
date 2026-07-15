@@ -15,6 +15,8 @@ export default function ConsultationPage() {
   const locale = useLocale();
   const isRtl = locale === "ar";
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,16 +28,17 @@ export default function ConsultationPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true); setError("");
     try {
       const res = await fetch("/api/consultation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      if (res.ok) setSubmitted(true);
+      if (res.ok) setSubmitted(true); else setError(locale === "ar" ? "تعذر إرسال الطلب. يرجى المحاولة مجدداً." : locale === "fr" ? "Impossible d’envoyer la demande." : "Unable to submit the request.");
     } catch {
-      // silent
-    }
+      setError(locale === "ar" ? "تعذر الاتصال بالخادم." : locale === "fr" ? "Connexion au serveur impossible." : "Unable to connect to the server.");
+    } finally { setLoading(false); }
   };
 
   return (
@@ -94,9 +97,10 @@ export default function ConsultationPage() {
                     <Label htmlFor="message">{t("contact.form.message")}</Label>
                     <Textarea id="message" rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} required />
                   </div>
-                  <Button type="submit" size="lg" className="rounded-full w-full">
+                  {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
+                  <Button type="submit" size="lg" disabled={loading} className="rounded-full w-full">
                     <Send className="h-4 w-4" />
-                    {t("contact.form.send")}
+                    {loading ? "…" : t("contact.form.send")}
                   </Button>
                 </form>
               )}

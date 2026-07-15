@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { Link } from "@/lib/navigation";
+import { Link, usePathname } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
-import { MapPin, Phone, Mail, Linkedin, Twitter, Youtube } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook } from "lucide-react";
 import Image from "next/image";
 import logo from "../../../assets/acefide.png";
 
@@ -12,7 +12,6 @@ const footerLinks = [
   { key: "home", href: "/" },
   { key: "about", href: "/about" },
   { key: "president", href: "/president" },
-  { key: "projects", href: "/projects" },
   { key: "events", href: "/events" },
   { key: "news", href: "/news" },
   { key: "partners", href: "/partners" },
@@ -20,15 +19,17 @@ const footerLinks = [
 ];
 
 const socialLinks = [
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Youtube, href: "#", label: "YouTube" },
+  { icon: Facebook, href: "https://www.facebook.com/ACEFIDEAlgeria", label: "Facebook" },
 ];
 
 export function Footer() {
   const t = useTranslations();
   const locale = useLocale();
+  const pathname = usePathname();
   const isRtl = locale === "ar";
+  const address = isRtl ? "المبنى رقم 60، دالي إبراهيم، العاشور، درارية، الجزائر العاصمة" : locale === "fr" ? "Bâtiment 60, Dely Ibrahim, El Achour, Draria, Alger" : "Building 60, Dely Ibrahim, El Achour, Draria, Algiers";
+
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <footer
@@ -95,19 +96,19 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <span className="text-sm text-muted-foreground">
-                  {t("contact.info.address")}
+                  {address}
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary shrink-0" />
                 <span className="text-sm text-muted-foreground">
-                  {t("contact.info.phone")}
+                  023 29 88 88
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary shrink-0" />
                 <span className="text-sm text-muted-foreground">
-                  {t("contact.info.email")}
+                  acefidedz@gmail.com
                 </span>
               </li>
             </ul>
@@ -178,6 +179,7 @@ function NewsletterForm() {
   };
 
   return (
+    <div>
     <form onSubmit={handleSubmit} className="flex gap-2">
       <input
         type="email"
@@ -194,5 +196,7 @@ function NewsletterForm() {
         {t("button")}
       </button>
     </form>
+    {status !== "idle" && <p role="status" className={`mt-2 text-xs ${status === "success" ? "text-primary" : "text-red-700"}`}>{status === "success" ? t("success") : t("error")}</p>}
+    </div>
   );
 }

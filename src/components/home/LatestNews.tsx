@@ -1,110 +1,159 @@
-"use client";
-
-import Image from "next/image";
-import { useTranslations, useLocale } from "next-intl";
+import { ArrowLeft, ArrowRight, CalendarDays, Newspaper } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 import { Link } from "@/lib/navigation";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, ArrowLeft, Calendar } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-const newsItems = [
-  {
-    id: 1,
-    title: "إطلاق دراسة استشرافية حول مستقبل الاقتصاد الجزائري",
-    titleEn: "Launch of a Foresight Study on the Future of the Algerian Economy",
-    category: "STUDIES",
-    date: "2026-05-15",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-    excerpt: "دراسة معمقة حول التحديات والفرص الاقتصادية في الجزائر خلال العقد القادم...",
-  },
-  {
-    id: 2,
-    title: "تنظيم المؤتمر السنوي الأول للاستثمار والمقاولاتية",
-    titleEn: "Organizing the First Annual Conference on Investment and Entrepreneurship",
-    category: "NEWS",
-    date: "2026-04-20",
-    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80",
-    excerpt: "المؤتمر يجمع خبراء الاقتصاد والمستثمرين ورواد الأعمال لمناقشة آفاق الاستثمار...",
-  },
-  {
-    id: 3,
-    title: "توقيع اتفاقية شراكة مع جامعة الجزائر",
-    titleEn: "Signing a Partnership Agreement with the University of Algiers",
-    category: "NEWS",
-    date: "2026-03-10",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80",
-    excerpt: "اتفاقية شراكة استراتيجية تهدف إلى تعزيز التعاون الأكاديمي والبحثي...",
-  },
-];
+type Locale = "ar" | "fr" | "en";
 
-export function LatestNews() {
-  const t = useTranslations("news");
-  const locale = useLocale();
+type LatestNewsProps = {
+  locale: Locale;
+};
+
+const copy = {
+  ar: {
+    edition: "آخر الأخبار",
+    title: "الجريدة الاقتصادية",
+    description: "أخبار المركز، تحليلاته، وشراكاته في قراءة حديثة للمشهد الاقتصادي.",
+    viewAll: "تصفح جميع الأخبار",
+    read: "اقرأ الخبر",
+    empty: "لا توجد أخبار منشورة حاليًا.",
+  },
+  fr: {
+    edition: "Dernières nouvelles",
+    title: "Le journal économique",
+    description: "Actualités, analyses et partenariats du centre dans une lecture contemporaine de l’économie.",
+    viewAll: "Toutes les actualités",
+    read: "Lire l’article",
+    empty: "Aucune actualité publiée pour le moment.",
+  },
+  en: {
+    edition: "Latest edition",
+    title: "The Economic Journal",
+    description: "News, analysis, and partnerships from the center in a contemporary view of the economy.",
+    viewAll: "Browse all news",
+    read: "Read article",
+    empty: "No news has been published yet.",
+  },
+} as const;
+
+const categoryLabels = {
+  NEWS: { ar: "أخبار", fr: "Actualité", en: "News" },
+  REPORTS: { ar: "تقارير", fr: "Rapport", en: "Reports" },
+  STUDIES: { ar: "دراسات", fr: "Étude", en: "Studies" },
+  ANALYSIS: { ar: "تحليل", fr: "Analyse", en: "Analysis" },
+} as const;
+
+export async function LatestNews({ locale }: LatestNewsProps) {
+  const text = copy[locale];
   const isRtl = locale === "ar";
   const Arrow = isRtl ? ArrowLeft : ArrowRight;
+  const items = await prisma.news.findMany({
+    where: { published: true },
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    take: 5,
+  }).catch(() => []);
+
+  const localized = (item: (typeof items)[number]) => ({
+    title: locale === "ar" ? item.titleAr : locale === "fr" ? item.titleFr : item.titleEn,
+    excerpt: locale === "ar" ? item.excerptAr : locale === "fr" ? item.excerptFr : item.excerptEn,
+  });
+  const lead = items[0];
+  const secondary = items.slice(1, 3);
+  const briefs = items.slice(3, 5);
 
   return (
-    <section
-      className={cn(
-        "py-20 bg-muted/30",
-        isRtl && "font-arabic"
-      )}
-      dir={isRtl ? "rtl" : "ltr"}
-    >
-      <div className="container-content scroll-reveal">
-        <div className="flex items-end justify-between mb-12">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {t("latest")}
-            </h2>
-            <div className="w-16 h-1 bg-turquoise rounded-full" />
+    <section className="bg-[#f5f3ed] py-16 text-[#14221d] md:py-24" dir={isRtl ? "rtl" : "ltr"}>
+      <div className="container-content">
+        <header className="border-y-4 border-double border-[#14221d] py-5 text-center">
+          <div className="flex items-center justify-center gap-3 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-primary">
+            <span className="h-px w-8 bg-primary/50" />
+            <Newspaper className="h-4 w-4" />
+            {text.edition}
+            <span className="h-px w-8 bg-primary/50" />
           </div>
-          <Button variant="outline" className="rounded-full" asChild>
-            <Link href="/news">
-              {t("viewAll")}
-              <Arrow className="h-4 w-4" />
+          <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] sm:text-5xl md:text-6xl">{text.title}</h2>
+          <div className="mt-4 flex flex-col items-center justify-between gap-3 border-t border-[#14221d]/20 pt-3 text-xs sm:flex-row">
+            <p className="max-w-2xl text-muted-foreground">{text.description}</p>
+            <Link href="/news" className="group inline-flex shrink-0 items-center gap-2 font-bold text-primary hover:text-primary-dark">
+              {text.viewAll}<Arrow className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
             </Link>
-          </Button>
-        </div>
+          </div>
+        </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {newsItems.map((item) => (
-            <Card
-              key={item.id}
-              className="group overflow-hidden hover:shadow-lg transition-all"
-            >
-              <div className="relative aspect-video overflow-hidden bg-muted">
-                <Image
-                  src={item.image}
-                  alt={locale === "ar" ? item.title : item.titleEn}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+        {!lead ? (
+          <div className="border-b border-[#14221d]/25 py-16 text-center text-muted-foreground">{text.empty}</div>
+        ) : (
+          <div className="grid border-b border-[#14221d]/30 lg:grid-cols-12">
+            <Link href={`/news/${lead.slug}`} className="group py-7 lg:col-span-7 lg:border-e lg:border-[#14221d]/30 lg:pe-8">
+              {lead.coverImage && (
+                <div
+                  className="aspect-[16/9] w-full overflow-hidden bg-muted bg-cover bg-center grayscale-[12%] transition duration-700 group-hover:grayscale-0"
+                  style={{ backgroundImage: `url(${JSON.stringify(lead.coverImage).slice(1, -1)})` }}
+                  role="img"
+                  aria-label={localized(lead).title}
                 />
+              )}
+              <div className={lead.coverImage ? "mt-5" : "pt-3"}>
+                <NewsMeta item={lead} locale={locale} />
+                <h3 className="mt-3 text-3xl font-black leading-tight tracking-[-0.025em] transition-colors group-hover:text-primary sm:text-4xl">{localized(lead).title}</h3>
+                {localized(lead).excerpt && <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">{localized(lead).excerpt}</p>}
+                <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-primary">{text.read}<Arrow className="h-4 w-4" /></span>
               </div>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <Badge variant="turquoise" className="text-xs">
-                    {t(`categories.${item.category.toLowerCase()}`)}
-                  </Badge>
-                  <span className="text-xs text-muted-foreground flex items-center gap-1">
-                    <Calendar className="h-3 w-3" />
-                    {item.date}
-                  </span>
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                  {locale === "ar" ? item.title : item.titleEn}
-                </h3>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {locale === "ar" ? item.excerpt : item.excerpt}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+            </Link>
+
+            <div className="divide-y divide-[#14221d]/25 lg:col-span-5 lg:ps-8">
+              {secondary.map((item) => {
+                const article = localized(item);
+                return (
+                  <Link key={item.id} href={`/news/${item.slug}`} className="group grid gap-4 py-7 sm:grid-cols-[1fr_9rem] lg:grid-cols-1 xl:grid-cols-[1fr_9rem]">
+                    <div>
+                      <NewsMeta item={item} locale={locale} />
+                      <h3 className="mt-3 text-xl font-extrabold leading-7 transition-colors group-hover:text-primary sm:text-2xl">{article.title}</h3>
+                      {article.excerpt && <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">{article.excerpt}</p>}
+                    </div>
+                    {item.coverImage && (
+                      <div className="order-first aspect-[4/3] bg-muted bg-cover bg-center sm:order-last lg:order-first xl:order-last" style={{ backgroundImage: `url(${JSON.stringify(item.coverImage).slice(1, -1)})` }} />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {briefs.length > 0 && (
+          <div className="grid divide-y divide-[#14221d]/25 md:grid-cols-2 md:divide-x md:divide-y-0 rtl:md:divide-x-reverse">
+            {briefs.map((item, index) => {
+              const article = localized(item);
+              return (
+                <Link key={item.id} href={`/news/${item.slug}`} className={`group py-6 ${index === 0 ? "md:pe-8" : "md:ps-8"}`}>
+                  <NewsMeta item={item} locale={locale} />
+                  <h3 className="mt-2 text-xl font-extrabold leading-7 transition-colors group-hover:text-primary">{article.title}</h3>
+                  {article.excerpt && <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">{article.excerpt}</p>}
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
+  );
+}
+
+type NewsMetaProps = {
+  item: Awaited<ReturnType<typeof prisma.news.findMany>>[number];
+  locale: Locale;
+};
+
+function NewsMeta({ item, locale }: NewsMetaProps) {
+  const date = item.publishedAt ?? item.createdAt;
+  return (
+    <p className="flex flex-wrap items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-primary">
+      <span>{categoryLabels[item.category][locale]}</span>
+      <span className="text-[#14221d]/25">/</span>
+      <time dateTime={date.toISOString()} className="inline-flex items-center gap-1.5 text-muted-foreground">
+        <CalendarDays className="h-3.5 w-3.5" />
+        {date.toLocaleDateString(locale, { day: "2-digit", month: "long", year: "numeric" })}
+      </time>
+    </p>
   );
 }

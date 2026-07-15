@@ -21,10 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*-server.*.log
 
 # local env files
 .env*.local
 .env
+/.local-postgres/
 
 # vercel
 .vercel
@@ -33,5 +35,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# prisma
-prisma/migrations/
+# Prisma migrations are versioned and deployed with the application.

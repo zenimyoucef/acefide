@@ -1,70 +1,12 @@
-"use client";
-
-import Image from "next/image";
-import { useTranslations, useLocale } from "next-intl";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { CalendarDays,MapPin,ArrowLeft,ArrowRight } from "lucide-react";
+import { getActivity,localized } from "@/lib/activities";
 import { Link } from "@/lib/navigation";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Calendar, MapPin, Users } from "lucide-react";
 
-export default function EventDetailPage() {
-  const t = useTranslations("events");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-  const Arrow = isRtl ? ArrowLeft : ArrowRight;
+export async function generateMetadata({params}:{params:Promise<{locale:string;id:string}>}):Promise<Metadata>{const{locale,id}=await params;const activity=await getActivity(id);if(!activity)return{};const text=localized(activity,locale);return{title:text.title,description:text.description||undefined,openGraph:{title:text.title,description:text.description||undefined,type:"article",images:activity.coverImage?[activity.coverImage]:undefined}}}
 
-  return (
-    <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
-      <section className="gradient-primary py-20">
-        <div className="container-content">
-          <Link
-            href="/events"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-6 transition-colors"
-          >
-            <Arrow className="h-4 w-4" />
-            {locale === "ar" ? "العودة للفعاليات" : locale === "fr" ? "Retour aux événements" : "Back to Events"}
-          </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-white">
-            {locale === "ar" ? "تفاصيل الفعالية" : locale === "fr" ? "Détails de l'événement" : "Event Details"}
-          </h1>
-        </div>
-      </section>
-      <section className="py-20">
-        <div className="container-content max-w-4xl">
-          <div className="relative aspect-video overflow-hidden rounded-2xl bg-muted mb-8">
-            <Image
-              src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1600&q=80"
-              alt={locale === "ar" ? "ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙØ¹Ø§Ù„ÙŠØ©" : locale === "fr" ? "DÃ©tails de l'Ã©vÃ©nement" : "Event details"}
-              fill
-              sizes="(max-width: 1024px) 100vw, 896px"
-              className="object-cover"
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <Calendar className="h-5 w-5 text-primary" />
-                <span>{locale === "ar" ? "قيد التحديد" : locale === "fr" ? "À déterminer" : "To be determined"}</span>
-              </div>
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <MapPin className="h-5 w-5 text-primary" />
-                <span>{locale === "ar" ? "الجزائر العاصمة" : locale === "fr" ? "Alger" : "Algiers"}</span>
-              </div>
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <Users className="h-5 w-5 text-primary" />
-                <span>{locale === "ar" ? "المتحدثون قيد التحديد" : locale === "fr" ? "Intervenants à confirmer" : "Speakers to be confirmed"}</span>
-              </div>
-            </div>
-            <Button size="lg" className="rounded-full">
-              {t("register")}
-              <Arrow className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="prose prose-lg max-w-none text-muted-foreground leading-relaxed">
-            <p>{locale === "ar" ? "تفاصيل الفعالية قيد الإضافة..." : locale === "fr" ? "Détails de l'événement à venir..." : "Event details coming soon..."}</p>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+export default async function EventDetailPage({params}:{params:Promise<{locale:string;id:string}>}){
+ const{locale,id}=await params;const activity=await getActivity(id);if(!activity)notFound();const text=localized(activity,locale);const Arrow=locale==="ar"?ArrowRight:ArrowLeft;const gallery=[...new Set([activity.coverImage,...activity.galleryImages].filter((value):value is string=>Boolean(value)))];
+ return <article className="min-h-[70vh] bg-[#f7f8f4]" dir={locale==="ar"?"rtl":"ltr"}><header className="bg-[#0b1f33] py-16 text-white"><div className="container-content max-w-4xl"><Link href="/events" className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white"><Arrow className="h-4 w-4"/>{locale==="ar"?"العودة إلى الأنشطة":locale==="fr"?"Retour aux activités":"Back to activities"}</Link><h1 className="mt-8 text-3xl font-bold leading-tight md:text-5xl">{text.title}</h1><div className="mt-7 flex flex-wrap gap-5 text-sm text-white/75"><span className="flex items-center gap-2"><CalendarDays className="h-4 w-4 text-[#c8a24a]"/>{activity.date.toLocaleDateString(locale,{year:"numeric",month:"long",day:"numeric"})}</span>{text.location&&<span className="flex items-center gap-2"><MapPin className="h-4 w-4 text-[#c8a24a]"/>{text.location}</span>}</div></div></header><div className="container-content max-w-5xl py-12">{gallery.length>0&&<div className="grid gap-4 sm:grid-cols-2">{gallery.map((image,index)=><div key={image} className={`${index===0?"sm:col-span-2 aspect-[16/8]":"aspect-[4/3]"} overflow-hidden rounded-2xl bg-slate-200 shadow-sm`}><div className="h-full w-full bg-cover bg-center" role="img" aria-label={`${text.title} ${index+1}`} style={{backgroundImage:`url(${JSON.stringify(image).slice(1,-1)})`}}/></div>)}</div>}<div className="mx-auto max-w-3xl py-10"><p className="text-lg leading-9 text-[#374151]">{text.description}</p><div className="mt-12 rounded-xl border-s-4 border-[#c8a24a] bg-white p-6"><p className="font-semibold text-[#0b1f33]">{locale==="ar"?"يأتي هذا النشاط ضمن عمل المركز في دعم الحوار الاقتصادي والتعاون المؤسساتي والتنمية الوطنية.":locale==="fr"?"Cette activité s’inscrit dans l’action du centre en faveur du dialogue économique, de la coopération institutionnelle et du développement national.":"This activity forms part of the center’s work to advance economic dialogue, institutional cooperation, and national development."}</p></div></div></div></article>;
 }

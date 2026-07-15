@@ -25,14 +25,14 @@
     "explorePublications": "Explorer les Publications"
   },
   "president": {
-    "name": "Akram Zaidi",
+    "name": "Akram Zidi",
     "title": "Président du ACEFIDE",
     "shortBio": "Expert en économie et prospective économique, il porte la vision du centre vers un avenir économique durable pour l'Algérie.",
     "readMore": "Lire la Suite",
     "message": "Message du Président",
     "vision": "Ma Vision",
     "timeline": "Parcours Professionnel",
-    "fullBio": "M. Akram Zaidi est le Président du Centre Algérien de Prospective Économique, de Développement de l'Investissement et de l'Entrepreneuriat (ACEFIDE). Il possède une vaste expérience en économie et en prospective économique. À travers le centre, il s'efforce de fournir des études et recherches économiques de haute qualité pour soutenir les décideurs, les investisseurs et les entrepreneurs. Il croit en l'importance du travail institutionnel et des partenariats stratégiques pour réaliser un développement économique durable en Algérie."
+    "fullBio": "M. Akram Zidi est le Président du Centre Algérien de Prospective Économique, de Développement de l'Investissement et de l'Entrepreneuriat (ACEFIDE). Il possède une vaste expérience en économie et en prospective économique. À travers le centre, il s'efforce de fournir des études et recherches économiques de haute qualité pour soutenir les décideurs, les investisseurs et les entrepreneurs. Il croit en l'importance du travail institutionnel et des partenariats stratégiques pour réaliser un développement économique durable en Algérie."
   },
   "impact": {
     "title": "Notre Impact",
@@ -63,7 +63,7 @@
   "about": {
     "title": "À Propos du Centre",
     "history": "Notre Histoire",
-    "historyDesc": "Le Centre Algérien de Prospective Économique, de Développement de l'Investissement et de l'Entrepreneuriat (ACEFIDE) a été fondé en 2020 en tant que centre de réflexion économique indépendant, visant à contribuer au développement économique durable de l'Algérie à travers des études prospectives et des recherches appliquées.",
+    "historyDesc": "ACEFIDE a officiellement annoncé sa naissance durant l’été 2022, à l’occasion des célébrations de la fête de l’Indépendance. Association nationale, elle contribue au développement économique par les études, le dialogue institutionnel, la promotion de l’investissement, l’entrepreneuriat et la sensibilisation.",
     "vision": "Notre Vision",
     "visionDesc": "Être un centre de référence en prospective économique, développement de l'investissement et entrepreneuriat en Algérie et dans la région, contribuant à bâtir une économie de la connaissance compétitive et durable.",
     "mission": "Notre Mission",
@@ -78,7 +78,7 @@
     },
     "structure": "Structure Organisationnelle",
     "registration": "Informations d'Enregistrement",
-    "registrationInfo": "Numéro d'enregistrement : XXXXXXXX (en attente) | Wilaya : Alger | Fondation : 2020"
+    "registrationInfo": "Association nationale | Alger, Algérie | Lancement officiel : été 2022"
   },
   "projects": {
     "title": "Projets & Initiatives",
@@ -171,6 +171,7 @@
     "partners": "Partenaires",
     "members": "Demandes d'Adhésion",
     "consultations": "Demandes de Consultation",
+    "messages": "Messages de contact",
     "subscribers": "Abonnés",
     "content": "Gestion de Contenu",
     "login": "Connexion",

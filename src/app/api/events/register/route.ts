@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { eventRegistrationSchema, validationError } from "@/lib/validation";
+import { rateLimit, requestKey } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   try {
-    const { eventId, name, email, phone, organization, notes } =
-      await request.json();
-
-    if (!eventId || !name || !email) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
+    if (!rateLimit(requestKey(request, "event-registration"))) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    const parsed = eventRegistrationSchema.safeParse(await request.json());
+    if (!parsed.success) return NextResponse.json(validationError(parsed.error), { status: 400 });
+    const { eventId, name, email, phone, organization, notes } = parsed.data;
 
     const event = await prisma.event.findUnique({
       where: { id: eventId },

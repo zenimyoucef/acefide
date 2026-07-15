@@ -1,57 +1,17 @@
 "use client";
+import { useLocale } from "next-intl";
+import { Building2, FileCheck2, Handshake, Lightbulb, Rocket, TrendingUp } from "lucide-react";
 
-import { useTranslations, useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
-import { Eye, TrendingUp, Rocket, FileCheck } from "lucide-react";
-
-const missions = [
-  { key: "foresight", icon: Eye },
-  { key: "investment", icon: TrendingUp },
-  { key: "entrepreneurship", icon: Rocket },
-  { key: "policy", icon: FileCheck },
+const objectives = [
+  { icon: TrendingUp, ar: "تحسين مناخ الاستثمار", fr: "Améliorer le climat d’investissement", en: "Improve the investment climate" },
+  { icon: Rocket, ar: "تشجيع المقاولاتية", fr: "Encourager l’entrepreneuriat", en: "Encourage entrepreneurship" },
+  { icon: Lightbulb, ar: "دراسات استشرافية", fr: "Études prospectives", en: "Provide foresight studies" },
+  { icon: Building2, ar: "دعم المستثمرين وحاملي المشاريع", fr: "Soutenir les investisseurs et porteurs de projets", en: "Support investors and project owners" },
+  { icon: Handshake, ar: "تعزيز التعاون المؤسساتي", fr: "Renforcer la coopération institutionnelle", en: "Strengthen institutional cooperation" },
+  { icon: FileCheck2, ar: "اقتراح الحلول والتوصيات", fr: "Proposer des solutions et recommandations", en: "Contribute solutions and recommendations" },
 ];
-
 export function MissionSection() {
-  const t = useTranslations("mission");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-
-  return (
-    <section
-      className={cn(
-        "py-20",
-        isRtl && "font-arabic"
-      )}
-      dir={isRtl ? "rtl" : "ltr"}
-    >
-      <div className="container-content scroll-reveal">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            {t("title")}
-          </h2>
-          <div className="w-16 h-1 bg-turquoise mx-auto rounded-full" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {missions.map((mission) => (
-            <div
-              key={mission.key}
-              className="pressable group relative p-6 rounded-2xl bg-card border border-border/50 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1 sm:p-8"
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-turquoise rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary/10 to-turquoise/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                <mission.icon className="h-7 w-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">
-                {t(`${mission.key}.title`)}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {t(`${mission.key}.desc`)}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  const locale = useLocale() as "ar" | "fr" | "en";
+  const title = locale === "ar" ? "أهدافنا" : locale === "fr" ? "Nos objectifs" : "Our objectives";
+  return <section className="bg-[#f7f8f6] py-20" dir={locale === "ar" ? "rtl" : "ltr"}><div className="container-content"><div className="mb-12 max-w-2xl"><span className="text-sm font-bold uppercase tracking-widest text-primary">ACEFIDE</span><h2 className="mt-3 text-3xl font-bold text-[#0b1f33] md:text-4xl">{title}</h2></div><div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{objectives.map(({ icon: Icon, ...item }, index) => <article key={item.en} className="group rounded-xl border bg-white p-6 transition hover:-translate-y-1 hover:shadow-lg"><div className="mb-6 flex items-center justify-between"><div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary"><Icon /></div><span className="text-sm font-semibold text-[#c8a24a]">0{index + 1}</span></div><h3 className="text-lg font-semibold text-[#111827]">{item[locale]}</h3></article>)}</div></div></section>;
 }

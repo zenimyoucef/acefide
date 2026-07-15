@@ -1,6 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
-import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { getDirection } from "@/lib/utils";
@@ -20,6 +19,9 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: t("title"),
     description: t("description"),
+    alternates: { languages: { ar: "/ar", en: "/en", fr: "/fr" } },
+    openGraph: { title: t("title"), description: t("description"), locale, siteName: "ACEFIDE", type: "website" },
+    twitter: { card: "summary_large_image", title: t("title"), description: t("description") },
   };
 }
 
@@ -40,26 +42,12 @@ export default async function LocaleLayout({ children, params }: Props) {
       suppressHydrationWarning
       className="h-full"
     >
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-background text-foreground antialiased">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Organization", name: "ACEFIDE", alternateName: "Algerian Center for Economic Foresight, Investment Development and Entrepreneurship", foundingDate: "2022", email: "acefidedz@gmail.com", telephone: "+213 23 29 88 88", address: { "@type": "PostalAddress", streetAddress: "Building 60, Dely Ibrahim, El Achour, Draria", addressLocality: "Algiers", addressCountry: "DZ" }, sameAs: ["https://www.facebook.com/ACEFIDEAlgeria"] }).replace(/</g, "\\u003c") }} />
         <NextIntlClientProvider messages={messages}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </ThemeProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,0 +1,33 @@
+CREATE TYPE "Role" AS ENUM ('USER', 'EDITOR', 'ADMIN', 'SUPER_ADMIN');
+CREATE TYPE "NewsCategory" AS ENUM ('NEWS', 'REPORTS', 'STUDIES', 'ANALYSIS');
+CREATE TYPE "PublicationCategory" AS ENUM ('REPORT', 'STUDY', 'ANALYSIS', 'POLICY_BRIEF');
+CREATE TYPE "EventCategory" AS ENUM ('ORGANIZED', 'PARTICIPATION', 'MEETING', 'MEDIA');
+CREATE TYPE "RequestStatus" AS ENUM ('PENDING', 'CONTACTED', 'COMPLETED', 'CANCELLED');
+CREATE TYPE "PartnerCategory" AS ENUM ('INSTITUTIONAL', 'GOVERNMENT', 'INTERNATIONAL', 'UNIVERSITY', 'PRIVATE');
+CREATE TYPE "MediaType" AS ENUM ('IMAGE', 'VIDEO', 'DOCUMENT');
+
+CREATE TABLE "User" ("id" TEXT NOT NULL,"email" TEXT NOT NULL,"password" TEXT NOT NULL,"name" TEXT NOT NULL,"role" "Role" NOT NULL DEFAULT 'USER',"active" BOOLEAN NOT NULL DEFAULT true,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "User_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "News" ("id" TEXT NOT NULL,"titleAr" TEXT NOT NULL,"titleEn" TEXT NOT NULL,"titleFr" TEXT NOT NULL,"slug" TEXT NOT NULL,"excerptAr" TEXT,"excerptEn" TEXT,"excerptFr" TEXT,"contentAr" TEXT NOT NULL,"contentEn" TEXT NOT NULL,"contentFr" TEXT NOT NULL,"category" "NewsCategory" NOT NULL DEFAULT 'NEWS',"coverImage" TEXT,"published" BOOLEAN NOT NULL DEFAULT false,"publishedAt" TIMESTAMP(3),"authorId" TEXT NOT NULL,"seoTitle" TEXT,"seoDesc" TEXT,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "News_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "Publication" ("id" TEXT NOT NULL,"titleAr" TEXT NOT NULL,"titleEn" TEXT NOT NULL,"titleFr" TEXT NOT NULL,"slug" TEXT NOT NULL,"summaryAr" TEXT,"summaryEn" TEXT,"summaryFr" TEXT,"category" "PublicationCategory" NOT NULL DEFAULT 'REPORT',"coverImage" TEXT,"pdfUrl" TEXT,"published" BOOLEAN NOT NULL DEFAULT false,"publishedAt" TIMESTAMP(3),"authorId" TEXT NOT NULL,"downloads" INTEGER NOT NULL DEFAULT 0,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "Publication_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "Event" ("id" TEXT NOT NULL,"titleAr" TEXT NOT NULL,"titleEn" TEXT NOT NULL,"titleFr" TEXT NOT NULL,"slug" TEXT NOT NULL,"descriptionAr" TEXT,"descriptionEn" TEXT,"descriptionFr" TEXT,"category" "EventCategory" NOT NULL DEFAULT 'ORGANIZED',"date" TIMESTAMP(3) NOT NULL,"endDate" TIMESTAMP(3),"location" TEXT,"locationAr" TEXT,"locationEn" TEXT,"locationFr" TEXT,"speakers" TEXT,"coverImage" TEXT,"registrationLink" TEXT,"published" BOOLEAN NOT NULL DEFAULT false,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "Event_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "Registration" ("id" TEXT NOT NULL,"eventId" TEXT NOT NULL,"name" TEXT NOT NULL,"email" TEXT NOT NULL,"phone" TEXT,"organization" TEXT,"notes" TEXT,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "Registration_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "MembershipRequest" ("id" TEXT NOT NULL,"name" TEXT NOT NULL,"email" TEXT NOT NULL,"phone" TEXT,"organization" TEXT,"position" TEXT,"reason" TEXT,"status" "RequestStatus" NOT NULL DEFAULT 'PENDING',"notes" TEXT,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "MembershipRequest_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "ConsultationRequest" ("id" TEXT NOT NULL,"name" TEXT NOT NULL,"email" TEXT NOT NULL,"phone" TEXT,"organization" TEXT,"subject" TEXT NOT NULL,"message" TEXT NOT NULL,"status" "RequestStatus" NOT NULL DEFAULT 'PENDING',"notes" TEXT,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "ConsultationRequest_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "NewsletterSubscriber" ("id" TEXT NOT NULL,"email" TEXT NOT NULL,"active" BOOLEAN NOT NULL DEFAULT true,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "NewsletterSubscriber_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "Partner" ("id" TEXT NOT NULL,"nameAr" TEXT NOT NULL,"nameEn" TEXT NOT NULL,"nameFr" TEXT NOT NULL,"slug" TEXT NOT NULL,"descriptionAr" TEXT,"descriptionEn" TEXT,"descriptionFr" TEXT,"category" "PartnerCategory" NOT NULL DEFAULT 'INSTITUTIONAL',"logo" TEXT,"website" TEXT,"order" INTEGER NOT NULL DEFAULT 0,"published" BOOLEAN NOT NULL DEFAULT false,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "Partner_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "MediaGallery" ("id" TEXT NOT NULL,"title" TEXT NOT NULL,"titleAr" TEXT,"titleEn" TEXT,"titleFr" TEXT,"description" TEXT,"altText" TEXT,"url" TEXT NOT NULL,"type" "MediaType" NOT NULL DEFAULT 'IMAGE',"eventId" TEXT,"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "MediaGallery_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "ContactMessage" ("id" TEXT NOT NULL,"name" TEXT NOT NULL,"email" TEXT NOT NULL,"phone" TEXT,"organization" TEXT,"subject" TEXT NOT NULL,"message" TEXT NOT NULL,"read" BOOLEAN NOT NULL DEFAULT false,"status" "RequestStatus" NOT NULL DEFAULT 'PENDING',"createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "ContactMessage_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "SiteSetting" ("id" TEXT NOT NULL,"key" TEXT NOT NULL,"value" TEXT NOT NULL,CONSTRAINT "SiteSetting_pkey" PRIMARY KEY ("id"));
+CREATE TABLE "SEO" ("id" TEXT NOT NULL,"page" TEXT NOT NULL,"titleAr" TEXT,"titleEn" TEXT,"titleFr" TEXT,"descAr" TEXT,"descEn" TEXT,"descFr" TEXT,"ogImage" TEXT,"updatedAt" TIMESTAMP(3) NOT NULL,CONSTRAINT "SEO_pkey" PRIMARY KEY ("id"));
+
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "News_slug_key" ON "News"("slug");
+CREATE UNIQUE INDEX "Publication_slug_key" ON "Publication"("slug");
+CREATE UNIQUE INDEX "Event_slug_key" ON "Event"("slug");
+CREATE UNIQUE INDEX "NewsletterSubscriber_email_key" ON "NewsletterSubscriber"("email");
+CREATE UNIQUE INDEX "Partner_slug_key" ON "Partner"("slug");
+CREATE UNIQUE INDEX "SiteSetting_key_key" ON "SiteSetting"("key");
+CREATE UNIQUE INDEX "SEO_page_key" ON "SEO"("page");
+ALTER TABLE "News" ADD CONSTRAINT "News_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Publication" ADD CONSTRAINT "Publication_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Registration" ADD CONSTRAINT "Registration_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;

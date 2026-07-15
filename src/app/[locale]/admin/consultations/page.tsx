@@ -1,17 +1,2 @@
-"use client";
-
-import { useTranslations, useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
-import { Card, CardContent } from "@/components/ui/card";
-
-export default function AdminConsultationsPage() {
-  const t = useTranslations("admin");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-  return (
-    <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
-      <h1 className="text-2xl font-bold text-foreground mb-6">{t("consultations")}</h1>
-      <Card><CardContent className="p-6"><div className="text-center py-16 text-muted-foreground"><p>{locale === "ar" ? "لا توجد طلبات استشارة بعد" : "No consultation requests yet"}</p></div></CardContent></Card>
-    </div>
-  );
-}
+import { prisma } from "@/lib/prisma";
+export default async function ConsultationsPage() { const items = await prisma.consultationRequest.findMany({ orderBy:{createdAt:"desc"},take:200 }); return <div><h1 className="mb-6 text-2xl font-bold">Consultation requests</h1><div className="space-y-3">{items.map(x=><article key={x.id} className="rounded-xl border bg-white p-5"><div className="flex flex-wrap items-center justify-between gap-2"><h2 className="font-bold">{x.subject}</h2><span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">{x.status}</span></div><p className="mt-2 text-sm text-muted-foreground">{x.name} · {x.email}</p><p className="mt-4 text-sm leading-6">{x.message}</p></article>)}{!items.length&&<p className="rounded-xl border bg-white p-10 text-center text-muted-foreground">No submissions yet.</p>}</div></div>; }

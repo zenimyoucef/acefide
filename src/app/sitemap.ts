@@ -7,7 +7,7 @@ const pages = [
   "",
   "/about",
   "/president",
-  "/projects",
+  "/structure",
   "/events",
   "/news",
   "/publications",

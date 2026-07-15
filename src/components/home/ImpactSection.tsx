@@ -1,56 +1,15 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
-import { FileText, Calendar, Handshake, Users } from "lucide-react";
-
-const stats = [
-  { key: "studies", icon: FileText, value: "50+" },
-  { key: "events", icon: Calendar, value: "30+" },
-  { key: "partnerships", icon: Handshake, value: "20+" },
-  { key: "members", icon: Users, value: "100+" },
-];
+import { useLocale } from "next-intl";
+import { CalendarDays, Facebook, Handshake, MapPinned } from "lucide-react";
 
 export function ImpactSection() {
-  const t = useTranslations("impact");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
-
-  return (
-    <section
-      className={cn(
-        "-mt-px py-20 bg-[#eef2f4]",
-        isRtl && "font-arabic"
-      )}
-      dir={isRtl ? "rtl" : "ltr"}
-    >
-      <div className="container-content scroll-reveal">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            {t("title")}
-          </h2>
-          <div className="w-16 h-1 bg-turquoise mx-auto rounded-full" />
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((stat) => (
-            <div
-              key={stat.key}
-              className="pressable flex flex-col items-center p-5 rounded-2xl bg-card border border-border/50 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 sm:p-8"
-            >
-              <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <stat.icon className="h-7 w-7 text-primary" />
-              </div>
-              <span className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                {stat.value}
-              </span>
-              <span className="text-sm text-muted-foreground text-center">
-                {t(stat.key)}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  const locale = useLocale() as "ar" | "fr" | "en";
+  const items = [
+    { icon: CalendarDays, value: "2022", label: { ar: "الانطلاق الرسمي", fr: "Lancement officiel", en: "Official launch" }[locale] },
+    { icon: Facebook, value: "19K+", label: { ar: "متابع على فيسبوك", fr: "abonnés Facebook", en: "Facebook followers" }[locale] },
+    { icon: Handshake, value: "4+", label: { ar: "علاقات مؤسساتية موثقة", fr: "relations institutionnelles documentées", en: "documented institutional relationships" }[locale] },
+    { icon: MapPinned, value: locale === "ar" ? "وطني" : locale === "fr" ? "National" : "National", label: { ar: "نطاق النشاط", fr: "rayonnement", en: "scope" }[locale] },
+  ];
+  return <section className="border-y border-white/10 bg-[#0b1f33] py-8 text-white" dir={locale === "ar" ? "rtl" : "ltr"}><div className="container-content grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-white/10 md:grid-cols-4">{items.map(({ icon: Icon, value, label }) => <div key={label} className="flex min-h-32 flex-col items-center justify-center gap-2 bg-[#0b1f33] p-5 text-center"><Icon className="mb-1 h-5 w-5 text-[#e5c978]"/><strong className="text-2xl font-extrabold tracking-tight">{value}</strong><span className="text-xs font-medium text-white/60 sm:text-sm">{label}</span></div>)}</div></section>;
 }

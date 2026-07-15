@@ -25,14 +25,14 @@
     "explorePublications": "Explore Publications"
   },
   "president": {
-    "name": "Akram Zaidi",
+    "name": "Akram Zidi",
     "title": "President of ACEFIDE",
     "shortBio": "An expert in economics and economic foresight, leading the center's vision towards a sustainable economic future for Algeria.",
     "readMore": "Read More",
     "message": "President's Message",
     "vision": "My Vision",
     "timeline": "Career Timeline",
-    "fullBio": "Mr. Akram Zaidi is the President of the Algerian Center for Economic Foresight, Investment Development and Entrepreneurship (ACEFIDE). He has extensive experience in economics and economic foresight, and through the center, he strives to deliver high-quality economic studies and research that support decision-makers, investors, and entrepreneurs. He believes in the importance of institutional work and strategic partnerships to achieve sustainable economic development in Algeria."
+    "fullBio": "Mr. Akram Zidi is the President of the Algerian Center for Economic Foresight, Investment Development and Entrepreneurship (ACEFIDE). He has extensive experience in economics and economic foresight, and through the center, he strives to deliver high-quality economic studies and research that support decision-makers, investors, and entrepreneurs. He believes in the importance of institutional work and strategic partnerships to achieve sustainable economic development in Algeria."
   },
   "impact": {
     "title": "Our Impact",
@@ -63,7 +63,7 @@
   "about": {
     "title": "About the Center",
     "history": "Our History",
-    "historyDesc": "The Algerian Center for Economic Foresight, Investment Development and Entrepreneurship (ACEFIDE) was founded in 2020 as an independent economic think tank, aiming to contribute to Algeria's sustainable economic development through foresight studies and applied research.",
+    "historyDesc": "ACEFIDE officially announced its establishment in summer 2022, during Algeria's Independence Day celebrations. It is a national association contributing to economic development through studies, institutional dialogue, investment promotion, entrepreneurship support, and public awareness.",
     "vision": "Our Vision",
     "visionDesc": "To be a leading center in economic foresight, investment development and entrepreneurship in Algeria and the region, contributing to building a competitive and sustainable knowledge-based economy.",
     "mission": "Our Mission",
@@ -78,7 +78,7 @@
     },
     "structure": "Organizational Structure",
     "registration": "Registration Information",
-    "registrationInfo": "Registration Number: XXXXXXXX (pending) | Wilaya: Algiers | Founded: 2020"
+    "registrationInfo": "National association | Algiers, Algeria | Official launch: summer 2022"
   },
   "projects": {
     "title": "Projects & Initiatives",
@@ -139,9 +139,9 @@
       "error": "An error occurred while sending. Please try again."
     },
     "info": {
-      "address": "Algiers, Algeria",
-      "phone": "Phone: Pending",
-      "email": "Email: contact@ACEFIDE.dz"
+      "address": "Building 60, Dely Ibrahim, El Achour, Draria, Algiers",
+      "phone": "023 29 88 88",
+      "email": "acefidedz@gmail.com"
     }
   },
   "newsletter": {
@@ -171,6 +171,7 @@
     "partners": "Partners",
     "members": "Membership Requests",
     "consultations": "Consultation Requests",
+    "messages": "Contact Messages",
     "subscribers": "Subscribers",
     "content": "Content Management",
     "login": "Login",

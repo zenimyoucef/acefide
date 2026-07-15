@@ -41,6 +41,7 @@ model News {
   contentFr   String
   category    NewsCategory @default(NEWS)
   coverImage  String?
+  galleryImages String[] @default([])
   published   Boolean  @default(false)
   publishedAt DateTime?
   authorId    String
@@ -95,16 +96,28 @@ model Event {
   descriptionAr String?
   descriptionEn String?
   descriptionFr String?
+  category    EventCategory @default(ORGANIZED)
   date        DateTime
   endDate     DateTime?
   location    String?
+  locationAr  String?
+  locationEn  String?
+  locationFr  String?
   speakers    String?
   coverImage  String?
   registrationLink String?
+  galleryImages String[] @default([])
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   registrations Registration[]
+}
+
+enum EventCategory {
+  ORGANIZED
+  PARTICIPATION
+  MEETING
+  MEDIA
 }
 
 model Registration {
@@ -127,6 +140,25 @@ model MembershipRequest {
   organization String?
   position     String?
   reason       String?
+  dateOfBirth  DateTime?
+  placeOfBirth String?
+  nationalId   String?
+  address      String?
+  wilaya       String?
+  educationLevel String?
+  employmentStatus String?
+  membershipCategory String?
+  interests    String[] @default([])
+  previousAssociation Boolean?
+  previousAssociationDetails String?
+  socialLinks  String?
+  identityDocumentUrl String?
+  personalPhotoUrl String?
+  cvUrl        String?
+  diplomaUrl   String?
+  criminalRecordUrl String?
+  duesReceiptUrl String?
+  declarationAccepted Boolean @default(false)
   status       RequestStatus @default(PENDING)
   notes        String?
   createdAt    DateTime @default(now())
@@ -190,7 +222,11 @@ enum PartnerCategory {
 model MediaGallery {
   id          String   @id @default(cuid())
   title       String
+  titleAr     String?
+  titleEn     String?
+  titleFr     String?
   description String?
+  altText     String?
   url         String
   type        MediaType @default(IMAGE)
   eventId     String?
@@ -212,6 +248,7 @@ model ContactMessage {
   subject      String
   message      String
   read         Boolean  @default(false)
+  status       RequestStatus @default(PENDING)
   createdAt    DateTime @default(now())
 }
 
