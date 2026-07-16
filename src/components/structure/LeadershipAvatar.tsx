@@ -31,7 +31,7 @@ export function LeadershipAvatar({ member, locale, size = "sm" }: LeadershipAvat
   return (
     <span
       className={cn(
-        "relative inline-flex shrink-0 overflow-hidden rounded-full border-4 border-white bg-muted shadow-md ring-1 ring-black/5",
+        "relative inline-flex shrink-0 overflow-hidden rounded-full border-4 border-white bg-muted shadow-md ring-1 ring-black/5 transition duration-300 group-hover:scale-105 group-hover:shadow-xl group-active:scale-[1.02]",
         sizeClass
       )}
       title={`${member.name[locale]} - ${member.role[locale]}`}

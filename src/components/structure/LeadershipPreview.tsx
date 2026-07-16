@@ -18,10 +18,17 @@ export function LeadershipPreview({ fullBleed = false, members: providedMembers 
   const copy = structureCopy[locale];
   const Arrow = isRtl ? ArrowLeft : ArrowRight;
   const members = (providedMembers || leadershipMembers).filter((member) => member.id !== "president");
-  const marqueeMembers = fullBleed ? members : [...members, ...members, ...members];
+
+  const renderMember = (member: LeadershipMember, key: string) => (
+    <Link key={key} href={`/team/${member.id}`} className="team-member-card group flex w-72 shrink-0 flex-col items-center rounded-3xl text-center outline-none transition focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4" dir={isRtl ? "rtl" : "ltr"} aria-label={`${member.name[locale]} - ${member.role[locale]}`}>
+      <LeadershipAvatar member={member} locale={locale} size="team" />
+      <span className="mt-4 line-clamp-2 text-base font-bold leading-5 text-[#10241d] transition-colors group-hover:text-primary">{member.name[locale]}</span>
+      <span className="mt-1 line-clamp-2 text-sm font-semibold leading-5 text-primary">{member.role[locale]}</span>
+    </Link>
+  );
 
   return (
-    <div className={cn("overflow-hidden", !fullBleed && "p-1")}>
+    <div className={cn("leadership-section", !fullBleed && "overflow-hidden p-1")}>
       <div className={cn("flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between", fullBleed && "container-content")}>
         <span>
           <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary">
@@ -44,13 +51,7 @@ export function LeadershipPreview({ fullBleed = false, members: providedMembers 
         dir="ltr"
       >
         <div className="team-marquee-track flex w-max gap-12 py-2">
-          {marqueeMembers.map((member, index) => (
-            <div key={`${member.id}-${index}`} className="flex w-72 shrink-0 flex-col items-center text-center" dir={isRtl ? "rtl" : "ltr"}>
-              <LeadershipAvatar member={member} locale={locale} size="team" />
-              <span className="mt-4 line-clamp-2 text-base font-bold leading-5 text-[#10241d]">{member.name[locale]}</span>
-              <span className="mt-1 line-clamp-2 text-sm font-semibold leading-5 text-primary">{member.role[locale]}</span>
-            </div>
-          ))}
+          {members.map((member, index) => renderMember(member, `${member.id ?? index}`))}
         </div>
       </div>
     </div>

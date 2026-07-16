@@ -1,16 +1,19 @@
-"use client";
-
 import Image from "next/image";
 import akram from "../../../assets/akram.png";
-import { useLocale, useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/lib/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Quote, Signature } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getLeadershipMembers } from "@/lib/leadership-data";
 
-export function PresidentSection() {
-  const t = useTranslations("president");
-  const locale = useLocale();
+export async function PresidentSection() {
+  const [t, locale, members] = await Promise.all([
+    getTranslations("president"),
+    getLocale(),
+    getLeadershipMembers(),
+  ]);
+  const presidentImage = members.find((member) => member.id === "president")?.imageUrl || akram;
   const isRtl = locale === "ar";
   const Arrow = isRtl ? ArrowLeft : ArrowRight;
 
@@ -73,7 +76,7 @@ export function PresidentSection() {
               <div className="absolute -bottom-5 -start-5 h-28 w-28 border-s-4 border-t-4 border-turquoise" />
               <div className="relative aspect-[4/5] overflow-hidden bg-primary-dark shadow-2xl">
                 <Image
-                  src={akram}
+                  src={presidentImage}
                   alt={t("name")}
                   fill
                   sizes="(min-width: 1024px) 460px, 86vw"

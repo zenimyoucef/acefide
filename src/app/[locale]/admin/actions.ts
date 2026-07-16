@@ -1,6 +1,6 @@
 "use server";
 import { randomUUID } from "crypto";
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -126,6 +126,26 @@ export async function deletePartner(locale: string, id: string) {
   revalidatePath(`/${locale}`); revalidatePath(`/${locale}/partners`); revalidatePath(`/${locale}/admin/partners`);
 }
 
+export async function deleteMembershipRequest(locale: string, id: string) {
+  await editor();
+  const applicant = await prisma.membershipRequest.findUnique({ where: { id } });
+  if (!applicant) return;
+
+  await prisma.membershipRequest.delete({ where: { id } });
+
+  const uploads = [
+    applicant.identityDocumentUrl, applicant.personalPhotoUrl, applicant.cvUrl,
+    applicant.diplomaUrl, applicant.criminalRecordUrl, applicant.duesReceiptUrl,
+  ];
+  await Promise.allSettled(uploads.map(async (url) => {
+    if (!url?.startsWith("/uploads/membership/")) return;
+    const filename = path.basename(url);
+    await unlink(path.join(process.cwd(), "public", "uploads", "membership", filename));
+  }));
+
+  revalidatePath(`/${locale}/admin/members`);
+}
+
 export async function saveSiteSettings(locale: string, data: FormData) {
   await editor();
   const keys = ["site_name_ar", "site_name_fr", "site_name_en", "contact_email", "contact_phone", "contact_address_ar", "contact_address_fr", "contact_address_en", "facebook_url", "linkedin_url", "youtube_url", "map_embed_url"];
@@ -142,9 +162,10 @@ export async function saveLeadershipMember(locale: string, memberId: string, dat
     imageUrl: imageUrl || undefined,
     name: { ar:text(data,"nameAr"), fr:text(data,"nameFr"), en:text(data,"nameEn") },
     role: { ar:text(data,"roleAr"), fr:text(data,"roleFr"), en:text(data,"roleEn") },
+    achievements: { ar:text(data,"achievementsAr"), fr:text(data,"achievementsFr"), en:text(data,"achievementsEn") },
   } : member);
   await prisma.siteSetting.upsert({ where:{key:"leadership_members"}, update:{value:JSON.stringify(updated)}, create:{key:"leadership_members",value:JSON.stringify(updated)} });
-  revalidatePath(`/${locale}`); revalidatePath(`/${locale}/structure`); revalidatePath(`/${locale}/president`); revalidatePath(`/${locale}/admin/team`);
+  revalidatePath(`/${locale}`); revalidatePath(`/${locale}/structure`); revalidatePath(`/${locale}/president`); revalidatePath(`/${locale}/team/${memberId}`); revalidatePath(`/${locale}/admin/team`);
   redirect(`/${locale}/admin/team`);
 }
 
@@ -152,7 +173,7 @@ export async function addLeadershipMember(locale: string, data: FormData) {
   await editor(); const members=await getLeadershipMembers(); const nameEn=text(data,"nameEn"); if(!nameEn)throw new Error("English name is required");
   const imageUrl=await uploadedFile(data,"imageFile","imageUrl","leadership",{"image/jpeg":"jpg","image/png":"png","image/webp":"webp"},8);
   const initials=nameEn.split(/\s+/).map(part=>part[0]).join("").slice(0,2).toUpperCase();
-  members.push({id:randomUUID(),initials:initials||"TM",accent:"from-primary to-turquoise",imageUrl:imageUrl||undefined,name:{ar:text(data,"nameAr"),fr:text(data,"nameFr"),en:nameEn},role:{ar:text(data,"roleAr"),fr:text(data,"roleFr"),en:text(data,"roleEn")},summary:{ar:"",fr:"",en:""},reportsTo:"president"});
+  members.push({id:randomUUID(),initials:initials||"TM",accent:"from-primary to-turquoise",imageUrl:imageUrl||undefined,name:{ar:text(data,"nameAr"),fr:text(data,"nameFr"),en:nameEn},role:{ar:text(data,"roleAr"),fr:text(data,"roleFr"),en:text(data,"roleEn")},summary:{ar:"",fr:"",en:""},achievements:{ar:text(data,"achievementsAr"),fr:text(data,"achievementsFr"),en:text(data,"achievementsEn")},reportsTo:"president"});
   await prisma.siteSetting.upsert({where:{key:"leadership_members"},update:{value:JSON.stringify(members)},create:{key:"leadership_members",value:JSON.stringify(members)}});
   revalidatePath(`/${locale}`);revalidatePath(`/${locale}/structure`);revalidatePath(`/${locale}/president`);revalidatePath(`/${locale}/admin/team`);redirect(`/${locale}/admin/team`);
 }
@@ -160,5 +181,5 @@ export async function addLeadershipMember(locale: string, data: FormData) {
 export async function removeLeadershipMember(locale:string,memberId:string){
   await editor();if(memberId==="president")throw new Error("The president cannot be removed");const members=(await getLeadershipMembers()).filter(member=>member.id!==memberId);
   await prisma.siteSetting.upsert({where:{key:"leadership_members"},update:{value:JSON.stringify(members)},create:{key:"leadership_members",value:JSON.stringify(members)}});
-  revalidatePath(`/${locale}`);revalidatePath(`/${locale}/structure`);revalidatePath(`/${locale}/president`);revalidatePath(`/${locale}/admin/team`);
+  revalidatePath(`/${locale}`);revalidatePath(`/${locale}/structure`);revalidatePath(`/${locale}/president`);revalidatePath(`/${locale}/team/${memberId}`);revalidatePath(`/${locale}/admin/team`);
 }

@@ -7,6 +7,7 @@ export type LeadershipMember = {
   name: Record<Locale, string>;
   role: Record<Locale, string>;
   summary: Record<Locale, string>;
+  achievements?: Record<Locale, string>;
   imageUrl?: string;
   image?: "akram";
   reportsTo?: string;

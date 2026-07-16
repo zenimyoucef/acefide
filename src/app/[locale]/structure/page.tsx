@@ -3,6 +3,7 @@ import { LeadershipAvatar } from "@/components/structure/LeadershipAvatar";
 import { structureCopy, type Locale } from "@/lib/structure";
 import { getLeadershipMembers } from "@/lib/leadership-data";
 import { cn } from "@/lib/utils";
+import { Link } from "@/lib/navigation";
 
 export default async function StructurePage({params}:{params:Promise<{locale:string}>}) {
   const {locale:localeParam}=await params;
@@ -36,11 +37,11 @@ export default async function StructurePage({params}:{params:Promise<{locale:str
           <div className="mx-auto max-w-5xl">
             <div className="text-center">
               <p className="section-kicker">{copy.president}</p>
-              <div className="mx-auto mt-6 flex max-w-sm flex-col items-center text-center">
+              <Link href={`/team/${president.id}`} className="group mx-auto mt-6 flex max-w-sm flex-col items-center rounded-3xl text-center outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4">
                 <LeadershipAvatar member={president} locale={locale} size="xl" />
                 <h2 className="mt-5 text-2xl font-bold text-[#10241d] md:text-3xl">{president.name[locale]}</h2>
                 <p className="mt-1 text-base font-semibold text-primary md:text-lg">{president.role[locale]}</p>
-              </div>
+              </Link>
             </div>
 
             <div className="mx-auto h-12 w-px bg-primary/25" />
@@ -55,16 +56,17 @@ export default async function StructurePage({params}:{params:Promise<{locale:str
 
               <div className="grid justify-items-center gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
                 {executives.map((member) => (
-                  <article
+                  <Link
                     key={member.id}
-                    className="group flex w-full max-w-[15rem] flex-col items-center text-center"
+                    href={`/team/${member.id}`}
+                    className="group flex w-full max-w-[15rem] flex-col items-center rounded-3xl text-center outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
                   >
                     <span className="rounded-full transition group-hover:-translate-y-1 group-hover:shadow-[0_18px_38px_rgba(11,31,51,0.10)]">
                       <LeadershipAvatar member={member} locale={locale} size="lg" />
                     </span>
                     <h3 className="mt-4 text-lg font-bold leading-tight text-[#10241d]">{member.name[locale]}</h3>
                     <p className="mt-1 text-sm font-semibold leading-6 text-primary">{member.role[locale]}</p>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </div>

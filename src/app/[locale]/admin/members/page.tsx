@@ -1,7 +1,10 @@
 import { ExternalLink, Mail, Phone } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { DeleteApplicantButton } from "@/components/admin/DeleteApplicantButton";
+import { deleteMembershipRequest } from "../actions";
 
-export default async function MembersPage() {
+export default async function MembersPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const items = await prisma.membershipRequest.findMany({ orderBy: { createdAt: "desc" }, take: 200 });
 
   return (
@@ -25,7 +28,10 @@ export default async function MembersPage() {
             <article key={item.id} className="overflow-hidden rounded-2xl border bg-white shadow-sm">
               <header className="flex flex-wrap items-start justify-between gap-4 border-b bg-[#f8faf7] p-5">
                 <div><h2 className="text-xl font-bold text-[#0b1f33]">{item.name}</h2><p className="mt-1 text-xs text-muted-foreground">Submitted {item.createdAt.toLocaleString()}</p></div>
-                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">{item.status}</span>
+                <div className="flex items-center gap-3">
+                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">{item.status}</span>
+                  <DeleteApplicantButton action={deleteMembershipRequest.bind(null, locale, item.id)} applicantName={item.name} />
+                </div>
               </header>
               <div className="grid gap-7 p-5 xl:grid-cols-[1fr_1fr]">
                 <section>

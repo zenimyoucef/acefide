@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Building2 } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "@/lib/navigation";
 import { prisma } from "@/lib/prisma";
 
@@ -32,21 +32,26 @@ export async function PartnersSection({ locale }: { locale: Locale }) {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {partners.map((partner) => {
             const name = locale === "ar" ? partner.nameAr : locale === "fr" ? partner.nameFr : partner.nameEn;
-            const description = locale === "ar" ? partner.descriptionAr : locale === "fr" ? partner.descriptionFr : partner.descriptionEn;
-            return (
-              <Link key={partner.id} href={`/partners/${partner.slug}`} className="group surface-card flex min-h-72 flex-col p-6 transition-all hover:-translate-y-1 hover:shadow-xl">
-                <div className="flex h-28 items-center justify-center rounded-xl border bg-white p-4">
-                  {partner.logo ? (
-                    <Image src={partner.logo} alt={`${name} logo`} width={180} height={96} className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105" />
-                  ) : (
-                    <Building2 className="h-10 w-10 text-primary" />
-                  )}
-                </div>
-                <h3 className="mt-5 text-lg font-bold text-[#0b1f33]">{name}</h3>
-                {description && <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">{description}</p>}
-                <span className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-primary">
-                  {copy.details}<Arrow className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
-                </span>
+            if (!partner.logo) return null;
+
+            const logo = (
+              <Image
+                src={partner.logo}
+                alt={`${name} logo`}
+                width={220}
+                height={120}
+                className="h-full w-full object-contain transition-transform duration-300 ease-out group-hover:scale-125 group-focus-visible:scale-125 group-active:scale-110"
+              />
+            );
+            const className = "group flex h-32 items-center justify-center p-3 focus-visible:rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
+
+            return partner.website ? (
+              <a key={partner.id} href={partner.website} target="_blank" rel="noopener noreferrer" aria-label={name} title={name} className={className}>
+                {logo}
+              </a>
+            ) : (
+              <Link key={partner.id} href={`/partners/${partner.slug}`} aria-label={name} title={name} className={className}>
+                {logo}
               </Link>
             );
           })}

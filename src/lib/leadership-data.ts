@@ -7,7 +7,10 @@ export async function getLeadershipMembers(): Promise<LeadershipMember[]> {
   if (!setting?.value) return leadershipMembers;
   try {
     const saved = JSON.parse(setting.value) as LeadershipMember[];
-    return Array.isArray(saved) ? saved : leadershipMembers;
+    return Array.isArray(saved) ? saved.map((member) => ({
+      ...member,
+      achievements: member.achievements || { ar: "", fr: "", en: "" },
+    })) : leadershipMembers;
   } catch {
     return leadershipMembers;
   }

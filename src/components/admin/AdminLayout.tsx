@@ -18,6 +18,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Languages,
+  Menu,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { usePathname, useRouter } from "@/lib/navigation";
@@ -45,6 +47,7 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
   const locale = useLocale();
   const isRtl = locale === "ar";
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -66,11 +69,13 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
       )}
       dir={isRtl ? "rtl" : "ltr"}
     >
+      {mobileOpen && <button type="button" aria-label="Close navigation" onClick={() => setMobileOpen(false)} className="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-[2px] lg:hidden" />}
       {/* Sidebar */}
       <aside
         className={cn(
-          "bg-card border-border/50 border-e transition-all duration-300 flex flex-col",
-          collapsed ? "w-16" : "w-64"
+          "fixed inset-y-0 start-0 z-50 flex h-dvh w-[min(18rem,86vw)] flex-col border-e border-border/50 bg-card shadow-2xl transition-transform duration-300 lg:static lg:z-auto lg:h-screen lg:shrink-0 lg:translate-x-0 lg:shadow-none",
+          mobileOpen ? "translate-x-0" : isRtl ? "translate-x-full" : "-translate-x-full",
+          collapsed ? "lg:w-16" : "lg:w-64"
         )}
       >
         <div className="p-4 border-b border-border/50 flex items-center justify-between">
@@ -82,9 +87,10 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
               <span className="font-bold text-foreground text-lg">ACEFIDE</span>
             )}
           </div>
+          <button type="button" onClick={() => setMobileOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted lg:hidden" aria-label="Close navigation"><X className="h-5 w-5" /></button>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="h-8 w-8 rounded-lg hover:bg-muted flex items-center justify-center text-muted-foreground"
+            className="hidden h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted lg:flex"
           >
             {collapsed ? (
               <ChevronRight className="h-4 w-4" />
@@ -98,9 +104,10 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
             <Link
               key={item.key}
               href={item.href}
+              onClick={() => setMobileOpen(false)}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors",
-                collapsed && "justify-center px-0"
+                collapsed && "lg:justify-center lg:px-0"
               )}
             >
               <item.icon className="h-5 w-5 shrink-0" />
@@ -114,7 +121,7 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
             onClick={logout}
             className={cn(
               "flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors",
-              collapsed && "justify-center px-0"
+              collapsed && "lg:justify-center lg:px-0"
             )}
           >
             <LogOut className="h-5 w-5 shrink-0" />
@@ -125,11 +132,14 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
 
       {/* Main Content */}
       <main className="min-w-0 flex-1 overflow-auto">
-        <header className="flex items-center justify-between gap-4 border-b bg-white px-6 py-4">
-          <div><p className="font-semibold text-foreground">{user.name}</p><p className="text-xs text-muted-foreground">{user.role}</p></div>
-          <div className="flex items-center gap-3">
+        <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b bg-white/95 px-3 py-3 backdrop-blur sm:gap-4 sm:px-6 sm:py-4">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <button type="button" onClick={() => setMobileOpen(true)} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border bg-white text-primary lg:hidden" aria-label="Open navigation"><Menu className="h-5 w-5" /></button>
+            <div className="min-w-0"><p className="truncate text-sm font-semibold text-foreground sm:text-base">{user.name}</p><p className="truncate text-[0.65rem] text-muted-foreground sm:text-xs">{user.role}</p></div>
+          </div>
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
             <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-600">
-              <Languages className="h-4 w-4 text-primary" />
+              <Languages className="hidden h-4 w-4 text-primary sm:block" />
               <span className="sr-only">Interface language</span>
               <select value={locale} onChange={(event) => changeLanguage(event.target.value)} className="h-9 cursor-pointer bg-transparent font-semibold outline-none" aria-label="Interface language">
                 <option value="en">English</option>
@@ -137,10 +147,10 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
                 <option value="ar">العربية</option>
               </select>
             </label>
-            <button onClick={logout} className="text-sm text-muted-foreground hover:text-foreground">{t("logout")}</button>
+            <button onClick={logout} className="hidden text-sm text-muted-foreground hover:text-foreground sm:block">{t("logout")}</button>
           </div>
         </header>
-        <div className="p-4 sm:p-6">{children}</div>
+        <div className="p-3 sm:p-6">{children}</div>
       </main>
     </div>
   );

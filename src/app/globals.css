@@ -307,6 +307,68 @@ h1, h2, h3, h4, h5, h6 {
   section {
     scroll-margin-top: 4.5rem;
   }
+
+  /* Comfortable touch targets and compact admin surfaces on phones. */
+  .admin-shell button,
+  .admin-shell a[href],
+  .admin-shell select {
+    min-height: 2.75rem;
+  }
+
+  .admin-shell h1 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .admin-shell h2 {
+    font-size: 1.125rem;
+  }
+
+  .admin-shell article,
+  .admin-shell section {
+    min-width: 0;
+  }
+
+  .admin-shell article > header,
+  .admin-shell .p-5,
+  .admin-shell .p-6,
+  .admin-shell .p-7 {
+    padding: 1rem;
+  }
+
+  .admin-shell fieldset {
+    min-width: 0;
+  }
+
+  .admin-shell fieldset.p-5,
+  .admin-shell fieldset.p-4 {
+    padding: .875rem;
+  }
+
+  .admin-shell input[type="file"] {
+    max-width: 100%;
+  }
+
+  .admin-shell .overflow-x-auto {
+    margin-inline: -.25rem;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-shell table th,
+  .admin-shell table td {
+    white-space: nowrap;
+  }
+
+  .admin-shell article a[href^="mailto:"],
+  .admin-shell article a[href^="tel:"] {
+    min-height: auto;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-shell article a[target="_blank"] {
+    min-width: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -358,14 +420,9 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: -200% 0; }
 }
 
-@keyframes teamMarquee {
-  from { transform: translate3d(-33.333%, 0, 0); }
-  to { transform: translate3d(-66.666%, 0, 0); }
-}
-
 @keyframes teamMarqueeScreen {
-  from { transform: translateX(100vw); }
-  to { transform: translateX(-100%); }
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
 }
 
 .team-marquee-mask {
@@ -403,13 +460,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .team-marquee-track {
-  animation: teamMarquee 38s linear infinite;
-  min-width: max-content;
-  transform: translate3d(-33.333%, 0, 0);
-  will-change: transform;
-}
-
-.team-marquee-full-bleed .team-marquee-track {
   display: flex;
   width: max-content;
   animation: teamMarqueeScreen 30s linear infinite;

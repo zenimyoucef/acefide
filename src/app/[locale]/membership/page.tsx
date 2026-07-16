@@ -36,6 +36,25 @@ const documents = [
   ["duesReceipt", "وصل تسديد مستحقات الانخراط"],
 ] as const;
 
+const fieldLabels: Record<string, string> = {
+  name: "الاسم واللقب",
+  email: "البريد الإلكتروني",
+  phone: "رقم الهاتف",
+  dateOfBirth: "تاريخ الميلاد",
+  placeOfBirth: "مكان الميلاد",
+  nationalId: "رقم التعريف الوطني",
+  address: "العنوان الكامل",
+  wilaya: "الولاية",
+  educationLevel: "المستوى الدراسي",
+  employmentStatus: "الوضعية الاجتماعية والمهنية",
+  position: "المهنة أو الصفة",
+  membershipCategory: "فئة الانخراط",
+  interests: "مجالات الاهتمام",
+  previousAssociation: "الانخراط السابق في جمعية أو نادٍ",
+  reason: "دوافع الانضمام",
+  declarationAccepted: "التصريح والموافقة على الخصوصية",
+};
+
 const fieldClass = "mt-2 h-11 w-full rounded-lg border border-primary/15 bg-white px-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10";
 
 export default function MembershipPage() {
@@ -45,12 +64,32 @@ export default function MembershipPage() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/membership", { method: "POST", body: new FormData(event.currentTarget) });
+      const response = await fetch("/api/membership", { method: "POST", body: formData });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "تعذر إرسال الطلب");
+      if (!response.ok) {
+        const invalidFields = result.fields && typeof result.fields === "object"
+          ? Object.keys(result.fields).filter((field) => Array.isArray(result.fields[field]) && result.fields[field].length)
+          : [];
+        if (invalidFields.length) {
+          const firstField = invalidFields[0];
+          const labels = invalidFields.map((field) => fieldLabels[field] || field);
+          const input = form.elements.namedItem(firstField);
+          if (input instanceof HTMLElement) {
+            input.focus();
+            input.scrollIntoView({ behavior: "smooth", block: "center" });
+          } else if (input instanceof RadioNodeList && input[0] instanceof HTMLElement) {
+            input[0].focus();
+            input[0].scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          throw new Error(`يرجى مراجعة الحقول التالية: ${labels.join("، ")}.`);
+        }
+        throw new Error(result.error || "تعذر إرسال الطلب");
+      }
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (cause) {
@@ -115,7 +154,7 @@ export default function MembershipPage() {
             <label className="flex items-start gap-3 rounded-xl border bg-white p-4 text-sm font-bold"><input name="declarationAccepted" type="checkbox" required className="mt-1 h-4 w-4 accent-primary" />أصرح بصحة المعلومات الواردة في هذه الاستمارة وأوافق على معالجة بياناتي وفق بيان الخصوصية.</label>
           </FormSection>
 
-          {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">{error}</p>}
+          {error && <p role="alert" aria-live="assertive" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">{error}</p>}
           <Button type="submit" size="xl" disabled={loading} className="w-full rounded-full md:w-auto md:min-w-56"><Send className="h-5 w-5" />{loading ? "جارٍ إرسال الطلب..." : "إرسال طلب الانخراط"}</Button>
         </form>
       </div>
