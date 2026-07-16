@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "dev:no-turbo": "next dev --webpack",
-    "build": "next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
+    "vercel-build": "prisma migrate deploy && tsx prisma/seed.ts && next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",

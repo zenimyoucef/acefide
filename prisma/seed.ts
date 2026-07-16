@@ -18,7 +18,9 @@ async function main() {
   let admin = null;
   if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
     if (process.env.ADMIN_PASSWORD.length < 12) throw new Error("ADMIN_PASSWORD must contain at least 12 characters");
-    admin = await prisma.user.upsert({ where: { email: process.env.ADMIN_EMAIL.toLowerCase() }, update: { active: true }, create: { email: process.env.ADMIN_EMAIL.toLowerCase(), password: await hash(process.env.ADMIN_PASSWORD, 12), name: process.env.ADMIN_NAME || "ACEFIDE Administrator", role: "SUPER_ADMIN" } });
+    const password = await hash(process.env.ADMIN_PASSWORD, 12);
+    const name = process.env.ADMIN_NAME || "ACEFIDE Administrator";
+    admin = await prisma.user.upsert({ where: { email: process.env.ADMIN_EMAIL.toLowerCase() }, update: { active: true, password, name, role: "SUPER_ADMIN" }, create: { email: process.env.ADMIN_EMAIL.toLowerCase(), password, name, role: "SUPER_ADMIN" } });
   } else console.warn("ADMIN_EMAIL/ADMIN_PASSWORD not set; administrator creation skipped.");
 
   for (const event of events) {
