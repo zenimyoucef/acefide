@@ -1,27 +1,31 @@
-import { randomUUID } from "crypto";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { membershipSchema, validationError } from "@/lib/validation";
 import { rateLimit, requestKey } from "@/lib/rate-limit";
 
-const uploadFields = ["identityDocument", "personalPhoto", "cv", "diploma", "criminalRecord", "duesReceipt"] as const;
+async function saveFile(file: File, fieldName: string) {
+  if (!file || file.size === 0) {
+    return null;
+  }
 
-async function saveUpload(data: FormData, field: (typeof uploadFields)[number]) {
-  const file = data.get(field);
-  if (!(file instanceof File) || file.size === 0) throw new Error(`Missing required file: ${field}`);
-  if (file.size > 8 * 1024 * 1024) throw new Error(`${field} exceeds 8 MB`);
-  const extensions: Record<string, string> = {
-    "application/pdf": "pdf", "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp",
-  };
-  const extension = extensions[file.type];
-  if (!extension) throw new Error(`${field} must be PDF, JPG, PNG, or WebP`);
-  const directory = path.join(process.cwd(), "public", "uploads", "membership");
-  await mkdir(directory, { recursive: true });
-  const filename = `${randomUUID()}.${extension}`;
-  await writeFile(path.join(directory, filename), Buffer.from(await file.arrayBuffer()));
-  return `/uploads/membership/${filename}`;
+  const extension = file.name.includes(".")
+    ? file.name.substring(file.name.lastIndexOf("."))
+    : "";
+
+  const filename = `${crypto.randomUUID()}${extension}`;
+
+  const blob = await put(
+    `membership/${fieldName}/${filename}`,
+    file,
+    {
+      access: "private",
+      addRandomSuffix: false,
+      contentType: file.type || undefined,
+    }
+  );
+
+  return blob.url;
 }
 
 export async function POST(request: Request) {
@@ -40,8 +44,30 @@ export async function POST(request: Request) {
     });
     if (!parsed.success) return NextResponse.json(validationError(parsed.error), { status: 400 });
 
-    const [identityDocumentUrl, personalPhotoUrl, cvUrl, diplomaUrl, criminalRecordUrl, duesReceiptUrl] =
-      await Promise.all(uploadFields.map((field) => saveUpload(data, field)));
+    const identityDocumentUrl = await saveFile(
+      data.get("identityDocument") as File,
+      "identity-document"
+    );
+    const personalPhotoUrl = await saveFile(
+      data.get("personalPhoto") as File,
+      "personal-photo"
+    );
+    const cvUrl = await saveFile(
+      data.get("cv") as File,
+      "cv"
+    );
+    const diplomaUrl = await saveFile(
+      data.get("diploma") as File,
+      "diploma"
+    );
+    const criminalRecordUrl = await saveFile(
+      data.get("criminalRecord") as File,
+      "criminal-record"
+    );
+    const duesReceiptUrl = await saveFile(
+      data.get("duesReceipt") as File,
+      "dues-receipt"
+    );
     const value = parsed.data;
     const membership = await prisma.membershipRequest.create({
       data: {
