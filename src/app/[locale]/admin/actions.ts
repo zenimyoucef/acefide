@@ -55,12 +55,18 @@ async function uploadFile(file: File | null, folder: string, allowed: Record<str
   const stem = cleanPathPart(file.name.replace(/\.[^.]+$/, ""), "file").slice(0, 80);
   const prefix = folder.split("/").map((part) => cleanPathPart(part, "files")).join("/");
   const pathname = `${prefix}/${randomUUID()}-${stem}${extension}`;
+  const token = process.env.PUBLIC_BLOB_READ_WRITE_TOKEN;
+
+  if (!token) {
+    throw new Error("PUBLIC_BLOB_READ_WRITE_TOKEN is not configured");
+  }
 
   try {
     const blob = await put(pathname, file, {
       access: "public",
       addRandomSuffix: false,
       contentType: file.type || undefined,
+      token,
     });
     return blob.url;
   } catch (error) {
@@ -87,17 +93,21 @@ function isVercelBlobUrl(value: string | null | undefined): value is string {
   }
 }
 
-async function deleteBlobSafely(url: string | null | undefined) {
+async function deleteBlobSafely(url: string | null | undefined, token = process.env.PUBLIC_BLOB_READ_WRITE_TOKEN) {
   if (!isVercelBlobUrl(url)) return;
+  if (!token) {
+    console.error("Vercel Blob deletion skipped: the required store token is not configured");
+    return;
+  }
   try {
-    await del(url);
+    await del(url, { token });
   } catch (error) {
     console.error(`Vercel Blob deletion failed for ${url}:`, error);
   }
 }
 
-async function deleteBlobsSafely(urls: Array<string | null | undefined>) {
-  await Promise.all([...new Set(urls.filter(isVercelBlobUrl))].map(deleteBlobSafely));
+async function deleteBlobsSafely(urls: Array<string | null | undefined>, token = process.env.PUBLIC_BLOB_READ_WRITE_TOKEN) {
+  await Promise.all([...new Set(urls.filter(isVercelBlobUrl))].map((url) => deleteBlobSafely(url, token)));
 }
 
 async function runAdminAction<T>(name: string, action: () => Promise<T>): Promise<T> {
@@ -318,7 +328,10 @@ export async function deleteMembershipRequest(locale: string, id: string) {
     const applicant = await prisma.membershipRequest.findUnique({ where: { id } });
     if (!applicant) return;
     await prisma.membershipRequest.delete({ where: { id } });
-    await deleteBlobsSafely([applicant.identityDocumentUrl, applicant.personalPhotoUrl, applicant.cvUrl, applicant.diplomaUrl, applicant.criminalRecordUrl, applicant.duesReceiptUrl]);
+    await deleteBlobsSafely(
+      [applicant.identityDocumentUrl, applicant.personalPhotoUrl, applicant.cvUrl, applicant.diplomaUrl, applicant.criminalRecordUrl, applicant.duesReceiptUrl],
+      process.env.BLOB_READ_WRITE_TOKEN,
+    );
   });
   revalidatePath(`/${locale}/admin/members`);
 }
