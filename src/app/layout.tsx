@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { hasLocale } from "next-intl";
 import { PublicSiteShell } from "@/components/layout/PublicSiteShell";
 import { routing } from "@/routing";
+import logo from "../../assets/acefide.png";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,6 +24,11 @@ export const metadata: Metadata = {
     "Algerian Economy",
   ],
   authors: [{ name: "ACEFIDE" }],
+  icons: {
+    icon: logo.src,
+    shortcut: logo.src,
+    apple: logo.src,
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
