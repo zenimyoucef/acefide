@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import akram from "../../../assets/akram.png";
 import type { LeadershipMember, Locale } from "@/lib/structure";
@@ -12,7 +13,10 @@ type LeadershipAvatarProps = {
 };
 
 export function LeadershipAvatar({ member, locale, size = "sm" }: LeadershipAvatarProps) {
-  const imageSrc = member.imageUrl ?? (member.image === "akram" ? akram : null);
+  const uploadedImage = typeof member.imageUrl === "string" && member.imageUrl.trim() ? member.imageUrl.trim() : null;
+  const imageSrc = uploadedImage || (member.image === "akram" ? akram : null);
+  const [imageFailed, setImageFailed] = useState(false);
+  useEffect(() => setImageFailed(false), [imageSrc]);
   const sizeClass = {
     sm: "h-12 w-12",
     md: "h-24 w-24",
@@ -36,10 +40,17 @@ export function LeadershipAvatar({ member, locale, size = "sm" }: LeadershipAvat
       )}
       title={`${member.name[locale]} - ${member.role[locale]}`}
     >
-      {imageSrc ? (
-        <Image src={imageSrc} alt={member.name[locale]} fill sizes={imageSize} className="object-cover object-center" />
+      {imageSrc && !imageFailed ? (
+        <Image
+          src={imageSrc}
+          alt={member.name[locale]}
+          fill
+          sizes={imageSize}
+          onError={() => setImageFailed(true)}
+          className="z-10 h-full w-full rounded-full object-cover object-center opacity-100 [filter:none] [mix-blend-mode:normal]"
+        />
       ) : (
-        <span className={cn("flex h-full w-full items-center justify-center bg-gradient-to-br text-lg font-extrabold text-white", member.accent)}>
+        <span className={cn("relative z-10 flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br text-lg font-extrabold text-white", member.accent)}>
           {member.initials}
         </span>
       )}

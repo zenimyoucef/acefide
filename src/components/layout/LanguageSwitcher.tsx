@@ -1,7 +1,10 @@
 "use client";
 
-import { usePathname, useRouter } from "@/lib/navigation";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
+import { Globe } from "lucide-react";
+import { usePathname, useRouter } from "@/lib/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,51 +12,68 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Globe } from "lucide-react";
+
+type Locale = "ar" | "en" | "fr";
 
 const languages = [
-  { code: "ar", label: "العربية", dir: "rtl" as const },
-  { code: "en", label: "English", dir: "ltr" as const },
-  { code: "fr", label: "Français", dir: "ltr" as const },
-];
+  { code: "ar", name: "العربية", dir: "rtl" as const },
+  { code: "en", name: "English", dir: "ltr" as const },
+  { code: "fr", name: "Français", dir: "ltr" as const },
+] as const;
 
 export function LanguageSwitcher() {
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
-  const switchLanguage = (newLocale: string) => {
-    router.replace(pathname, { locale: newLocale });
+  const switchLanguage = (newLocale: Locale) => {
+    if (newLocale === locale) {
+      setOpen(false);
+      return;
+    }
+
+    setOpen(false);
+
+    const query = searchParams.toString();
+    const target = query ? `${pathname}?${query}` : pathname;
+
+    router.replace(target, {
+      locale: newLocale,
+      scroll: false,
+    });
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Globe className="h-5 w-5" />
-          <span className="sr-only">Switch language</span>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="min-w-[4.5rem] rounded-full px-3"
+          aria-label="Change language"
+        >
+          <Globe className="h-4 w-4" aria-hidden="true" />
+          <span className="text-xs font-bold tracking-wide">{locale.toUpperCase()}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[140px]">
-        {languages.map((lang) => (
-          <DropdownMenuItem
-            key={lang.code}
-            onClick={() => switchLanguage(lang.code)}
-            className={`cursor-pointer ${
-              locale === lang.code ? "bg-muted font-semibold" : ""
-            }`}
-            dir={lang.dir}
-          >
-            <span className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">
-                {lang.code === "ar"
-                  ? "AR"
-                  : lang.code === "en"
-                  ? "EN"
-                  : "FR"}
+      <DropdownMenuContent align="end" className="min-w-40 p-1.5">
+        {languages.map((language) => (
+          <DropdownMenuItem key={language.code} asChild className="cursor-pointer">
+            <button
+              type="button"
+              dir={language.dir}
+              aria-current={locale === language.code ? "true" : undefined}
+              className="flex w-full items-center justify-between gap-4"
+              onClick={() => switchLanguage(language.code)}
+            >
+              <span>{language.name}</span>
+              <span className="text-xs font-bold text-muted-foreground">
+                {language.code.toUpperCase()}
               </span>
-              {lang.label}
-            </span>
+            </button>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

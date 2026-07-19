@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { hasLocale } from "next-intl";
+import { PublicSiteShell } from "@/components/layout/PublicSiteShell";
+import { routing } from "@/routing";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,10 +32,21 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", images: ["/images/algiers-hero.png"] },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  const requestHeaders = await headers();
+  const requestLocale = requestHeaders.get("X-NEXT-INTL-LOCALE");
+  const locale = hasLocale(routing.locales, requestLocale) ? requestLocale : routing.defaultLocale;
+  const dir = locale === "ar" ? "rtl" : "ltr";
+
+  return (
+    <html lang={locale} dir={dir} suppressHydrationWarning className="h-full">
+      <body suppressHydrationWarning className="flex min-h-full flex-col bg-background text-foreground antialiased">
+        <PublicSiteShell>{children}</PublicSiteShell>
+      </body>
+    </html>
+  );
 }

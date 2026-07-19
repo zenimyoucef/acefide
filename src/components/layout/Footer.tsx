@@ -27,7 +27,7 @@ export function Footer() {
   const locale = useLocale();
   const pathname = usePathname();
   const isRtl = locale === "ar";
-  const address = isRtl ? "المبنى رقم 60، دالي إبراهيم، العاشور، درارية، الجزائر العاصمة" : locale === "fr" ? "Bâtiment 60, Dely Ibrahim, El Achour, Draria, Alger" : "Building 60, Dely Ibrahim, El Achour, Draria, Algiers";
+  const address = isRtl ? "المبنى رقم 60، الدابوس، العاشور، درارية، الجزائر العاصمة" : locale === "fr" ? "Bâtiment 60, Dely Ibrahim, El Achour, Draria, Alger" : "Building 60, Dely Ibrahim, El Achour, Draria, Algiers";
 
   if (pathname.startsWith("/admin")) return null;
 

@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "m33ntl9ks390mj82.public.blob.vercel-storage.com" },
     ],
   },
   experimental: {

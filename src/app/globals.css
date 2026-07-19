@@ -432,9 +432,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .team-marquee-full-bleed {
   position: relative;
-  left: 50%;
   width: 100vw;
-  margin-left: -50vw;
+  margin-inline: calc(50% - 50vw);
   overflow: hidden;
 }
 
@@ -444,7 +443,7 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   top: 0;
   bottom: 0;
-  z-index: 2;
+  z-index: 0;
   width: clamp(3rem, 9vw, 7rem);
   pointer-events: none;
 }
@@ -460,6 +459,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .team-marquee-track {
+  position: relative;
+  z-index: 1;
   display: flex;
   width: max-content;
   animation: teamMarqueeScreen 30s linear infinite;

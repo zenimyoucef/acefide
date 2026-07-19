@@ -11,7 +11,7 @@ export function HeroSection() {
   const t = useTranslations("hero");
   const locale = useLocale();
   const isRtl = locale === "ar";
-  const badge = isRtl ? "جمعية غير حكومية" : locale === "fr" ? "Organisation non gouvernementale (ONG)" : "Non-Governmental Organization (NGO)";
+  const badge = isRtl ? "منظمة غير حكومية" : locale === "fr" ? "Organisation non gouvernementale (ONG)" : "Non-Governmental Organization (NGO)";
   const inscription = isRtl ? "التسجيل" : locale === "fr" ? "Inscription" : "Register";
   const contact = isRtl ? "اتصل بنا" : locale === "fr" ? "Nous contacter" : "Contact us";
 
