@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react";
+import { AdminForm } from "./AdminForm";
 import type { LeadershipMember, Locale } from "@/lib/structure";
 import { removeLeadershipMember, saveLeadershipMember } from "@/app/[locale]/admin/actions";
 import { ImageUploadField } from "./ImageUploadField";
@@ -25,7 +26,7 @@ export function LeadershipEditor({ locale, members }: { locale: string; members:
       <div className="space-y-6">
         {members.map((member) => (
           <article key={member.id} className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
-            <form action={saveLeadershipMember.bind(null, locale, member.id)}>
+            <AdminForm action={saveLeadershipMember.bind(null, locale, member.id)} locale={locale}>
               <div className="mb-5 flex items-center gap-3">
                 <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br font-bold text-white ${member.accent}`}>{member.initials}</span>
                 <div className="min-w-0"><h3 className="truncate font-bold">{member.name[activeLocale]}</h3><p className="truncate text-sm text-slate-500">{member.role[activeLocale]}</p></div>
@@ -46,8 +47,8 @@ export function LeadershipEditor({ locale, members }: { locale: string; members:
                 </div>
               </div>
               <div className="mt-5 flex justify-end"><button className="w-full rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white sm:w-auto">{t.save}</button></div>
-            </form>
-            <div className="mt-4 border-t pt-4">{member.id === "president" ? <p className="text-xs text-slate-400">{t.protected}</p> : <form action={removeLeadershipMember.bind(null, locale, member.id)}><button className="inline-flex items-center gap-2 text-sm font-semibold text-red-700"><Trash2 className="h-4 w-4" />{t.remove}</button></form>}</div>
+            </AdminForm>
+            <div className="mt-4 border-t pt-4">{member.id === "president" ? <p className="text-xs text-slate-400">{t.protected}</p> : <AdminForm action={removeLeadershipMember.bind(null, locale, member.id)} locale={locale}><button className="inline-flex items-center gap-2 text-sm font-semibold text-red-700"><Trash2 className="h-4 w-4" />{t.remove}</button></AdminForm>}</div>
           </article>
         ))}
       </div>

@@ -30,7 +30,7 @@ export default async function MembersPage({ params }: { params: Promise<{ locale
                 <div><h2 className="text-xl font-bold text-[#0b1f33]">{item.name}</h2><p className="mt-1 text-xs text-muted-foreground">Submitted {item.createdAt.toLocaleString()}</p></div>
                 <div className="flex items-center gap-3">
                   <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">{item.status}</span>
-                  <DeleteApplicantButton action={deleteMembershipRequest.bind(null, locale, item.id)} applicantName={item.name} />
+                  <DeleteApplicantButton action={deleteMembershipRequest.bind(null, locale, item.id)} applicantName={item.name} locale={locale} />
                 </div>
               </header>
               <div className="grid gap-7 p-5 xl:grid-cols-[1fr_1fr]">

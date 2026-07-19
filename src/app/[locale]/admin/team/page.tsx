@@ -3,6 +3,7 @@ import { addLeadershipMember } from "../actions";
 import { LeadershipEditor } from "@/components/admin/LeadershipEditor";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { getLeadershipMembers } from "@/lib/leadership-data";
+import { AdminForm } from "@/components/admin/AdminForm";
 
 const input = "mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-primary";
 const area = "mt-1 min-h-28 w-full rounded-lg border border-slate-200 bg-white p-3 text-sm leading-6 outline-none focus:border-primary";
@@ -24,7 +25,7 @@ export default async function TeamPage({ params }: { params: Promise<{ locale: s
   return (
     <div className="mx-auto max-w-5xl">
       <header><h1 className="text-3xl font-bold">{t.title}</h1><p className="mt-2 text-sm text-slate-500">{t.help}</p></header>
-      <form action={addLeadershipMember.bind(null, locale)} className="mt-8 rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
+      <AdminForm action={addLeadershipMember.bind(null, locale)} locale={locale} className="mt-8 rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
         <h2 className="flex items-center gap-2 text-xl font-bold"><UserPlus className="h-5 w-5 text-primary" />{t.add}</h2>
         <div className="mt-5 grid gap-5 lg:grid-cols-3">
           {languages.map((language) => (
@@ -38,7 +39,7 @@ export default async function TeamPage({ params }: { params: Promise<{ locale: s
         </div>
         <div className="mt-5"><ImageUploadField name="imageFile" preserveName="imageUrl" label={t.photo} /></div>
         <div className="mt-5 flex justify-end"><button className="w-full rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white sm:w-auto">{t.button}</button></div>
-      </form>
+      </AdminForm>
       <LeadershipEditor locale={locale} members={members} />
     </div>
   );

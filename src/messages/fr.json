@@ -195,5 +195,17 @@
     "password": "Mot de Passe",
     "login": "Se Connecter",
     "loginError": "Email ou mot de passe incorrect"
+  },
+  "adminValidation": {
+    "correctFields": "Veuillez corriger les champs indiqués.",
+    "saved": "Enregistrement réussi.",
+    "deleted": "Suppression réussie.",
+    "saving": "Enregistrement…",
+    "unexpected": "Une erreur inattendue s’est produite. Veuillez réessayer.",
+    "duplicateSlug": "Ce nom de lien est déjà utilisé.",
+    "schemaNotReady": "La base de données n’est pas prête pour cette fonctionnalité. Contactez l’administrateur.",
+    "invalidImage": "Veuillez téléverser une image valide.",
+    "invalidDocument": "Veuillez téléverser un PDF ou document valide.",
+    "invalidUrl": "Veuillez saisir une URL valide."
   }
 }

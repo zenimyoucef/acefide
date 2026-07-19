@@ -4,6 +4,7 @@ import { saveNews, updateNews } from "../../actions";
 import { FriendlySlugField } from "@/components/admin/FriendlySlugField";
 import { MultiImageUploadField } from "@/components/admin/MultiImageUploadField";
 import { prisma } from "@/lib/prisma";
+import { AdminForm } from "@/components/admin/AdminForm";
 
 const inputClass =
   "mt-2 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-normal outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/10";
@@ -40,7 +41,7 @@ export default async function NewNews({ params, searchParams }: { params: Promis
         </p>
       </div>
 
-      <form action={article?updateNews.bind(null,locale,article.id):saveNews.bind(null, locale)} className="space-y-6">
+      <AdminForm action={article?updateNews.bind(null,locale,article.id):saveNews.bind(null, locale)} locale={locale} successRedirect={`/${locale}/admin/news`} className="space-y-6">
         <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-5 flex items-start gap-3">
             <div className="rounded-lg bg-primary/10 p-2 text-primary"><Globe2 className="h-5 w-5" /></div>
@@ -122,7 +123,7 @@ export default async function NewNews({ params, searchParams }: { params: Promis
             <button type="submit" className="rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-primary/90">{t.save}</button>
           </div>
         </section>
-      </form>
+      </AdminForm>
     </div>
   );
 }

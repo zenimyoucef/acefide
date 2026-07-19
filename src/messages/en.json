@@ -195,5 +195,17 @@
     "password": "Password",
     "login": "Sign In",
     "loginError": "Invalid email or password"
+  },
+  "adminValidation": {
+    "correctFields": "Please correct the highlighted fields.",
+    "saved": "Saved successfully.",
+    "deleted": "Deleted successfully.",
+    "saving": "Saving…",
+    "unexpected": "An unexpected error occurred. Please try again.",
+    "duplicateSlug": "This slug is already in use.",
+    "schemaNotReady": "The database schema is not ready for this feature. Please contact the administrator.",
+    "invalidImage": "Please upload a valid image.",
+    "invalidDocument": "Please upload a valid PDF or document.",
+    "invalidUrl": "Please enter a valid URL."
   }
 }
