@@ -17,7 +17,7 @@ export const membershipSchema = z.object({
   wilaya: z.string().trim().min(2).max(80),
   educationLevel: z.string().trim().min(2).max(100),
   employmentStatus: z.string().trim().min(2).max(100),
-  organization: optionalText,
+  organization: z.string().trim().min(2).max(500),
   position: z.string().trim().min(2).max(200),
   membershipCategory: z.string().trim().min(2).max(200),
   interests: z.array(z.string().trim().min(2).max(120)).min(1).max(20),

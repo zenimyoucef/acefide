@@ -21,45 +21,51 @@ export default function PresidentPage() {
 
   return (
     <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
-      <section className="relative min-h-[calc(100vh-4rem)] overflow-hidden bg-primary-dark text-white">
-        <div className="absolute inset-0 bg-[linear-gradient(150deg,#063f2f_0%,#0d6b4f_34%,#f3fbf6_34.2%,#ffffff_53%,#dff7ee_53.2%,#14b8a6_72%,#063f2f_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,45,34,0.94)_0%,rgba(13,107,79,0.58)_34%,rgba(255,255,255,0.04)_52%,rgba(13,107,79,0.50)_76%,rgba(4,45,34,0.94)_100%)]" />
-
-        <div className="container-content relative z-10 flex min-h-[calc(100vh-4rem)] items-center py-16 md:py-20">
-          <div className="grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-[0.95fr_1fr] lg:gap-16">
-            <div className="relative mx-auto w-full max-w-[560px]">
-              <div className="absolute left-0 top-4 hidden h-[88%] w-full rounded-2xl border border-turquoise-light/35 bg-white/5 shadow-2xl backdrop-blur-sm md:block" />
-              <div className="relative mx-auto aspect-[0.76] w-[min(78vw,448px)] overflow-hidden rounded-2xl border border-turquoise-light/60 bg-gradient-to-br from-primary/35 via-turquoise/15 to-white/35 shadow-2xl">
-                <Image
-                  src={akram}
-                  alt={t("name")}
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 448px, 78vw"
-                  className="object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary-dark/20" />
-              </div>
-            </div>
-
-            <div className="mx-auto max-w-xl rounded-2xl bg-primary-dark/72 p-6 text-center shadow-2xl backdrop-blur-sm md:p-8 lg:mx-0 lg:text-start">
-              <Quote className="mb-6 h-12 w-12 text-turquoise-light/80" />
-              <h1 className="text-4xl font-bold leading-tight text-white md:text-5xl">
+      <section className="relative overflow-hidden bg-[#f7f8f4] text-[#0b1f33]">
+        <div className="absolute inset-x-0 top-0 h-64 bg-[#073f31]" />
+        <div className="container-content relative z-10 py-12 md:py-16 lg:py-20">
+          <div className="grid min-h-[calc(100vh-8rem)] items-center gap-10 lg:grid-cols-[0.92fr_1.08fr]">
+            <article className="order-2 lg:order-1">
+              <p className="text-sm font-black uppercase tracking-[0.2em] text-primary">ACEFIDE</p>
+              <h1 className="mt-5 text-4xl font-black leading-tight text-[#0b1f33] md:text-6xl">
                 {t("name")}
               </h1>
-              <p className="mt-4 text-lg font-semibold text-turquoise-light md:text-xl">
+              <p className="mt-4 max-w-xl text-xl font-bold leading-8 text-primary md:text-2xl">
                 {t("title")}
               </p>
-              <p className="mt-8 max-w-lg text-base font-medium leading-8 text-white/92 md:text-lg">
+              <p className="mt-8 max-w-2xl text-lg font-medium leading-9 text-[#43534d]">
                 {t("shortBio")}
               </p>
-              <a
-                href="#president-message"
-                className="mt-9 inline-flex h-12 items-center justify-center gap-2 rounded-full border border-turquoise-light/80 bg-white/10 px-8 text-sm font-medium text-white shadow-sm transition-colors hover:bg-white hover:text-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-turquoise-light focus-visible:ring-offset-2 focus-visible:ring-offset-primary-dark"
-              >
-                {t("readMore")}
-                <ArrowDown className="h-4 w-4" />
-              </a>
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+                <a
+                  href="#president-message"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-bold text-white shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  {t("readMore")}
+                  <ArrowDown className="h-4 w-4" />
+                </a>
+                <span className="h-px w-16 bg-primary/30" />
+              </div>
+            </article>
+
+            <div className="order-1 lg:order-2">
+              <div className="relative mx-auto max-w-[560px]">
+                <div className="absolute -inset-4 rounded-[2rem] border border-primary/15 bg-white shadow-[0_28px_70px_rgba(11,31,51,.12)]" />
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-[#dbe8e2] shadow-2xl">
+                  <Image
+                    src={akram}
+                    alt={t("name")}
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 520px, 88vw"
+                    className="object-cover object-center"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#062f26]/90 via-[#062f26]/36 to-transparent p-6 text-white">
+                    <Quote className="mb-3 h-8 w-8 text-turquoise-light" />
+                    <p className="text-sm font-bold leading-7 text-white/90">{t("shortBio")}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -67,10 +73,10 @@ export default function PresidentPage() {
 
       <section id="president-message" className="bg-[#f3fbf6] py-20 text-[#10241d]">
         <div className="container-content max-w-4xl">
-          <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-white p-8 shadow-[0_22px_60px_rgba(13,107,79,0.12)] md:p-12">
-            <Quote className="absolute left-6 top-6 h-16 w-16 text-turquoise/15" />
+          <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-white p-8 shadow-[0_18px_50px_rgba(13,107,79,0.08)] md:p-12">
+            <Quote className="absolute end-6 top-6 h-16 w-16 text-turquoise/15" />
             <div className="relative z-10">
-              <h2 className="mb-6 text-2xl font-bold text-[#10241d]">{t("message")}</h2>
+              <h2 className="mb-6 text-3xl font-black text-[#10241d]">{t("message")}</h2>
               <div className="max-w-none space-y-4 text-base leading-8 text-[#385047] md:text-lg">
                 <p>{t("fullBio")}</p>
                 <p>
