@@ -48,7 +48,11 @@ export async function streamMembershipDocument(id: string, document: string, acc
       },
     });
   } catch (error) {
-    console.error("Membership document download failed", error);
-    return NextResponse.json({ error: "Unable to retrieve document" }, { status: 500 });
+    console.error("Membership document download failed");
+    console.error(error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : String(error) },
+      { status: 500 },
+    );
   }
 }
