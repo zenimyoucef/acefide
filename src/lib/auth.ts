@@ -45,3 +45,9 @@ export async function requireAdmin(locale: string) {
   if (!session || !["EDITOR", "ADMIN", "SUPER_ADMIN"].includes(session.role)) redirect(`/${locale}/login`);
   return session;
 }
+
+export async function requireUser(locale: string) {
+  const session = await getSession();
+  if (!session) redirect(`/${locale}/login`);
+  return session;
+}

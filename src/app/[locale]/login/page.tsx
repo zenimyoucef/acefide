@@ -13,9 +13,9 @@ export default function LoginPage() {
     event.preventDefault(); setLoading(true); setError(""); const data = new FormData(event.currentTarget);
     try {
       const response = await fetch("/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: data.get("email"), password: data.get("password"), locale }), signal: AbortSignal.timeout(15_000) });
-      const result = await response.json().catch(() => null) as { error?: string } | null;
+      const result = await response.json().catch(() => null) as { error?: string; role?: string } | null;
       if (!response.ok) return setError(result?.error || "Unable to sign in. Please try again.");
-      router.replace("/admin"); router.refresh();
+      router.replace(result?.role === "USER" ? "/membership/dashboard" : "/admin"); router.refresh();
     } catch {
       setError(locale === "ar" ? "تعذر الاتصال بالخادم. يرجى المحاولة مرة أخرى." : locale === "fr" ? "Impossible de contacter le serveur. Veuillez réessayer." : "Unable to contact the server. Please try again.");
     } finally {

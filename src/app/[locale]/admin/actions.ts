@@ -2,6 +2,9 @@
 
 import { randomUUID } from "crypto";
 import { del, put } from "@vercel/blob";
+import { hash } from "bcryptjs";
+import { randomBytes } from "node:crypto";
+import { createMembershipActivation, sendMembershipActivationEmail } from "@/lib/membership-activation";
 import { Prisma, type EventCategory, type PartnerCategory, type PublicationCategory } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/auth";
@@ -427,6 +430,39 @@ export async function deleteMembershipRequest(locale: string, id: string, _data?
     );
     revalidatePath(`/${locale}/admin/members`);
   }, messages(locale).deleted);
+}
+
+export async function approveMembershipRequest(locale: string, id: string) {
+  return runAdminAction(locale, "approveMembershipRequest", async () => {
+    await editor();
+    const application = await prisma.membershipRequest.findFirst({ where: { id, status: "PENDING_REVIEW" } });
+    if (!application) return;
+    const activation = createMembershipActivation();
+    const temporaryPassword = await hash(randomBytes(32).toString("base64url"), 12);
+    const user = await prisma.$transaction(async (transaction) => {
+      const createdUser = await transaction.user.create({ data: { email: application.email, name: application.name, password: temporaryPassword, active: false, activationTokenHash: activation.tokenHash, activationExpiresAt: activation.expiresAt } });
+      await transaction.membershipRequest.update({ where: { id }, data: { userId: createdUser.id, status: "APPROVED_WAITING_PAYMENT", approvedAt: new Date(), rejectedAt: null } });
+      return createdUser;
+    });
+    try {
+      await sendMembershipActivationEmail({ email: user.email, name: user.name, token: activation.token, locale });
+    } catch (error) {
+      await prisma.$transaction([prisma.membershipRequest.update({ where: { id }, data: { userId: null, status: "PENDING_REVIEW", approvedAt: null } }), prisma.user.delete({ where: { id: user.id } })]);
+      throw error;
+    }
+    revalidatePath(`/${locale}/admin/members`); revalidatePath(`/${locale}/membership/dashboard`);
+  }, locale === "ar" ? "تمت الموافقة على الطلب." : "Application approved.");
+}
+
+export async function rejectMembershipRequest(locale: string, id: string) {
+  return runAdminAction(locale, "rejectMembershipRequest", async () => {
+    await editor();
+    await prisma.membershipRequest.updateMany({
+      where: { id, status: "PENDING_REVIEW" },
+      data: { status: "REJECTED", rejectedAt: new Date() },
+    });
+    revalidatePath(`/${locale}/admin/members`); revalidatePath(`/${locale}/membership/dashboard`);
+  }, locale === "ar" ? "تم رفض الطلب." : "Application rejected.");
 }
 
 export async function saveSiteSettings(locale: string, data: FormData) {

@@ -1,6 +1,7 @@
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { membershipBlobToken } from "@/lib/membership-blob";
 import { membershipSchema, validationError } from "@/lib/validation";
 import { rateLimit, requestKey } from "@/lib/rate-limit";
 
@@ -22,6 +23,7 @@ async function saveFile(file: File, fieldName: string) {
       access: "private",
       addRandomSuffix: false,
       contentType: file.type || undefined,
+      token: membershipBlobToken(),
     }
   );
 
@@ -31,6 +33,7 @@ async function saveFile(file: File, fieldName: string) {
 export async function POST(request: Request) {
   try {
     if (!rateLimit(requestKey(request, "membership"))) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    if (!process.env.BLOB_READ_WRITE_TOKEN) return NextResponse.json({ error: "Document uploads are not configured. Set BLOB_READ_WRITE_TOKEN before accepting membership applications." }, { status: 503 });
     const data = await request.formData();
     const parsed = membershipSchema.safeParse({
       name: data.get("name"), email: data.get("email"), phone: data.get("phone"),
@@ -64,16 +67,19 @@ export async function POST(request: Request) {
       data.get("criminalRecord") as File,
       "criminal-record"
     );
-    const duesReceiptUrl = await saveFile(
-      data.get("duesReceipt") as File,
-      "dues-receipt"
-    );
     const value = parsed.data;
+    const email = value.email.toLowerCase();
+    const [existingUser, existingApplication] = await Promise.all([
+      prisma.user.findUnique({ where: { email }, select: { id: true } }),
+      prisma.membershipRequest.findFirst({ where: { email, status: { not: "REJECTED" } }, select: { id: true } }),
+    ]);
+    if (existingUser || existingApplication) return NextResponse.json({ error: "An application is already being processed for this email." }, { status: 409 });
     const membership = await prisma.membershipRequest.create({
       data: {
         ...value,
+        email,
         dateOfBirth: new Date(`${value.dateOfBirth}T12:00:00Z`),
-        identityDocumentUrl, personalPhotoUrl, cvUrl, diplomaUrl, criminalRecordUrl, duesReceiptUrl,
+        identityDocumentUrl, personalPhotoUrl, cvUrl, diplomaUrl, criminalRecordUrl,
       },
     });
     return NextResponse.json({ message: "Membership request submitted", id: membership.id }, { status: 201 });
