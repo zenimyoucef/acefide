@@ -2,7 +2,7 @@ import { get } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { membershipBlobToken } from "@/lib/membership-blob";
+import { membershipBlobAuth } from "@/lib/membership-blob";
 
 export const membershipDocumentKeys = ["cv", "identity-document", "personal-photo", "diploma", "criminal-record"] as const;
 export type MembershipDocumentKey = (typeof membershipDocumentKeys)[number];
@@ -38,7 +38,7 @@ export async function streamMembershipDocument(id: string, document: string, acc
     const url = request[documentFields[document as MembershipDocumentKey]];
     if (!url) return NextResponse.json({ error: "File not found" }, { status: 404 });
 
-    const blob = await get(url, { access: "private", token: membershipBlobToken() });
+    const blob = await get(url, { access: "private", ...membershipBlobAuth() });
     if (!blob?.stream) return NextResponse.json({ error: "File not found" }, { status: 404 });
 
     return new NextResponse(blob.stream, {
