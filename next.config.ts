@@ -4,7 +4,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
-  distDir: ".next-local",
+  distDir: process.env.VERCEL ? ".next" : ".next-local",
   turbopack: {
     root: process.cwd(),
   },
