@@ -8,15 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MembershipAccountGate } from "@/components/membership/MembershipAccountGate";
-
-const wilayas = [
-  "ولاية أدرار", "ولاية الشلف", "ولاية الأغواط", "ولاية أم البواقي", "ولاية باتنة", "ولاية بجاية", "ولاية بسكرة", "ولاية بشار", "ولاية البليدة", "ولاية البويرة",
-  "ولاية تمنراست", "ولاية تبسة", "ولاية تلمسان", "ولاية تيارت", "ولاية تيزي وزو", "ولاية الجزائر", "ولاية الجلفة", "ولاية جيجل", "ولاية سطيف", "ولاية سعيدة",
-  "ولاية سكيكدة", "ولاية سيدي بلعباس", "ولاية عنابة", "ولاية قالمة", "ولاية قسنطينة", "ولاية المدية", "ولاية مستغانم", "ولاية المسيلة", "ولاية معسكر", "ولاية ورقلة",
-  "ولاية وهران", "ولاية البيض", "ولاية إليزي", "ولاية برج بوعريريج", "ولاية بومرداس", "ولاية الطارف", "ولاية تندوف", "ولاية تيسمسيلت", "ولاية الوادي", "ولاية خنشلة",
-  "ولاية سوق أهراس", "ولاية تيبازة", "ولاية ميلة", "ولاية عين الدفلى", "ولاية النعامة", "ولاية عين تموشنت", "ولاية غرداية", "ولاية غليزان", "ولاية تيميمون", "ولاية برج باجي مختار",
-  "ولاية أولاد جلال", "ولاية بني عباس", "ولاية عين صالح", "ولاية عين قزام", "ولاية تقرت", "ولاية جانت", "ولاية المغير", "ولاية المنيعة",
-];
+import { ALGERIA_WILAYAS } from "@/lib/algeria-wilayas";
+import { REQUIRED_MEMBERSHIP_FILES } from "@/lib/membership-files";
 
 const educationLevels = ["مستوى تأهيلي", "مستوى مهني", "مستوى جامعي", "مستوى تكويني"];
 const employmentStatuses = ["ممتهن", "طالب جامعي", "موظف", "عامل حر", "متقاعد"];
@@ -63,6 +56,12 @@ const fieldLabels: Record<string, string> = {
   previousAssociation: "عضوية سابقة في نادٍ أو جمعية",
   reason: "دوافع الإنضمام",
   declarationAccepted: "تصريح خاص بطالب الإنخراط",
+  identityDocument: "نسخة بطاقة التعريف الوطنية أو جواز السفر",
+  personalPhoto: "صورة شخصية",
+  cv: "السيرة الذاتية/CV",
+  diploma: "شهادة المؤهل العلمي أو المهني",
+  criminalRecord: "صحيفة السوابق العدلية",
+  duesReceipt: "وصل تسديد مستحقات الإنخراط",
 };
 
 const fieldClass = "mt-2 h-11 w-full rounded-lg border border-primary/15 bg-white px-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10";
@@ -168,7 +167,7 @@ export default function MembershipPage() {
               <Field label="مكان الميلاد"><Input name="placeOfBirth" required /></Field>
               <Field label="رقم التعريف الوطني"><Input name="nationalId" inputMode="numeric" required /></Field>
               <label className="block text-sm font-bold md:col-span-2">العنوان <span className="text-red-600">*</span><Textarea name="address" rows={3} required className="mt-2" /></label>
-              <label className="block text-sm font-bold">الولاية <span className="text-red-600">*</span><select name="wilaya" required className={fieldClass}><option value="">اختر الولاية</option>{wilayas.map((wilaya) => <option key={wilaya}>{wilaya}</option>)}</select></label>
+              <label className="block text-sm font-bold">الولاية <span className="text-red-600">*</span><select name="wilaya" required className={fieldClass}><option value="">اختر الولاية</option>{ALGERIA_WILAYAS.map((wilaya) => <option key={wilaya}>{wilaya}</option>)}</select></label>
               <Field label="رقم الهاتف"><Input name="phone" type="tel" required /></Field>
               <Field label="البريد الإلكتروني"><Input name="email" type="email" value={account.email || ""} readOnly required /></Field>
             </div>
@@ -192,7 +191,14 @@ export default function MembershipPage() {
             <label className="block text-sm font-bold">إذا كانت إجابتك نعم يرجى ذكر إسم النادي أو الجمعية التي كنت عضوا فيها أو الصفة التي تقلدتها<Textarea name="previousAssociationDetails" rows={3} className="mt-2" /></label>
             <Field label="يرجى تزويدنا بروابط حساباتك على مواقع التواصل الاجتماعي (فيسبوك، لينكدإن، إنستغرام، وغيرها)"><Input name="socialLinks" /></Field>
             <label className="block text-sm font-bold">يرجى، أن تشرح لنا في بضع كلمات دوافعك للانضمام إلى منظمتنا <span className="text-red-600">*</span><Textarea name="reason" rows={5} minLength={20} required className="mt-2" /></label>
-            <label className="rounded-xl border border-dashed border-primary/25 bg-white p-4 text-sm font-bold">تحميل السيرة الذاتية/CV <span className="text-red-600">*</span><input name="cv" type="file" accept="application/pdf,image/jpeg,image/png,image/webp,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required className="mt-3 block w-full text-xs font-normal file:me-3 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:font-bold file:text-primary" /></label>
+            <div className="grid gap-4 md:grid-cols-2">
+              {REQUIRED_MEMBERSHIP_FILES.map((document) => (
+                <label key={document.field} className="rounded-xl border border-dashed border-primary/25 bg-white p-4 text-sm font-bold">
+                  تحميل {document.label} <span className="text-red-600">*</span>
+                  <input name={document.field} type="file" accept={document.accept} required className="mt-3 block w-full text-xs font-normal file:me-3 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:font-bold file:text-primary" />
+                </label>
+              ))}
+            </div>
             <label className="flex items-start gap-3 rounded-xl border bg-white p-4 text-sm font-bold"><input name="declarationAccepted" type="checkbox" required className="mt-1 h-4 w-4 accent-primary" />أصرح بصحة المعلومات الواردة في هذه الإستمارة</label>
           </FormSection>
 

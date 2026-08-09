@@ -5,6 +5,7 @@ import { membershipBlobAuth } from "@/lib/membership-blob";
 import { membershipSchema, validationError } from "@/lib/validation";
 import { rateLimit, requestKey } from "@/lib/rate-limit";
 import { getSession } from "@/lib/auth";
+import { readRequiredMembershipFiles, REQUIRED_MEMBERSHIP_FILES } from "@/lib/membership-files";
 
 async function saveFile(file: File, fieldName: string) {
   if (!file || file.size === 0) {
@@ -41,6 +42,13 @@ export async function POST(request: Request) {
     const duplicate = await prisma.membershipRequest.findUnique({ where: { userId: applicant.id }, select: { id: true } });
     if (duplicate) return NextResponse.json({ error: "You have already submitted a membership application." }, { status: 409 });
     const data = await request.formData();
+    const requiredFiles = readRequiredMembershipFiles(data);
+    if (!requiredFiles.success) {
+      return NextResponse.json({
+        error: "All membership documents are required.",
+        fields: Object.fromEntries(requiredFiles.missing.map((field) => [field, ["Required"]])),
+      }, { status: 400 });
+    }
     const parsed = membershipSchema.safeParse({
       name: data.get("name"), email: data.get("email"), phone: data.get("phone"),
       dateOfBirth: data.get("dateOfBirth"), placeOfBirth: data.get("placeOfBirth"), nationalId: data.get("nationalId"),
@@ -53,26 +61,11 @@ export async function POST(request: Request) {
     });
     if (!parsed.success) return NextResponse.json(validationError(parsed.error), { status: 400 });
 
-    const identityDocumentUrl = await saveFile(
-      data.get("identityDocument") as File,
-      "identity-document"
-    );
-    const personalPhotoUrl = await saveFile(
-      data.get("personalPhoto") as File,
-      "personal-photo"
-    );
-    const cvUrl = await saveFile(
-      data.get("cv") as File,
-      "cv"
-    );
-    const diplomaUrl = await saveFile(
-      data.get("diploma") as File,
-      "diploma"
-    );
-    const criminalRecordUrl = await saveFile(
-      data.get("criminalRecord") as File,
-      "criminal-record"
-    );
+    const uploadedEntries = await Promise.all(REQUIRED_MEMBERSHIP_FILES.map(async ({ field, blobFolder }) => [
+      field,
+      await saveFile(requiredFiles.files[field], blobFolder),
+    ] as const));
+    const uploadedFiles = Object.fromEntries(uploadedEntries);
     const value = parsed.data;
     const membership = await prisma.membershipRequest.create({
       data: {
@@ -80,7 +73,12 @@ export async function POST(request: Request) {
         userId: applicant.id,
         email: applicant.email,
         dateOfBirth: new Date(`${value.dateOfBirth}T12:00:00Z`),
-        identityDocumentUrl, personalPhotoUrl, cvUrl, diplomaUrl, criminalRecordUrl,
+        identityDocumentUrl: uploadedFiles.identityDocument,
+        personalPhotoUrl: uploadedFiles.personalPhoto,
+        cvUrl: uploadedFiles.cv,
+        diplomaUrl: uploadedFiles.diploma,
+        criminalRecordUrl: uploadedFiles.criminalRecord,
+        duesReceiptUrl: uploadedFiles.duesReceipt,
       },
     });
     return NextResponse.json({ message: "Membership request submitted", id: membership.id }, { status: 201 });

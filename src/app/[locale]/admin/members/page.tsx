@@ -59,6 +59,7 @@ export default async function MembersPage({ params }: { params: Promise<{ locale
             [isArabic ? "صورة شخصية" : "Personal photo", item.personalPhotoUrl],
             [isArabic ? "شهادة المؤهل العلمي أو المهني" : "Diploma / qualification", item.diplomaUrl],
             [isArabic ? "صحيفة السوابق العدلية" : "Criminal record", item.criminalRecordUrl],
+            [isArabic ? "وصل تسديد مستحقات الإنخراط" : "Membership dues receipt", item.duesReceiptUrl],
           ];
           const extraDocuments = optionalDocuments.filter((document): document is [string, string] => Boolean(document[1]));
           const documentPaths = new Map<string, string>([
@@ -66,6 +67,7 @@ export default async function MembersPage({ params }: { params: Promise<{ locale
             [item.personalPhotoUrl, `/api/admin/membership/${item.id}/personal-photo`],
             [item.diplomaUrl, `/api/admin/membership/${item.id}/diploma`],
             [item.criminalRecordUrl, `/api/admin/membership/${item.id}/criminal-record`],
+            [item.duesReceiptUrl, `/api/admin/membership/${item.id}/dues-receipt`],
           ].filter((entry): entry is [string, string] => Boolean(entry[0])));
           return (
             <article key={item.id} className="overflow-hidden rounded-2xl border bg-white shadow-sm">

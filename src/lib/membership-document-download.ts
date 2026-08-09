@@ -4,15 +4,16 @@ import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { membershipBlobAuth } from "@/lib/membership-blob";
 
-export const membershipDocumentKeys = ["cv", "identity-document", "personal-photo", "diploma", "criminal-record"] as const;
+export const membershipDocumentKeys = ["cv", "identity-document", "personal-photo", "diploma", "criminal-record", "dues-receipt"] as const;
 export type MembershipDocumentKey = (typeof membershipDocumentKeys)[number];
 
-const documentFields: Record<MembershipDocumentKey, "cvUrl" | "identityDocumentUrl" | "personalPhotoUrl" | "diplomaUrl" | "criminalRecordUrl"> = {
+const documentFields: Record<MembershipDocumentKey, "cvUrl" | "identityDocumentUrl" | "personalPhotoUrl" | "diplomaUrl" | "criminalRecordUrl" | "duesReceiptUrl"> = {
   cv: "cvUrl",
   "identity-document": "identityDocumentUrl",
   "personal-photo": "personalPhotoUrl",
   diploma: "diplomaUrl",
   "criminal-record": "criminalRecordUrl",
+  "dues-receipt": "duesReceiptUrl",
 };
 
 type DownloadAccess = "admin" | "owner";
@@ -30,7 +31,7 @@ export async function streamMembershipDocument(id: string, document: string, acc
   try {
     const request = await prisma.membershipRequest.findUnique({
       where: access === "owner" ? { userId: session.id } : { id },
-      select: { userId: true, cvUrl: true, identityDocumentUrl: true, personalPhotoUrl: true, diplomaUrl: true, criminalRecordUrl: true },
+      select: { userId: true, cvUrl: true, identityDocumentUrl: true, personalPhotoUrl: true, diplomaUrl: true, criminalRecordUrl: true, duesReceiptUrl: true },
     });
     if (!request) return NextResponse.json({ error: "File not found" }, { status: 404 });
     if (access === "owner" && request.userId !== session.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
