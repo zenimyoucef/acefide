@@ -12,8 +12,10 @@ export async function POST(request: Request) {
   if (!parsed.success) return NextResponse.json({ error: "Invalid credentials." }, { status: 400 });
   try {
     const user = await prisma.user.findUnique({ where: { email: parsed.data.email.toLowerCase() } });
-    if (!user || !user.active || !(await compare(parsed.data.password, user.password))) return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
-    const response = NextResponse.json({ ok: true, role: user.role });
+    if (!user || !(await compare(parsed.data.password, user.password))) return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+    if (!user.emailVerifiedAt && user.role === "USER") return NextResponse.json({ error: "Please verify your email before signing in.", verificationRequired: true }, { status: 403 });
+    if (!user.active) return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
+    const response = NextResponse.json({ ok: true, role: user.role, destination: user.role === "USER" ? `/${parsed.data.locale}/membership` : `/${parsed.data.locale}/admin` });
     response.cookies.set(SESSION_COOKIE, createSessionToken(user), { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 8 * 60 * 60 });
     return response;
   } catch (error) {

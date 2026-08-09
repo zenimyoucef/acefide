@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { CheckCircle, Send, ShieldCheck, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { MembershipAccountGate } from "@/components/membership/MembershipAccountGate";
 
 const wilayas = [
   "ولاية أدرار", "ولاية الشلف", "ولاية الأغواط", "ولاية أم البواقي", "ولاية باتنة", "ولاية بجاية", "ولاية بسكرة", "ولاية بشار", "ولاية البليدة", "ولاية البويرة",
@@ -66,9 +68,15 @@ const fieldLabels: Record<string, string> = {
 const fieldClass = "mt-2 h-11 w-full rounded-lg border border-primary/15 bg-white px-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10";
 
 export default function MembershipPage() {
+  const locale = String(useParams<{ locale: string }>().locale || "ar");
+  const [account, setAccount] = useState<{ state: "LOADING" | "REGISTER" | "VERIFY_EMAIL" | "APPLICATION" | "PENDING" | "REJECTED" | "APPROVED"; email?: string }>({ state: "LOADING" });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("/api/auth/status").then((response) => response.json()).then(setAccount).catch(() => setAccount({ state: "REGISTER" }));
+  }, []);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -111,6 +119,9 @@ export default function MembershipPage() {
       setLoading(false);
     }
   }
+
+  if (account.state === "LOADING") return <main className="min-h-[60vh] bg-[#f5f8f4]" />;
+  if (account.state !== "APPLICATION") return <MembershipAccountGate state={account.state} email={account.email} locale={locale} />;
 
   if (submitted) {
     return (
@@ -159,7 +170,7 @@ export default function MembershipPage() {
               <label className="block text-sm font-bold md:col-span-2">العنوان <span className="text-red-600">*</span><Textarea name="address" rows={3} required className="mt-2" /></label>
               <label className="block text-sm font-bold">الولاية <span className="text-red-600">*</span><select name="wilaya" required className={fieldClass}><option value="">اختر الولاية</option>{wilayas.map((wilaya) => <option key={wilaya}>{wilaya}</option>)}</select></label>
               <Field label="رقم الهاتف"><Input name="phone" type="tel" required /></Field>
-              <Field label="البريد الإلكتروني"><Input name="email" type="email" required /></Field>
+              <Field label="البريد الإلكتروني"><Input name="email" type="email" value={account.email || ""} readOnly required /></Field>
             </div>
             <ChoiceGroup name="educationLevel" label="المستوى الدراسي" options={educationLevels} />
             <ChoiceGroup name="employmentStatus" label="الوضعية الإجتماعية والمهنية" options={employmentStatuses} />

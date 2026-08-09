@@ -21,6 +21,9 @@ model User {
   membershipRequest MembershipRequest?
   activationTokenHash String?  @unique
   activationExpiresAt DateTime?
+  emailVerifiedAt DateTime?
+  emailVerificationTokenHash String? @unique
+  emailVerificationExpiresAt DateTime?
 }
 
 enum Role {

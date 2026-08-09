@@ -43,3 +43,8 @@ Before deploying to Vercel or another Node.js platform:
 5. Confirm the production URL, Facebook link, organization content, and contact settings.
 
 Uploads are URL-based. Add external object storage before implementing direct image or PDF uploads; serverless local filesystems are not persistent.
+# Verified membership registration
+
+Applicants create an account at the membership page, verify their email through a 24-hour single-use link, and only then submit personal information and documents. They can sign in to see the review status; approval unlocks the dashboard placeholder.
+
+Email delivery requires `NEXT_PUBLIC_APP_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_FROM`, and, when required by the server, `SMTP_USER` and `SMTP_PASSWORD`. Apply database migrations before enabling registration in production.

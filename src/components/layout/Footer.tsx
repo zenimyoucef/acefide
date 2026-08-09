@@ -44,8 +44,8 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="h-12 w-12 rounded-lg overflow-hidden flex items-center justify-center">
-                <Image src={logo} alt="ACEFIDE logo" width={48} height={48} className="object-cover" />
+              <div className="relative h-12 w-12 rounded-lg overflow-hidden flex items-center justify-center">
+                <Image src={logo} alt="ACEFIDE logo" fill sizes="48px" className="object-contain" />
               </div>
               <span className="text-lg font-bold">ACEFIDE</span>
             </Link>

@@ -75,7 +75,7 @@ export default async function MembersPage({ params }: { params: Promise<{ locale
                   <StatusBadge status={item.status} />
                 </div>
               </header>
-              <div className="grid gap-7 p-5 xl:grid-cols-[1fr_1fr]">
+              <div className="grid gap-7 p-5 lg:grid-cols-[1fr_1fr]">
                 <section>
                   <h3 className="mb-4 border-b pb-2 font-bold text-[#0b1f33]">{copy.applicant}</h3>
                   <div className="grid gap-4 text-sm sm:grid-cols-2">

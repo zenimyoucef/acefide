@@ -29,7 +29,7 @@ export async function PartnersSection({ locale }: { locale: Locale }) {
           <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-turquoise" />
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {partners.map((partner) => {
             const name = locale === "ar" ? partner.nameAr : locale === "fr" ? partner.nameFr : partner.nameEn;
             if (!partner.logo) return null;

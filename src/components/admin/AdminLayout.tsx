@@ -80,8 +80,8 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
       >
         <div className="p-4 border-b border-border/50 flex items-center justify-between">
           <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-md overflow-hidden flex items-center justify-center">
-              <Image src={logo} alt="ACEFIDE logo" width={32} height={32} className="object-cover" />
+              <div className="relative h-8 w-8 rounded-md overflow-hidden flex items-center justify-center">
+              <Image src={logo} alt="ACEFIDE logo" fill sizes="32px" className="object-contain" />
             </div>
             {!collapsed && (
               <span className="font-bold text-foreground text-lg">ACEFIDE</span>

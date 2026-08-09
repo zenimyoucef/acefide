@@ -104,14 +104,14 @@ export async function LatestNews({ locale }: LatestNewsProps) {
               {secondary.map((item) => {
                 const article = localized(item);
                 return (
-                  <Link key={item.id} href={`/news/${item.slug}`} className="group grid gap-4 py-7 sm:grid-cols-[1fr_9rem] lg:grid-cols-1 xl:grid-cols-[1fr_9rem]">
+                  <Link key={item.id} href={`/news/${item.slug}`} className="group grid gap-4 py-7 sm:grid-cols-[1fr_9rem]">
                     <div>
                       <NewsMeta item={item} locale={locale} />
                       <h3 className="mt-3 text-xl font-extrabold leading-7 transition-colors group-hover:text-primary sm:text-2xl">{article.title}</h3>
                       {article.excerpt && <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">{article.excerpt}</p>}
                     </div>
                     {item.coverImage && (
-                      <div className="order-first aspect-[4/3] bg-muted bg-cover bg-center sm:order-last lg:order-first xl:order-last" style={{ backgroundImage: `url(${JSON.stringify(item.coverImage).slice(1, -1)})` }} />
+                      <div className="order-first aspect-[4/3] bg-muted bg-cover bg-center sm:order-last" style={{ backgroundImage: `url(${JSON.stringify(item.coverImage).slice(1, -1)})` }} />
                     )}
                   </Link>
                 );

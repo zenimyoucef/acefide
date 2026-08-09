@@ -69,7 +69,11 @@ textarea {
 }
 
 img,
-video,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
 canvas,
 svg {
   max-width: 100%;

@@ -24,7 +24,7 @@ export function HeroSection() {
         priority
         placeholder="blur"
         sizes="100vw"
-        className={`object-cover object-center ${isRtl ? "" : "scale-x-[-1]"}`}
+        className={`object-cover object-left md:object-center ${isRtl ? "" : "scale-x-[-1]"}`}
       />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,17,24,.96)_0%,rgba(5,24,29,.86)_38%,rgba(5,20,24,.42)_72%,rgba(5,15,18,.24)_100%)] rtl:bg-[linear-gradient(270deg,rgba(4,17,24,.96)_0%,rgba(5,24,29,.86)_38%,rgba(5,20,24,.42)_72%,rgba(5,15,18,.24)_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,12,18,.08)_35%,rgba(4,20,22,.92)_100%)]" />

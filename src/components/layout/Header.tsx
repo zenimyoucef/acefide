@@ -71,10 +71,10 @@ export function Header() {
           className="flex min-w-0 shrink items-center gap-3 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           aria-label={`${tSite("title")} — ${t("home")}`}
         >
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5">
-            <Image src={logo} alt="ACEFIDE logo" width={44} height={44} className="object-cover" priority />
+          <span className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5">
+            <Image src={logo} alt="ACEFIDE logo" fill sizes="44px" className="object-contain" priority />
           </span>
-          <span className="hidden min-w-0 max-w-[15rem] text-start text-xs font-bold leading-[1.35] text-[#0b1f33] xl:block 2xl:max-w-[21rem]">
+          <span className="hidden min-w-0 max-w-[10rem] text-start text-[0.6875rem] font-bold leading-[1.35] text-[#0b1f33] lg:block xl:max-w-[15rem] xl:text-xs 2xl:max-w-[21rem]">
             {tSite("title")}
           </span>
         </Link>

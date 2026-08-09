@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { membershipBlobToken } from "@/lib/membership-blob";
 import { membershipSchema, validationError } from "@/lib/validation";
 import { rateLimit, requestKey } from "@/lib/rate-limit";
+import { getSession } from "@/lib/auth";
 
 async function saveFile(file: File, fieldName: string) {
   if (!file || file.size === 0) {
@@ -33,6 +34,12 @@ async function saveFile(file: File, fieldName: string) {
 export async function POST(request: Request) {
   try {
     if (!rateLimit(requestKey(request, "membership"))) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    const session = await getSession();
+    if (!session) return NextResponse.json({ error: "Sign in before submitting your application." }, { status: 401 });
+    const applicant = await prisma.user.findUnique({ where: { id: session.id }, select: { id: true, email: true, emailVerifiedAt: true } });
+    if (!applicant?.emailVerifiedAt) return NextResponse.json({ error: "Verify your email before submitting your application." }, { status: 403 });
+    const duplicate = await prisma.membershipRequest.findUnique({ where: { userId: applicant.id }, select: { id: true } });
+    if (duplicate) return NextResponse.json({ error: "You have already submitted a membership application." }, { status: 409 });
     if (!process.env.BLOB_READ_WRITE_TOKEN) return NextResponse.json({ error: "Document uploads are not configured. Set BLOB_READ_WRITE_TOKEN before accepting membership applications." }, { status: 503 });
     const data = await request.formData();
     const parsed = membershipSchema.safeParse({
@@ -68,16 +75,11 @@ export async function POST(request: Request) {
       "criminal-record"
     );
     const value = parsed.data;
-    const email = value.email.toLowerCase();
-    const [existingUser, existingApplication] = await Promise.all([
-      prisma.user.findUnique({ where: { email }, select: { id: true } }),
-      prisma.membershipRequest.findFirst({ where: { email, status: { not: "REJECTED" } }, select: { id: true } }),
-    ]);
-    if (existingUser || existingApplication) return NextResponse.json({ error: "An application is already being processed for this email." }, { status: 409 });
     const membership = await prisma.membershipRequest.create({
       data: {
         ...value,
-        email,
+        userId: applicant.id,
+        email: applicant.email,
         dateOfBirth: new Date(`${value.dateOfBirth}T12:00:00Z`),
         identityDocumentUrl, personalPhotoUrl, cvUrl, diplomaUrl, criminalRecordUrl,
       },
