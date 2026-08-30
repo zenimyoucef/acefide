@@ -81,10 +81,10 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
         <div className="p-4 border-b border-border/50 flex items-center justify-between">
           <div className="flex items-center gap-3">
               <div className="relative h-8 w-8 flex items-center justify-center">
-              <Image src={logo} alt="ACEFIDE logo" fill sizes="32px" className="object-contain" />
+              <Image src={logo} alt="كارد logo" fill sizes="32px" className="object-contain" />
             </div>
             {!collapsed && (
-              <span className="font-bold text-foreground text-lg">ACEFIDE</span>
+              <span className="font-bold text-foreground text-lg">كارد</span>
             )}
           </div>
           <button type="button" onClick={() => setMobileOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted lg:hidden" aria-label="Close navigation"><X className="h-5 w-5" /></button>

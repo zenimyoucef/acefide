@@ -19,7 +19,7 @@ const footerLinks = [
 ];
 
 const socialLinks = [
-  { icon: Facebook, href: "https://www.facebook.com/ACEFIDEAlgeria", label: "Facebook" },
+  { icon: Facebook, href: "https://www.facebook.com/kardAlgeria", label: "Facebook" },
 ];
 
 export function Footer() {
@@ -40,9 +40,9 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-4">
               <div className="relative h-12 w-12 flex items-center justify-center">
-                <Image src={logo} alt="ACEFIDE logo" fill sizes="48px" className="object-contain" />
+                <Image src={logo} alt="كارد logo" fill sizes="48px" className="object-contain" />
               </div>
-              <span className="text-lg font-bold">ACEFIDE</span>
+              <span className="text-lg font-bold">كارد</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
               {t("footer.description")}

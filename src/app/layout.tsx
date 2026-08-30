@@ -6,13 +6,13 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: "ACEFIDE | المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي",
-    template: "%s | ACEFIDE",
+    default: "كارد | المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي",
+    template: "%s | كارد",
   },
   description:
     "نساهم في تطوير الاقتصاد من خلال التفكير والاقتراح وإبراز الفرص و تثمينها",
   keywords: [
-    "ACEFIDE",
+    "كارد",
     "الجزائر",
     "الاستشراف الاقتصادي",
     "الاستثمار",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     " Think Tank",
     "الاقتصاد الجزائري",
   ],
-  authors: [{ name: "ACEFIDE" }],
+  authors: [{ name: "كارد" }],
   icons: {
     icon: logo.src,
     shortcut: logo.src,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ar",
-    siteName: "ACEFIDE",
+    siteName: "كارد",
     images: ["/images/algiers-hero.png"],
   },
   twitter: { card: "summary_large_image", images: ["/images/algiers-hero.png"] },

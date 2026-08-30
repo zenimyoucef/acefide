@@ -101,7 +101,7 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
     <main className="min-h-screen bg-[#f5f2e9] text-[#17211d]" dir={locale === "ar" ? "rtl" : "ltr"}>
       <div className="container-content py-10 md:py-14">
         <header className="border-y-4 border-double border-[#17211d] py-5 text-center">
-          <p className="text-[0.65rem] font-black uppercase tracking-[0.3em] text-primary">ACEFIDE · {text.latest}</p>
+          <p className="text-[0.65rem] font-black uppercase tracking-[0.3em] text-primary">كارد · {text.latest}</p>
           <h1 className="mt-3 text-4xl font-black tracking-[-0.045em] sm:text-6xl lg:text-7xl">{text.masthead}</h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">{text.subtitle}</p>
           <p className="mt-4 border-t border-[#17211d]/30 pt-3 text-xs font-semibold">
@@ -180,7 +180,7 @@ function ArticleCover({ item, number, featured = false }: { item: JournalItem; n
       ) : (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(135deg,#dfe9e1,#f4efe1)] text-primary/35">
           <Newspaper className={featured ? "h-24 w-24" : "h-14 w-14"} />
-          <span className="mt-3 text-xs font-black uppercase tracking-[0.2em]">ACEFIDE</span>
+          <span className="mt-3 text-xs font-black uppercase tracking-[0.2em]">كارد</span>
         </div>
       )}
       <span className="absolute start-3 top-3 flex h-10 min-w-10 items-center justify-center rounded-full border border-white/60 bg-[#102a22]/90 px-2 text-sm font-black text-white shadow-lg backdrop-blur">

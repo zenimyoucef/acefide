@@ -36,7 +36,7 @@ export async function sendMembershipActivationEmail({ email, name, token, locale
   await transporter.sendMail({
     from,
     to: email,
-    subject: "Activate your ACEFIDE membership account",
+    subject: "Activate your كارد membership account",
     text: `Hello ${name},\n\nYour membership application has been approved. Set your password and activate your account here: ${activationUrl}\n\nThis link expires in 72 hours.`,
   });
 }

@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { Role } from "@prisma/client";
 
-export const SESSION_COOKIE = "acefide_session";
+export const SESSION_COOKIE = "kard_session";
 export type SessionUser = { id: string; email: string; name: string; role: Role };
 type SessionPayload = SessionUser & { exp: number };
 
