@@ -6,19 +6,20 @@ import { ImageUploadField } from "./ImageUploadField";
 
 const input = "mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-primary";
 const area = "mt-1 min-h-32 w-full rounded-lg border border-slate-200 bg-white p-3 text-sm leading-6 outline-none focus:border-primary";
-const languages = [
-  { code: "Ar", locale: "ar", label: "العربية", dir: "rtl" },
-  { code: "Fr", locale: "fr", label: "Français", dir: "ltr" },
-  { code: "En", locale: "en", label: "English", dir: "ltr" },
-] as const;
 
 export function LeadershipEditor({ locale, members }: { locale: string; members: LeadershipMember[] }) {
-  const t = locale === "ar"
-    ? { title: "أعضاء الفريق", help: "عدّل بيانات الأعضاء وإنجازاتهم وصورهم.", upload: "اختيار صورة جديدة", name: "الاسم", role: "المنصب", achievements: "الإنجازات والمسيرة الناجحة", achievementsHelp: "اكتب كل إنجاز في سطر مستقل.", save: "حفظ التغييرات", remove: "حذف العضو", protected: "لا يمكن حذف الرئيس" }
-    : locale === "fr"
-      ? { title: "Membres de l’équipe", help: "Modifiez les profils, réalisations et photos.", upload: "Choisir une nouvelle photo", name: "Nom", role: "Fonction", achievements: "Réalisations et parcours", achievementsHelp: "Écrivez une réalisation par ligne.", save: "Enregistrer", remove: "Supprimer", protected: "Le président ne peut pas être supprimé" }
-      : { title: "Team members", help: "Edit member profiles, achievements, and photos.", upload: "Choose a new photo", name: "Name", role: "Role", achievements: "Achievements and success story", achievementsHelp: "Write one achievement per line.", save: "Save changes", remove: "Remove member", protected: "The president cannot be removed" };
-  const activeLocale = (locale === "ar" || locale === "fr" ? locale : "en") as Locale;
+  const t = {
+    title: "أعضاء الفريق",
+    help: "عدّل بيانات الأعضاء وإنجازاتهم وصورهم.",
+    upload: "اختيار صورة جديدة",
+    name: "الاسم",
+    role: "المنصب",
+    achievements: "الإنجازات والمسيرة الناجحة",
+    achievementsHelp: "اكتب كل إنجاز في سطر مستقل.",
+    save: "حفظ التغييرات",
+    remove: "حذف العضو",
+    protected: "لا يمكن حذف الرئيس",
+  };
 
   return (
     <section className="mt-10">
@@ -29,21 +30,35 @@ export function LeadershipEditor({ locale, members }: { locale: string; members:
             <AdminForm action={saveLeadershipMember.bind(null, locale, member.id)} locale={locale}>
               <div className="mb-5 flex items-center gap-3">
                 <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br font-bold text-white ${member.accent}`}>{member.initials}</span>
-                <div className="min-w-0"><h3 className="truncate font-bold">{member.name[activeLocale]}</h3><p className="truncate text-sm text-slate-500">{member.role[activeLocale]}</p></div>
+                <div className="min-w-0"><h3 className="truncate font-bold">{member.name.ar}</h3><p className="truncate text-sm text-slate-500">{member.role.ar}</p></div>
               </div>
               <div className="grid gap-5 lg:grid-cols-[1fr_1.5fr]">
                 <ImageUploadField name="imageFile" preserveName="imageUrl" label={t.upload} currentImage={member.imageUrl} />
                 <div className="space-y-4">
-                  {languages.map((language) => (
-                    <fieldset key={language.code} dir={language.dir} className="rounded-xl border p-3 sm:p-4">
-                      <legend className="px-2 text-sm font-bold">{language.label}</legend>
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        <label className="block text-xs font-semibold">{t.name}<input name={`name${language.code}`} required defaultValue={member.name[language.locale]} className={input} /></label>
-                        <label className="block text-xs font-semibold">{t.role}<input name={`role${language.code}`} required defaultValue={member.role[language.locale]} className={input} /></label>
-                      </div>
-                      <label className="mt-3 block text-xs font-semibold">{t.achievements}<textarea name={`achievements${language.code}`} defaultValue={member.achievements?.[language.locale] || ""} placeholder={t.achievementsHelp} className={area} /></label>
-                    </fieldset>
-                  ))}
+                  <fieldset dir="rtl" className="rounded-xl border p-3 sm:p-4">
+                    <legend className="px-2 text-sm font-bold">العربية</legend>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="block text-xs font-semibold">{t.name}<input name="nameAr" required defaultValue={member.name.ar} className={input} /></label>
+                      <label className="block text-xs font-semibold">{t.role}<input name="roleAr" required defaultValue={member.role.ar} className={input} /></label>
+                    </div>
+                    <label className="mt-3 block text-xs font-semibold">{t.achievements}<textarea name="achievementsAr" defaultValue={member.achievements?.ar || ""} placeholder={t.achievementsHelp} className={area} /></label>
+                  </fieldset>
+                  <fieldset dir="ltr" className="rounded-xl border p-3 sm:p-4 opacity-50">
+                    <legend className="px-2 text-sm font-bold">Français</legend>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="block text-xs font-semibold">Nom<input name="nameFr" defaultValue={member.name.fr} className={input} /></label>
+                      <label className="block text-xs font-semibold">Fonction<input name="roleFr" defaultValue={member.role.fr} className={input} /></label>
+                    </div>
+                    <label className="mt-3 block text-xs font-semibold">Réalisations<textarea name="achievementsFr" defaultValue={member.achievements?.fr || ""} className={area} /></label>
+                  </fieldset>
+                  <fieldset dir="ltr" className="rounded-xl border p-3 sm:p-4 opacity-50">
+                    <legend className="px-2 text-sm font-bold">English</legend>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="block text-xs font-semibold">Name<input name="nameEn" defaultValue={member.name.en} className={input} /></label>
+                      <label className="block text-xs font-semibold">Role<input name="roleEn" defaultValue={member.role.en} className={input} /></label>
+                    </div>
+                    <label className="mt-3 block text-xs font-semibold">Achievements<textarea name="achievementsEn" defaultValue={member.achievements?.en || ""} className={area} /></label>
+                  </fieldset>
                 </div>
               </div>
               <div className="mt-5 flex justify-end"><button className="w-full rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white sm:w-auto">{t.save}</button></div>

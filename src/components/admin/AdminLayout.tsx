@@ -138,16 +138,7 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
             <div className="min-w-0"><p className="truncate text-sm font-semibold text-foreground sm:text-base">{user.name}</p><p className="truncate text-[0.65rem] text-muted-foreground sm:text-xs">{user.role}</p></div>
           </div>
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
-            <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-600">
-              <Languages className="hidden h-4 w-4 text-primary sm:block" />
-              <span className="sr-only">Interface language</span>
-              <select value={locale} onChange={(event) => changeLanguage(event.target.value)} className="h-9 cursor-pointer bg-transparent font-semibold outline-none" aria-label="Interface language">
-                <option value="en">English</option>
-                <option value="fr">Français</option>
-                <option value="ar">العربية</option>
-              </select>
-            </label>
-            <button onClick={logout} className="hidden text-sm text-muted-foreground hover:text-foreground sm:block">{t("logout")}</button>
+            <button onClick={logout} className="text-sm font-semibold text-muted-foreground hover:text-foreground">تسجيل الخروج</button>
           </div>
         </header>
         <div className="p-3 sm:p-6">{children}</div>

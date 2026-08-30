@@ -1,7 +1,5 @@
-"use client";
-
 import Link from "next/link";
-import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { AdminForm } from "@/components/admin/AdminForm";
 import { EventForm } from "@/components/admin/PublishingForms";
@@ -24,7 +22,7 @@ export default async function AdminEvents({ params, searchParams }: { params: Pr
     <div className="mx-auto max-w-5xl space-y-10">
       <header>
         <h1 className="text-3xl font-bold">{initial ? "تعديل فعالية" : "الفعاليات"}</h1>
-        <p className="mt-2 text-sm text-slate-500">إنشاء الأنشطة واللقاءات والم participation والظهور الإعلامية.</p>
+        <p className="mt-2 text-sm text-slate-500">إنشاء الأنشطة واللقاءات والمشاركات والظهور الإعلامية.</p>
       </header>
 
       <EventForm locale={locale} initial={initial} />
