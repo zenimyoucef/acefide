@@ -63,14 +63,14 @@ export function Header() {
       <div className="container-content flex h-full items-center gap-3">
         <Link
           href="/"
-          className="flex min-w-0 shrink items-center gap-3.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="flex min-w-0 items-center gap-3.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           aria-label={`${tSite("title")} — ${t("home")}`}
         >
           <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden">
             <Image src={logo} alt="المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي logo" fill sizes="56px" className="object-contain" priority />
           </span>
-          <span className="min-w-0 max-w-[8rem] truncate text-start text-xs font-bold leading-[1.35] text-[#0b1f33] sm:max-w-[14rem] sm:text-sm lg:max-w-[18rem] lg:text-[0.9rem] 2xl:max-w-[24rem]">
-            {tSite("shortTitle")}
+          <span className="min-w-0 whitespace-nowrap text-start text-[0.7rem] font-bold leading-[1.35] text-[#0b1f33] sm:text-[0.8rem] lg:text-[0.85rem]">
+            المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي
           </span>
         </Link>
 

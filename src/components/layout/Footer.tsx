@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/lib/navigation";
-import { cn } from "@/lib/utils";
-import { MapPin, Phone, Mail, Facebook } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, ChevronUp, ArrowLeft, Send } from "lucide-react";
 import Image from "next/image";
 import logo from "../../../assets/acefide.png";
 
@@ -30,120 +29,159 @@ export function Footer() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <footer
-      className="border-t border-border/40 bg-muted/50 font-arabic"
-      dir="rtl"
-    >
-      <div className="container-content py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="relative h-12 w-12 flex items-center justify-center">
-                <Image src={logo} alt="المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي logo" fill sizes="48px" className="object-contain" />
+    <footer className="relative font-arabic" dir="rtl">
+      {/* Decorative top border */}
+      <div className="h-1 bg-gradient-to-l from-turquoise via-primary to-primary-dark" />
+
+      {/* Main footer */}
+      <div className="bg-[#0a1a14]">
+        <div className="container-content">
+          {/* Top section — Logo, description, contact, newsletter in 4 columns */}
+          <div className="grid grid-cols-1 gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1.1fr] lg:gap-8">
+
+            {/* Brand + Description */}
+            <div>
+              <Link href="/" className="group mb-5 flex items-center gap-3">
+                <div className="relative h-14 w-14 shrink-0">
+                  <Image
+                    src={logo}
+                    alt="المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي"
+                    fill
+                    sizes="56px"
+                    className="object-contain"
+                  />
+                </div>
+                <div>
+                  <span className="block text-base font-bold text-white leading-snug group-hover:text-turquoise transition-colors duration-300">
+                    المركز الجزائري
+                  </span>
+                  <span className="block text-[0.7rem] font-semibold text-white/40 leading-snug">
+                    للتشبيك الاقتصادي والاستثمار التنموي
+                  </span>
+                </div>
+              </Link>
+              <p className="text-sm leading-7 text-white/35 max-w-xs">
+                {t("footer.description")}
+              </p>
+              {/* Social */}
+              <div className="mt-5 flex items-center gap-3">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative h-10 w-10 rounded-xl border border-white/10 bg-white/[0.03] flex items-center justify-center text-white/40 hover:border-turquoise/40 hover:text-turquoise hover:bg-turquoise/[0.06] transition-all duration-300"
+                    aria-label={social.label}
+                  >
+                    <social.icon className="h-4 w-4" />
+                  </a>
+                ))}
               </div>
-              <span className="text-lg font-bold">المركز الجزائري للتشبيك والاستثمار</span>
-            </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-              {t("footer.description")}
-            </p>
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="h-9 w-9 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-white transition-colors"
-                  aria-label={social.label}
-                >
-                  <social.icon className="h-4 w-4" />
-                </a>
-              ))}
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="relative mb-5 text-sm font-bold text-white">
+                <span className="relative z-10">روابط سريعة</span>
+                <span className="absolute -bottom-1 right-0 h-6 w-16 rounded bg-turquoise/10" />
+              </h3>
+              <ul className="space-y-0">
+                {footerLinks.map((link, i) => (
+                  <li key={link.key}>
+                    <Link
+                      href={link.href}
+                      className="group flex items-center gap-2 py-2 text-sm text-white/40 hover:text-turquoise transition-colors duration-200"
+                    >
+                      <span className="h-px w-0 bg-turquoise/50 group-hover:w-3 transition-all duration-300" />
+                      {t(`nav.${link.key}`)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact Information */}
+            <div>
+              <h3 className="relative mb-5 text-sm font-bold text-white">
+                <span className="relative z-10">معلومات الاتصال</span>
+                <span className="absolute -bottom-1 right-0 h-6 w-20 rounded bg-turquoise/10" />
+              </h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03]">
+                    <MapPin className="h-3.5 w-3.5 text-turquoise/70" />
+                  </span>
+                  <span className="text-sm text-white/35 leading-6 pt-1">
+                    {address}
+                  </span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03]">
+                    <Phone className="h-3.5 w-3.5 text-turquoise/70" />
+                  </span>
+                  <span className="text-sm text-white/35" dir="ltr">
+                    023 29 88 88
+                  </span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03]">
+                    <Mail className="h-3.5 w-3.5 text-turquoise/70" />
+                  </span>
+                  <span className="text-sm text-white/35" dir="ltr">
+                    acefidedz@gmail.com
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Newsletter */}
+            <div>
+              <h3 className="relative mb-5 text-sm font-bold text-white">
+                <span className="relative z-10">النشرة البريدية</span>
+                <span className="absolute -bottom-1 right-0 h-6 w-20 rounded bg-turquoise/10" />
+              </h3>
+              <p className="mb-4 text-sm text-white/35 leading-6">
+                اشترك في نشرتنا البريدية لتحصل على آخر الأخبار والفعاليات.
+              </p>
+              <NewsletterForm />
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">
-              {t("footer.quickLinks")}
-            </h3>
-            <ul className="space-y-3">
-              {footerLinks.map((link) => (
-                <li key={link.key}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {t(`nav.${link.key}`)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-l from-transparent via-white/10 to-transparent" />
 
-          {/* Contact Information */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">
-              {t("footer.contact")}
-            </h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-sm text-muted-foreground">
-                  {address}
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-primary shrink-0" />
-                <span className="text-sm text-muted-foreground">
-                  023 29 88 88
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-primary shrink-0" />
-                <span className="text-sm text-muted-foreground">
-                  acefidedz@gmail.com
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4">
-              {t("newsletter.title")}
-            </h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              {t("newsletter.desc")}
+          {/* Bottom bar */}
+          <div className="flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
+            <p className="text-xs text-white/25">
+              {t("footer.copyright", { year: new Date().getFullYear() })}
             </p>
-            <NewsletterForm />
+            <div className="flex items-center gap-6">
+              <Link
+                href="#"
+                className="text-xs text-white/25 hover:text-turquoise/60 transition-colors"
+              >
+                {t("footer.privacy")}
+              </Link>
+              <Link
+                href="#"
+                className="text-xs text-white/25 hover:text-turquoise/60 transition-colors"
+              >
+                {t("footer.terms")}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-border/40 py-6">
-        <div className="container-content flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            {t("footer.copyright", { year: new Date().getFullYear() })}
-          </p>
-          <div className="flex items-center gap-6">
-            <Link
-              href="#"
-              className="text-xs text-muted-foreground hover:text-primary transition-colors"
-            >
-              {t("footer.privacy")}
-            </Link>
-            <Link
-              href="#"
-              className="text-xs text-muted-foreground hover:text-primary transition-colors"
-            >
-              {t("footer.terms")}
-            </Link>
-          </div>
-        </div>
-      </div>
+      {/* Back to top — floating button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 left-6 z-50 h-11 w-11 rounded-xl bg-primary text-white shadow-lg shadow-primary/25 flex items-center justify-center hover:bg-primary-dark hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5"
+        aria-label="العودة للأعلى"
+      >
+        <ChevronUp className="h-5 w-5" />
+      </button>
     </footer>
   );
 }
@@ -175,23 +213,33 @@ function NewsletterForm() {
 
   return (
     <div>
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 min-[420px]:flex-row">
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder={t("placeholder")}
-        required
-        className="h-10 min-w-0 flex-1 rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-turquoise"
-      />
-      <button
-        type="submit"
-        className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-colors shrink-0"
-      >
-        {t("button")}
-      </button>
-    </form>
-    {status !== "idle" && <p role="status" className={`mt-2 text-xs ${status === "success" ? "text-primary" : "text-red-700"}`}>{status === "success" ? t("success") : t("error")}</p>}
+      <form onSubmit={handleSubmit} className="flex gap-0">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={t("placeholder")}
+          required
+          className="h-11 min-w-0 flex-1 rounded-r-xl border border-white/10 border-r-0 bg-white/[0.04] px-4 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-turquoise/40 focus:bg-white/[0.06] transition-all"
+        />
+        <button
+          type="submit"
+          className="h-11 px-5 rounded-l-xl bg-turquoise text-[#0a1a14] text-sm font-bold flex items-center gap-1.5 hover:bg-turquoise-light transition-all duration-300 shrink-0"
+        >
+          <Send className="h-3.5 w-3.5" />
+          {t("button")}
+        </button>
+      </form>
+      {status !== "idle" && (
+        <p
+          role="status"
+          className={`mt-2 text-xs ${
+            status === "success" ? "text-turquoise" : "text-red-400"
+          }`}
+        >
+          {status === "success" ? t("success") : t("error")}
+        </p>
+      )}
     </div>
   );
 }

@@ -11,7 +11,7 @@ export function HeroSection() {
   const t = useTranslations("hero");
   const badge = "منظمة غير حكومية";
   const inscription = "التسجيل";
-  const suggestion = "اقتراحات وملاحظات";
+  const suggestion = "إقتراحاتكم و إنشغالاتكم";
 
   return (
     <section className="relative min-h-[calc(100svh-4.5rem)] overflow-hidden bg-[#071b20] text-white" dir="rtl">

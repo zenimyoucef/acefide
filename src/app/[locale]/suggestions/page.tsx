@@ -1,13 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { Send, CheckCircle, MessageSquare, Lightbulb, AlertTriangle } from "lucide-react";
+import { useState, useRef } from "react";
+import { Send, CheckCircle, Lightbulb, AlertTriangle, Paperclip, X } from "lucide-react";
 
 export default function SuggestionsPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [type, setType] = useState<"suggestion" | "concern">("suggestion");
+  const [file, setFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = e.target.files?.[0];
+    if (selected) {
+      if (selected.size > 10 * 1024 * 1024) {
+        setError("الحد الأقصى لحجم الملف هو 10 ميغابايت");
+        return;
+      }
+      setFile(selected);
+      setError("");
+    }
+  }
+
+  function removeFile() {
+    setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -17,21 +36,23 @@ export default function SuggestionsPage() {
     setError("");
 
     try {
+      const body = new FormData();
+      body.append("name", formData.get("name") as string);
+      body.append("email", (formData.get("email") as string) || "");
+      body.append("type", type);
+      body.append("subject", formData.get("subject") as string);
+      body.append("message", formData.get("message") as string);
+      if (file) body.append("file", file);
+
       const res = await fetch("/api/suggestions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.get("name"),
-          email: formData.get("email"),
-          type: formData.get("type"),
-          subject: formData.get("subject"),
-          message: formData.get("message"),
-        }),
+        body,
       });
       if (res.ok) {
         setSubmitted(true);
       } else {
-        setError("تعذر إرسال الرسالة. يرجى المحاولة مرة أخرى.");
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "تعذر إرسال الرسالة. يرجى المحاولة مرة أخرى.");
       }
     } catch {
       setError("تعذر الاتصال بالخادم.");
@@ -57,7 +78,7 @@ export default function SuggestionsPage() {
       <div className="container-content max-w-3xl">
         <header className="mb-10">
           <p className="text-sm font-bold uppercase tracking-widest text-primary">تواصل معنا</p>
-          <h1 className="mt-3 text-3xl font-black tracking-tight text-[#0b1f33] md:text-4xl">اقتراحات وملاحظات</h1>
+          <h1 className="mt-3 text-3xl font-black tracking-tight text-[#0b1f33] md:text-4xl">إقتراحاتكم و إنشغالاتكم</h1>
           <p className="mt-4 text-muted-foreground">شاركنا اقتراحاتك أو ملاحظاتك أو مشاكلك. نحرص على الاستماع إليك وتحسين خدماتنا.</p>
         </header>
 
@@ -103,6 +124,36 @@ export default function SuggestionsPage() {
             الرسالة <span className="text-red-600">*</span>
             <textarea name="message" required rows={6} className="mt-2 w-full rounded-lg border border-border bg-white p-3 text-sm leading-7 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="اكتب رسالتك هنا..." />
           </label>
+
+          {/* File upload */}
+          <div>
+            <p className="text-sm font-bold mb-2">مرفق (اختياري)</p>
+            {file ? (
+              <div className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/[0.03] px-4 py-3">
+                <Paperclip className="h-4 w-4 text-primary shrink-0" />
+                <span className="text-sm truncate flex-1">{file.name}</span>
+                <span className="text-xs text-muted-foreground shrink-0">{(file.size / 1024 / 1024).toFixed(1)} MB</span>
+                <button type="button" onClick={removeFile} className="h-6 w-6 rounded-full bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-100 transition shrink-0">
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ) : (
+              <label className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border bg-white px-6 py-8 text-center transition hover:border-primary/40 hover:bg-primary/[0.02]">
+                <Paperclip className="h-6 w-6 text-muted-foreground" />
+                <div>
+                  <p className="text-sm font-bold text-foreground">اضغط لاختيار ملف</p>
+                  <p className="text-xs text-muted-foreground mt-1">صور أو PDF — الحد الأقصى 10 ميغابايت</p>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*,.pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                  className="sr-only"
+                />
+              </label>
+            )}
+          </div>
 
           {error && <p className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">{error}</p>}
 
