@@ -20,7 +20,7 @@ const text = (data: FormData, key: string) => {
   return typeof value === "string" ? value.trim() : "";
 };
 const slugify = (value: string) => value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
-const automaticSlug = (data: FormData, source: string) => text(data, "slug") || slugify(text(data, source));
+const automaticSlug = (data: FormData, ...sources: string[]) => text(data, "slug") || slugify(sources.map((s) => text(data, s)).find(Boolean) || "");
 
 const actionCopy = {
   ar: { invalid: "يرجى تصحيح الحقول المبيّنة.", saved: "تم الحفظ بنجاح.", deleted: "تم الحذف بنجاح.", unexpected: "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.", duplicate: "اسم الرابط مستخدم بالفعل.", schema: "قاعدة البيانات غير جاهزة لهذه الميزة. يرجى الاتصال بالمسؤول.", blob: "تعذر رفع الملف. يرجى التحقق منه والمحاولة مجددًا.", url: "يرجى إدخال رابط صالح.", image: "يرجى رفع صورة صالحة.", document: "يرجى رفع ملف PDF أو مستند صالح.", date: "يرجى اختيار تاريخ صالح للفعالية.", endDate: "يجب أن يكون تاريخ النهاية بعد تاريخ البداية.", required: "مطلوب" },
@@ -232,7 +232,8 @@ export async function saveNews(locale: string, data: FormData) {
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "saveNews", async () => {
     const user = await editor();
-    const slug = automaticSlug(data, "titleEn");
+    const slug = automaticSlug(data, "titleEn", "titleAr");
+    if (!slug) return invalid(locale, { slug: "يرجى إدخال عنوان المقال." });
     const previous = await prisma.news.findUnique({ where: { slug }, select: { coverImage: true, galleryImages: true } });
     const gallery = await contentGallery(data, "news");
     try {
@@ -297,7 +298,7 @@ export async function saveEvent(locale: string, data: FormData) {
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "saveEvent", async () => {
     await editor();
-    const slug = automaticSlug(data, "titleEn");
+    const slug = automaticSlug(data, "titleEn", "titleAr");
     const previous = await prisma.event.findUnique({ where: { slug }, select: { coverImage: true, galleryImages: true } });
     const published = data.get("published") === "on";
     const gallery = await contentGallery(data, "events");
@@ -350,7 +351,7 @@ export async function savePublication(locale: string, fixedCategory: Publication
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "savePublication", async () => {
     const user = await editor();
-    const slug = automaticSlug(data, "titleEn");
+    const slug = automaticSlug(data, "titleEn", "titleAr");
     const previous = await prisma.publication.findUnique({ where: { slug }, select: { coverImage: true, pdfUrl: true } });
     const uploads: string[] = [];
     try {
@@ -390,7 +391,7 @@ export async function savePartner(locale: string, data: FormData) {
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "savePartner", async () => {
     await editor();
-    const slug = automaticSlug(data, "nameEn");
+    const slug = automaticSlug(data, "nameEn", "nameAr");
     const previous = await prisma.partner.findUnique({ where: { slug }, select: { logo: true } });
     const logo = await uploadedFile(data, "logoFile", "logo", "partners", imageTypes, 4);
     try {
