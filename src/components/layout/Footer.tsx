@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/lib/navigation";
 import { MapPin, Phone, Mail, Facebook, ChevronUp, Send } from "lucide-react";
 import Image from "next/image";
-import logo from "../../../assets/acefide.png";
+import logo from "../../../assets/acendinobkg.png";
 
 const footerLinks = [
   { key: "home", href: "/" },
@@ -29,24 +29,33 @@ export function Footer() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <footer className="relative font-arabic" dir="rtl">
-      {/* Main footer — dark navy */}
-      <div className="bg-[#0b1f33]">
-        <div className="container-content py-14">
+    <footer className="relative font-arabic overflow-hidden" dir="rtl">
+      {/* Decorative top border */}
+      <div className="h-1 bg-gradient-to-l from-turquoise via-primary to-primary-dark" />
 
-          {/* Mobile: centered logo + name. Desktop: 4-col grid */}
+      {/* Main footer — rich gradient background */}
+      <div className="relative bg-gradient-to-br from-[#0b2a20] via-[#0d1f33] to-[#0a1628]">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 -right-32 h-64 w-64 rounded-full bg-primary/8 blur-[100px]" />
+          <div className="absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-turquoise/6 blur-[80px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-primary/3 blur-[120px]" />
+        </div>
+
+        <div className="relative container-content py-14">
+          {/* Mobile: centered logo. Desktop: 4-col grid */}
           <div className="flex flex-col items-center text-center lg:items-start lg:text-start lg:grid lg:grid-cols-[1.2fr_1fr_1fr_1.1fr] lg:gap-8">
 
             {/* Brand — centered on mobile */}
             <div className="mb-10 lg:mb-0">
               <Link href="/" className="group mb-5 flex flex-col items-center lg:items-start gap-3">
-                <div className="relative h-20 w-20 shrink-0 lg:h-14 lg:w-14">
+                <div className="relative h-24 w-24 shrink-0 lg:h-16 lg:w-16">
                   <Image
                     src={logo}
                     alt="المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي"
                     fill
-                    sizes="80px"
-                    className="object-contain"
+                    sizes="96px"
+                    className="object-contain drop-shadow-[0_0_20px_rgba(58,191,165,0.15)]"
                   />
                 </div>
                 <div className="text-center lg:text-start">
@@ -58,7 +67,7 @@ export function Footer() {
                   </span>
                 </div>
               </Link>
-              <p className="text-sm leading-7 text-white/40 max-w-xs mx-auto lg:mx-0">
+              <p className="text-sm leading-7 text-white/35 max-w-xs mx-auto lg:mx-0">
                 {t("footer.description")}
               </p>
               {/* Social */}
@@ -78,7 +87,7 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Quick Links — hidden on mobile, shown on desktop */}
+            {/* Quick Links — hidden on mobile */}
             <div className="hidden lg:block">
               <h3 className="relative mb-5 text-sm font-bold text-white">
                 <span className="relative z-10">روابط سريعة</span>
@@ -101,12 +110,12 @@ export function Footer() {
 
             {/* Contact Information */}
             <div className="text-center lg:text-start">
-              <h3 className="relative mb-5 text-sm font-bold text-turquoise">
-                <span className="relative z-10">معلومات الاتصال</span>
+              <h3 className="relative mb-5 text-sm font-bold">
+                <span className="relative z-10 text-turquoise">معلومات الاتصال</span>
               </h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3 justify-center lg:justify-start">
-                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-turquoise/20 bg-turquoise/[0.06]">
                     <MapPin className="h-3.5 w-3.5 text-turquoise/70" />
                   </span>
                   <span className="text-sm text-white/45 leading-6 pt-1">
@@ -114,7 +123,7 @@ export function Footer() {
                   </span>
                 </li>
                 <li className="flex items-center gap-3 justify-center lg:justify-start">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-turquoise/20 bg-turquoise/[0.06]">
                     <Phone className="h-3.5 w-3.5 text-turquoise/70" />
                   </span>
                   <span className="text-sm text-white/45" dir="ltr">
@@ -122,7 +131,7 @@ export function Footer() {
                   </span>
                 </li>
                 <li className="flex items-center gap-3 justify-center lg:justify-start">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-turquoise/20 bg-turquoise/[0.06]">
                     <Mail className="h-3.5 w-3.5 text-turquoise/70" />
                   </span>
                   <span className="text-sm text-white/45" dir="ltr">
@@ -134,10 +143,10 @@ export function Footer() {
 
             {/* Newsletter */}
             <div className="text-center lg:text-start">
-              <h3 className="relative mb-5 text-sm font-bold text-turquoise">
-                <span className="relative z-10">النشرة البريدية</span>
+              <h3 className="relative mb-5 text-sm font-bold">
+                <span className="relative z-10 text-turquoise">النشرة البريدية</span>
               </h3>
-              <p className="mb-4 text-sm text-white/40 leading-6">
+              <p className="mb-4 text-sm text-white/35 leading-6">
                 اشترك في نشرتنا البريدية لتحصل على آخر الأخبار والفعاليات.
               </p>
               <NewsletterForm />
@@ -173,7 +182,7 @@ export function Footer() {
       {/* Back to top */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-6 left-6 z-50 h-11 w-11 rounded-xl bg-primary text-white shadow-lg shadow-primary/25 flex items-center justify-center hover:bg-primary-dark hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5"
+        className="fixed bottom-6 left-6 z-50 h-11 w-11 rounded-xl bg-gradient-to-br from-primary to-turquoise text-white shadow-lg shadow-primary/25 flex items-center justify-center hover:shadow-primary/40 transition-all duration-300 hover:-translate-y-0.5"
         aria-label="العودة للأعلى"
       >
         <ChevronUp className="h-5 w-5" />
@@ -220,7 +229,7 @@ function NewsletterForm() {
         />
         <button
           type="submit"
-          className="h-11 px-5 rounded-l-xl bg-turquoise text-[#0b1f33] text-sm font-bold flex items-center gap-1.5 hover:bg-turquoise-light transition-all duration-300 shrink-0"
+          className="h-11 px-5 rounded-l-xl bg-gradient-to-l from-turquoise to-primary text-white text-sm font-bold flex items-center gap-1.5 hover:from-turquoise-light hover:to-primary-light transition-all duration-300 shrink-0"
         >
           <Send className="h-3.5 w-3.5" />
           {t("button")}

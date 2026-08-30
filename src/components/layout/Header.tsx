@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ChevronDown, Menu, X } from "lucide-react";
-import logo from "../../../assets/acefide.png";
+import logo from "../../../assets/acendinobkg.png";
 import { Link, usePathname } from "@/lib/navigation";
 import { Button } from "@/components/ui/button";
 import {

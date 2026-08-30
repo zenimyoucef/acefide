@@ -25,7 +25,7 @@ import { useState } from "react";
 import { usePathname, useRouter } from "@/lib/navigation";
 import type { SessionUser } from "@/lib/auth";
 import Image from "next/image";
-import logo from "../../../assets/acefide.png";
+import logo from "../../../assets/acendinobkg.png";
 
 const sidebarItems = [
   { key: "dashboard", icon: LayoutDashboard, href: "/admin" },
