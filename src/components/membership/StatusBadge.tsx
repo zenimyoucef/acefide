@@ -2,10 +2,10 @@ import type { MembershipStatus } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 
 const labels: Record<MembershipStatus, string> = {
-  PENDING_REVIEW: "Pending Review",
-  APPROVED_WAITING_PAYMENT: "Waiting for Completion",
-  COMPLETED: "Completed",
-  REJECTED: "Rejected",
+  PENDING_REVIEW: "قيد المراجعة",
+  APPROVED_WAITING_PAYMENT: "بانتظار الإكمال",
+  COMPLETED: "مكتمل",
+  REJECTED: "مرفوض",
 };
 
 const styles: Record<MembershipStatus, string> = {
@@ -16,5 +16,5 @@ const styles: Record<MembershipStatus, string> = {
 };
 
 export function StatusBadge({ status }: { status: MembershipStatus }) {
-  return <Badge className={`border ${styles[status]}`}>{status === "APPROVED_WAITING_PAYMENT" ? "Approved · " : ""}{labels[status]}</Badge>;
+  return <Badge className={`border ${styles[status]}`}>{status === "APPROVED_WAITING_PAYMENT" ? "تمت الموافقة · " : ""}{labels[status]}</Badge>;
 }

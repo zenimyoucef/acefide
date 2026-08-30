@@ -17,9 +17,28 @@ export default function MembershipActivationPage() {
     setError("");
     const response = await fetch("/api/membership/activate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token, password }) });
     const result = await response.json();
-    if (!response.ok) return setError(result.error || "Unable to activate your account.");
+    if (!response.ok) return setError(result.error || "تعذر تفعيل الحساب.");
     setDone(true);
   }
 
-  return <main className="min-h-[70vh] bg-[#f7f8f6] px-4 py-20"><form onSubmit={submit} className="mx-auto max-w-md rounded-2xl border bg-white p-8 shadow-sm"><h1 className="text-2xl font-bold">Activate membership account</h1>{done ? <p className="mt-5 text-sm text-emerald-700">Your account is active. You can now sign in.</p> : <><p className="mt-2 text-sm text-muted-foreground">Choose a password to activate your approved membership account.</p><Label className="mt-6 block text-sm font-semibold">Password<Input className="mt-2" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} /></Label>{error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}<Button className="mt-6" disabled={!token}>Activate account</Button></>}</form></main>;
+  return (
+    <main className="min-h-[70vh] bg-[#f7f8f6] px-4 py-20" dir="rtl">
+      <form onSubmit={submit} className="mx-auto max-w-md rounded-2xl border bg-white p-8 shadow-sm">
+        <h1 className="text-2xl font-bold">تفعيل حساب الإنخراط</h1>
+        {done ? (
+          <p className="mt-5 text-sm text-emerald-700">تم تفعيل حسابك بنجاح. يمكنك الآن تسجيل الدخول.</p>
+        ) : (
+          <>
+            <p className="mt-2 text-sm text-muted-foreground">اختر كلمة المرور لتفعيل حسابك المعتمد.</p>
+            <Label className="mt-6 block text-sm font-semibold">
+              كلمة المرور
+              <Input className="mt-2" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} />
+            </Label>
+            {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
+            <Button className="mt-6" disabled={!token}>تفعيل الحساب</Button>
+          </>
+        )}
+      </form>
+    </main>
+  );
 }

@@ -7,7 +7,7 @@ import { sendVerificationEmail } from "@/lib/verification-email";
 
 const schema = z.object({ email: z.string().trim().email(), locale: z.enum(["ar", "en", "fr"]).default("ar") });
 export async function POST(request: Request) {
-  if (!rateLimit(requestKey(request, "resend-verification"), 3, 30 * 60_000)) return NextResponse.json({ error: "Too many attempts." }, { status: 429 });
+  if (!rateLimit(requestKey(request, "resend-verification"), 3, 30 * 60_000)) return NextResponse.json({ error: "تم تجاوز عدد المحاولات المسموح." }, { status: 429 });
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: true });
   const user = await prisma.user.findUnique({ where: { email: parsed.data.email.toLowerCase() } });

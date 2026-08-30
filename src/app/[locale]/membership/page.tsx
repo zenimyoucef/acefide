@@ -58,7 +58,7 @@ const fieldLabels: Record<string, string> = {
   declarationAccepted: "تصريح خاص بطالب الإنخراط",
   identityDocument: "نسخة بطاقة التعريف الوطنية أو جواز السفر",
   personalPhoto: "صورة شخصية",
-  cv: "السيرة الذاتية/CV",
+  cv: "السيرة الذاتية",
   diploma: "شهادة المؤهل العلمي أو المهني",
   criminalRecord: "صحيفة السوابق العدلية",
   duesReceipt: "وصل تسديد مستحقات الإنخراط",

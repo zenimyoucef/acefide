@@ -13,9 +13,9 @@ const schema = z.object({
 }).refine((value) => value.password === value.passwordConfirmation, { path: ["passwordConfirmation"] });
 
 export async function POST(request: Request) {
-  if (!rateLimit(requestKey(request, "register"), 5, 15 * 60_000)) return NextResponse.json({ error: "Too many attempts." }, { status: 429 });
+  if (!rateLimit(requestKey(request, "register"), 5, 15 * 60_000)) return NextResponse.json({ error: "تم تجاوز عدد المحاولات المسموح." }, { status: 429 });
   const parsed = schema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) return NextResponse.json({ error: "Please check your registration details." }, { status: 400 });
+  if (!parsed.success) return NextResponse.json({ error: "يرجى التحقق من بيانات التسجيل." }, { status: 400 });
   const email = parsed.data.email.toLowerCase();
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) return NextResponse.json({ ok: true });
@@ -26,6 +26,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {
     console.error("Verification email delivery failed", error);
-    return NextResponse.json({ error: "Account created, but the verification email could not be sent. Please try resend." }, { status: 503 });
+    return NextResponse.json({ error: "تم إنشاء الحساب لكن لم نتمكن من إرسال رسالة التأكيد. يرجى إعادة الإرسال." }, { status: 503 });
   }
 }

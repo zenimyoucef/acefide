@@ -1,7 +1,7 @@
 export const REQUIRED_MEMBERSHIP_FILES = [
   { field: "identityDocument", blobFolder: "identity-document", label: "نسخة بطاقة التعريف الوطنية أو جواز السفر", accept: "application/pdf,image/jpeg,image/png,image/webp" },
   { field: "personalPhoto", blobFolder: "personal-photo", label: "صورة شخصية", accept: "image/jpeg,image/png,image/webp" },
-  { field: "cv", blobFolder: "cv", label: "السيرة الذاتية/CV", accept: "application/pdf,image/jpeg,image/png,image/webp,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+  { field: "cv", blobFolder: "cv", label: "السيرة الذاتية", accept: "application/pdf,image/jpeg,image/png,image/webp,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
   { field: "diploma", blobFolder: "diploma", label: "شهادة المؤهل العلمي أو المهني", accept: "application/pdf,image/jpeg,image/png,image/webp" },
   { field: "criminalRecord", blobFolder: "criminal-record", label: "صحيفة السوابق العدلية سارية الصلاحية", accept: "application/pdf,image/jpeg,image/png,image/webp" },
   { field: "duesReceipt", blobFolder: "dues-receipt", label: "وصل تسديد مستحقات الإنخراط", accept: "application/pdf,image/jpeg,image/png,image/webp" },

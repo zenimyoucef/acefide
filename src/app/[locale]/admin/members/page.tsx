@@ -43,7 +43,7 @@ function MemberCard({ item, locale }: { item: Awaited<ReturnType<typeof prisma.m
   ];
 
   const documents: Array<[string, string | null]> = [
-    ["السيرة الذاتية/CV", item.cvUrl],
+    ["السيرة الذاتية", item.cvUrl],
     ["نسخة بطاقة التعريف أو جواز السفر", item.identityDocumentUrl],
     ["صورة شخصية", item.personalPhotoUrl],
     ["شهادة المؤهل العلمي أو المهني", item.diplomaUrl],
