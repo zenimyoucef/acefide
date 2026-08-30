@@ -1,5 +1,5 @@
 import Image from "next/image";
-import akram from "../../../assets/akram.png";
+import akram from "../../../assets/akram.jpeg";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/lib/navigation";
 import { Button } from "@/components/ui/button";

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import akram from "../../../assets/akram.png";
+import akram from "../../../assets/akram.jpeg";
 import type { LeadershipMember, Locale } from "@/lib/structure";
 import { cn } from "@/lib/utils";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import akram from "../../../../assets/akram.png";
+import akram from "../../../../assets/akram.jpeg";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowDown, Calendar, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
