@@ -18,7 +18,7 @@ const footerLinks = [
 ];
 
 const socialLinks = [
-  { icon: Facebook, href: "https://www.facebook.com/kardAlgeria", label: "Facebook" },
+  { icon: Facebook, href: "https://www.facebook.com/ACEFIDEAlgeria", label: "Facebook" },
 ];
 
 export function Footer() {
