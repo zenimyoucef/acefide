@@ -71,7 +71,7 @@ export default function ProjectsPage() {
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
-              {locale === "ar" ? "الكل" : locale === "fr" ? "Tous" : "All"}
+              "الكل"
             </button>
             {categories.map((cat) => (
               <button

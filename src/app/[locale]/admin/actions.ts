@@ -174,7 +174,7 @@ function validateFile(locale: string, data: FormData, key: string, allowed: Reco
   const existing = existingKey ? text(data, existingKey) : "";
   if (!file) return required && !existing ? requiredMessage(locale, key) : null;
   if (!allowed[file.type]) return key.toLowerCase().includes("pdf") ? messages(locale).document : messages(locale).image;
-  if (file.size > maxMb * 1024 * 1024) return locale === "ar" ? `يجب أن يكون حجم الملف أقل من ${maxMb} ميغابايت.` : locale === "fr" ? `Le fichier doit faire moins de ${maxMb} Mo.` : `File must be smaller than ${maxMb} MB.`;
+  if (file.size > maxMb * 1024 * 1024) return `يجب أن يكون حجم الملف أقل من ${maxMb} ميغابايت.`;
   return null;
 }
 
@@ -186,7 +186,7 @@ function validateGallery(locale: string, data: FormData, required: boolean) {
   if (required && files.length === 0 && existing.length === 0) errors.galleryFiles = messages(locale).image;
   for (const file of files) {
     if (!imageTypes[file.type]) { errors.galleryFiles = messages(locale).image; break; }
-    if (file.size > 8 * 1024 * 1024) { errors.galleryFiles = locale === "ar" ? "يجب أن يكون حجم كل صورة أقل من 8 ميغابايت." : locale === "fr" ? "Chaque image doit faire moins de 8 Mo." : "Each image must be smaller than 8 MB."; break; }
+    if (file.size > 8 * 1024 * 1024) { errors.galleryFiles = "يجب أن يكون حجم كل صورة أقل من 8 ميغابايت."; break; }
   }
   return errors;
 }
@@ -387,7 +387,7 @@ export async function savePartner(locale: string, data: FormData) {
   if (!(["INSTITUTIONAL", "GOVERNMENT", "INTERNATIONAL", "UNIVERSITY", "PRIVATE"] as string[]).includes(text(data, "category"))) errors.category = requiredMessage(locale, label(locale, "category"));
   const logoError = validateFile(locale, data, "logoFile", imageTypes, 4, true, "logo"); if (logoError) errors.logoFile = logoError;
   const website = text(data, "website"); if (website && !validUrl(website)) errors.website = messages(locale).url;
-  const order = text(data, "order"); if (order && (!/^\d+$/.test(order) || Number(order) < 0)) errors.order = locale === "ar" ? "يجب أن يكون الترتيب رقمًا موجبًا." : locale === "fr" ? "L’ordre doit être un nombre positif." : "Order must be a positive number.";
+  const order = text(data, "order"); if (order && (!/^\d+$/.test(order) || Number(order) < 0)) errors.order = "يجب أن يكون الترتيب رقمًا موجبًا";
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "savePartner", async () => {
     await editor();
@@ -438,7 +438,7 @@ export async function approveMembershipRequest(locale: string, id: string) {
     if (!application.userId) throw new Error("This application is not linked to a verified account.");
     await prisma.membershipRequest.update({ where: { id }, data: { status: "APPROVED_WAITING_PAYMENT", approvedAt: new Date(), rejectedAt: null } });
     revalidatePath(`/${locale}/admin/members`); revalidatePath(`/${locale}/membership/dashboard`);
-  }, locale === "ar" ? "تمت الموافقة على الطلب." : "Application approved.");
+  }, "تمت الموافقة على الطلب.");
 }
 
 export async function rejectMembershipRequest(locale: string, id: string) {
@@ -449,14 +449,14 @@ export async function rejectMembershipRequest(locale: string, id: string) {
       data: { status: "REJECTED", rejectedAt: new Date() },
     });
     revalidatePath(`/${locale}/admin/members`); revalidatePath(`/${locale}/membership/dashboard`);
-  }, locale === "ar" ? "تم رفض الطلب." : "Application rejected.");
+  }, "تم رفض الطلب.");
 }
 
 export async function saveSiteSettings(locale: string, data: FormData) {
   const authorization = await authorizationError(locale); if (authorization) return authorization;
   const errors = requiredFields(locale, data, [["site_name_ar", label(locale, "site_name_ar")], ["site_name_en", label(locale, "site_name_en")], ["site_name_fr", label(locale, "site_name_fr")]]);
-  const email = text(data, "contact_email"); if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.contact_email = locale === "ar" ? "عنوان البريد الإلكتروني غير صالح." : locale === "fr" ? "L’adresse e-mail est invalide." : "Email address is invalid.";
-  const phone = text(data, "contact_phone"); if (phone && !/^[+()\d\s.-]{6,30}$/.test(phone)) errors.contact_phone = locale === "ar" ? "رقم الهاتف غير صالح." : locale === "fr" ? "Le numéro de téléphone est invalide." : "Phone number is invalid.";
+  const email = text(data, "contact_email"); if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.contact_email = "عنوان البريد الإلكتروني غير صالح";
+  const phone = text(data, "contact_phone"); if (phone && !/^[+()\d\s.-]{6,30}$/.test(phone)) errors.contact_phone = "رقم الهاتف غير صالح";
   for (const key of ["facebook_url", "linkedin_url", "youtube_url", "map_embed_url"]) { const value = text(data, key); if (value && !validUrl(value)) errors[key] = messages(locale).url; }
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "saveSiteSettings", async () => {
@@ -512,7 +512,7 @@ export async function addLeadershipMember(locale: string, data: FormData) {
 }
 
 export async function removeLeadershipMember(locale: string, memberId: string, _data?: FormData) {
-  if (memberId === "president") return { success: false, error: locale === "ar" ? "لا يمكن حذف رئيس المركز." : locale === "fr" ? "Le président ne peut pas être supprimé." : "The president cannot be removed." };
+  if (memberId === "president") return { success: false, error: "لا يمكن حذف رئيس المركز." };
   return runAdminAction(locale, "removeLeadershipMember", async () => {
     await editor();
     const current = await getLeadershipMembers();

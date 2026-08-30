@@ -109,7 +109,7 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
               )}
             >
               <item.icon className="h-5 w-5 shrink-0" />
-              {!collapsed && <span>{item.key === "team" ? (locale === "ar" ? "فريق العمل" : locale === "fr" ? "Équipe" : "Team") : t(item.key)}</span>}
+              {!collapsed && <span>{item.key === "team" ? "فريق العمل" : t(item.key)}</span>}
             </Link>
           ))}
         </nav>

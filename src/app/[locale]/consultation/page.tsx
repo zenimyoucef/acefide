@@ -35,9 +35,9 @@ export default function ConsultationPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      if (res.ok) setSubmitted(true); else setError(locale === "ar" ? "تعذر إرسال الطلب. يرجى المحاولة مجدداً." : locale === "fr" ? "Impossible d’envoyer la demande." : "Unable to submit the request.");
+      if (res.ok) setSubmitted(true); else setError("تعذر إرسال الطلب. يرجى المحاولة مجدداً.");
     } catch {
-      setError(locale === "ar" ? "تعذر الاتصال بالخادم." : locale === "fr" ? "Connexion au serveur impossible." : "Unable to connect to the server.");
+      setError("تعذر الاتصال بالخادم.");
     } finally { setLoading(false); }
   };
 
@@ -49,7 +49,7 @@ export default function ConsultationPage() {
             <MessageSquare className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            {locale === "ar" ? "طلب استشارة" : locale === "fr" ? "Demande de consultation" : "Consultation Request"}
+            "طلب استشارة"
           </h1>
           <div className="w-16 h-1 bg-turquoise mx-auto rounded-full" />
         </div>
@@ -63,9 +63,9 @@ export default function ConsultationPage() {
                 <div className="text-center py-12">
                   <CheckCircle className="h-16 w-16 text-turquoise mx-auto mb-4" />
                   <h3 className="text-2xl font-bold text-foreground mb-2">
-                    {locale === "ar" ? "تم إرسال طلب الاستشارة بنجاح" : locale === "fr" ? "Demande de consultation envoyée avec succès" : "Consultation request submitted successfully"}
+                    "تم إرسال طلب الاستشارة بنجاح"
                   </h3>
-                  <p className="text-muted-foreground">{locale === "ar" ? "سنتواصل معك قريباً" : locale === "fr" ? "Nous vous contacterons bientôt" : "We will get back to you soon"}</p>
+                  <p className="text-muted-foreground">"سنتواصل معك قريباً"</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">

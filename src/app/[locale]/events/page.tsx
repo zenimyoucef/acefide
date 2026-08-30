@@ -2,11 +2,74 @@ import { getActivities, localized } from "@/lib/activities";
 import { Link } from "@/lib/navigation";
 import { CalendarDays, MapPin } from "lucide-react";
 
-const labels = { ORGANIZED: { ar: "فعالية منظمة", fr: "Événement organisé", en: "Organized event" }, PARTICIPATION: { ar: "مشاركة", fr: "Participation", en: "Participation" }, MEETING: { ar: "لقاء", fr: "Rencontre", en: "Meeting" }, MEDIA: { ar: "ظهور إعلامي", fr: "Présence médiatique", en: "Media appearance" } } as const;
+const labels = {
+  ORGANIZED: "فعالية منظمة",
+  PARTICIPATION: "مشاركة",
+  MEETING: "لقاء",
+  MEDIA: "ظهور إعلامي",
+} as const;
+
+const categoryLabels = {
+  ORGANIZED: { ar: "فعالية منظمة", fr: "Événement organisé", en: "Organized event" },
+  PARTICIPATION: { ar: "مشاركة", fr: "Participation", en: "Participation" },
+  MEETING: { ar: "لقاء", fr: "Rencontre", en: "Meeting" },
+  MEDIA: { ar: "ظهور إعلامي", fr: "Présence médiatique", en: "Media appearance" },
+} as const;
+
 export default async function EventsPage({ params, searchParams }: { params: Promise<{ locale: string }>; searchParams: Promise<{ category?: string; year?: string }> }) {
-  const { locale } = await params; const query = await searchParams; const all = await getActivities();
-  const activities = all.filter(item => (!query.category || item.category === query.category) && (!query.year || item.date.getUTCFullYear().toString() === query.year));
-  const years = [...new Set(all.map(item => item.date.getUTCFullYear()))].sort((a,b) => b-a);
-  const title = locale === "ar" ? "أنشطة وفعاليات المركز" : locale === "fr" ? "Activités et événements" : "Activities and events";
-  return <div dir={locale === "ar" ? "rtl" : "ltr"}><section className="bg-[#0b1f33] py-20 text-white"><div className="container-content"><p className="text-sm font-bold uppercase tracking-widest text-[#c8a24a]">المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي</p><h1 className="mt-4 max-w-3xl text-4xl font-bold md:text-5xl">{title}</h1></div></section><section className="bg-[#f7f8f6] py-16"><div className="container-content"><div className="mb-10 flex flex-wrap gap-2"><Link href="/events" className={`rounded-full px-4 py-2 text-sm font-semibold ${!query.category ? "bg-primary text-white" : "border bg-white"}`}>{locale === "ar" ? "الكل" : locale === "fr" ? "Toutes" : "All"}</Link>{Object.entries(labels).map(([key,label]) => <Link key={key} href={`/events?category=${key}`} className={`rounded-full px-4 py-2 text-sm font-semibold ${query.category === key ? "bg-primary text-white" : "border bg-white"}`}>{label[locale as "ar"|"fr"|"en"]}</Link>)}{years.map(year => <Link key={year} href={`/events?year=${year}`} className={`rounded-full px-4 py-2 text-sm font-semibold ${query.year === String(year) ? "bg-[#0b1f33] text-white" : "border bg-white"}`}>{year}</Link>)}</div><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{activities.map(item => { const text = localized(item, locale); return <Link href={`/events/${item.slug}`} key={item.id} className="group rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl"><div className="flex items-center justify-between"><span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">{labels[item.category][locale as "ar"|"fr"|"en"]}</span><span className="text-xs font-bold text-[#c8a24a]">{item.date.toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })}</span></div><h2 className="mt-7 text-xl font-bold leading-8 text-[#0b1f33] group-hover:text-primary">{text.title}</h2><p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">{text.description}</p>{text.location && <p className="mt-5 flex items-start gap-2 border-t pt-4 text-sm text-muted-foreground"><MapPin className="mt-0.5 h-4 w-4 shrink-0"/>{text.location}</p>}</Link>})}</div>{activities.length === 0 && <div className="rounded-xl border bg-white p-12 text-center"><CalendarDays className="mx-auto mb-4 text-muted-foreground"/><p>{locale === "ar" ? "لا توجد أنشطة مطابقة." : locale === "fr" ? "Aucune activité correspondante." : "No matching activities."}</p></div>}</div></section></div>;
+  const { locale } = await params;
+  const query = await searchParams;
+  const all = await getActivities();
+  const activities = all.filter((item) => (!query.category || item.category === query.category) && (!query.year || item.date.getUTCFullYear().toString() === query.year));
+  const years = [...new Set(all.map((item) => item.date.getUTCFullYear()))].sort((a, b) => b - a);
+
+  return (
+    <div dir="rtl">
+      <section className="bg-[#0b1f33] py-20 text-white">
+        <div className="container-content">
+          <p className="text-sm font-bold uppercase tracking-widest text-[#c8a24a]">المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي</p>
+          <h1 className="mt-4 max-w-3xl text-4xl font-bold md:text-5xl">أنشطة وفعاليات المركز</h1>
+        </div>
+      </section>
+      <section className="bg-[#f7f8f6] py-16">
+        <div className="container-content">
+          <div className="mb-10 flex flex-wrap gap-2">
+            <Link href="/events" className={`rounded-full px-4 py-2 text-sm font-semibold ${!query.category ? "bg-primary text-white" : "border bg-white"}`}>الكل</Link>
+            {Object.entries(categoryLabels).map(([key, label]) => (
+              <Link key={key} href={`/events?category=${key}`} className={`rounded-full px-4 py-2 text-sm font-semibold ${query.category === key ? "bg-primary text-white" : "border bg-white"}`}>{label.ar}</Link>
+            ))}
+            {years.map((year) => (
+              <Link key={year} href={`/events?year=${year}`} className={`rounded-full px-4 py-2 text-sm font-semibold ${query.year === String(year) ? "bg-[#0b1f33] text-white" : "border bg-white"}`}>{year}</Link>
+            ))}
+          </div>
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {activities.map((item) => {
+              const text = localized(item, locale);
+              return (
+                <Link href={`/events/${item.slug}`} key={item.id} className="group rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl">
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">{categoryLabels[item.category].ar}</span>
+                    <span className="text-xs font-bold text-[#c8a24a]">{item.date.toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })}</span>
+                  </div>
+                  <h2 className="mt-7 text-xl font-bold leading-8 text-[#0b1f33] group-hover:text-primary">{text.title}</h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">{text.description}</p>
+                  {text.location && (
+                    <p className="mt-5 flex items-start gap-2 border-t pt-4 text-sm text-muted-foreground">
+                      <MapPin className="mt-0.5 h-4 w-4 shrink-0" />{text.location}
+                    </p>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+          {activities.length === 0 && (
+            <div className="rounded-xl border bg-white p-12 text-center">
+              <CalendarDays className="mx-auto mb-4 text-muted-foreground" />
+              <p>لا توجد أنشطة مطابقة.</p>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
 }

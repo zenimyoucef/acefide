@@ -19,17 +19,17 @@ export default function ProjectDetailPage() {
             className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-6 transition-colors"
           >
             <Arrow className="h-4 w-4" />
-            {locale === "ar" ? "العودة للمشاريع" : locale === "fr" ? "Retour aux projets" : "Back to Projects"}
+            "العودة للمشاريع"
           </Link>
           <h1 className="text-3xl md:text-4xl font-bold text-white">
-            {locale === "ar" ? "تفاصيل المشروع" : locale === "fr" ? "Détails du projet" : "Project Details"}
+            "تفاصيل المشروع"
           </h1>
         </div>
       </section>
       <section className="py-20">
         <div className="container-content max-w-4xl">
           <div className="prose prose-lg max-w-none text-muted-foreground leading-relaxed">
-            <p>{locale === "ar" ? "تفاصيل المشروع قيد الإضافة..." : locale === "fr" ? "Détails du projet à venir..." : "Project details coming soon..."}</p>
+            <p>تفاصيل المشروع قيد الإضافة...</p>
           </div>
         </div>
       </section>

@@ -43,9 +43,9 @@ export default function ContactPage() {
       if (res.ok) {
         setSubmitted(true);
         setFormData({ name: "", email: "", phone: "", organization: "", subject: "", message: "" });
-      } else setError(locale === "ar" ? "تعذر إرسال الرسالة. يرجى مراجعة البيانات والمحاولة مجدداً." : locale === "fr" ? "Impossible d’envoyer le message. Vérifiez les informations et réessayez." : "Unable to send the message. Please check your information and try again.");
+      } else setError("تعذر إرسال الرسالة. يرجى مراجعة البيانات والمحاولة مجدداً.");
     } catch {
-      setError(locale === "ar" ? "تعذر الاتصال بالخادم." : locale === "fr" ? "Connexion au serveur impossible." : "Unable to connect to the server.");
+      setError("تعذر الاتصال بالخادم.");
     } finally { setLoading(false); }
   };
 
@@ -153,7 +153,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">
-                        {locale === "ar" ? "العنوان" : locale === "fr" ? "Adresse" : "Address"}
+                        "العنوان"
                       </h3>
                       <p className="text-sm text-muted-foreground">{officialContact.address}</p>
                     </div>
@@ -164,7 +164,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">
-                        {locale === "ar" ? "الهاتف" : locale === "fr" ? "Téléphone" : "Phone"}
+                        "الهاتف"
                       </h3>
                       <a href="tel:+21323298888" className="text-sm text-muted-foreground hover:text-primary">{officialContact.phone}</a>
                     </div>
@@ -174,7 +174,7 @@ export default function ContactPage() {
                       <Mail className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground mb-1">Email</h3>
+                      <h3 className="font-semibold text-foreground mb-1">البريد الإلكتروني</h3>
                       <a href={`mailto:${officialContact.email}`} className="text-sm text-muted-foreground hover:text-primary">{officialContact.email}</a>
                     </div>
                   </div>
@@ -188,11 +188,7 @@ export default function ContactPage() {
                     <div className="text-center p-6">
                       <MapPin className="h-10 w-10 text-muted-foreground mx-auto mb-2" />
                       <p className="text-sm text-muted-foreground">
-                        {locale === "ar"
-                          ? "خريطة الموقع (قيد الإضافة)"
-                          : locale === "fr"
-                          ? "Carte du site (à venir)"
-                          : "Map location (coming soon)"}
+                        "خريطة الموقع (قيد الإضافة)"
                       </p>
                     </div>
                   </div>
