@@ -7,7 +7,7 @@ import { ArrowDown, Calendar, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const timeline = [
-  { year: "2020", en: "تأسيس CARED", ar: "تأسيس المركز الجزائري للتشبيك الاقتصادي", fr: "Fondation de CARED" },
+  { year: "2020", en: "تأسيس المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي", ar: "تأسيس المركز الجزائري للتشبيك الاقتصادي", fr: "Fondation de المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي" },
   { year: "2021", en: "First Economic Study Published", ar: "إصدار أول دراسة اقتصادية", fr: "Première étude économique publiée" },
   { year: "2022", en: "First Strategic Partnership", ar: "أول شراكة استراتيجية", fr: "Premier partenariat stratégique" },
   { year: "2023", en: "International Recognition", ar: "اعتراف دولي", fr: "Reconnaissance internationale" },
@@ -26,7 +26,7 @@ export default function PresidentPage() {
         <div className="container-content relative z-10 py-12 md:py-16 lg:py-20">
           <div className="grid min-h-[calc(100vh-8rem)] items-center gap-10 lg:grid-cols-[0.92fr_1.08fr]">
             <article className="order-2 lg:order-1">
-              <p className="text-sm font-black uppercase tracking-[0.2em] text-primary">CARED</p>
+              <p className="text-sm font-black uppercase tracking-[0.2em] text-primary">المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي</p>
               <h1 className="mt-5 text-4xl font-black leading-tight text-[#0b1f33] md:text-6xl">
                 {t("name")}
               </h1>

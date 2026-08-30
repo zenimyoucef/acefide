@@ -6,13 +6,13 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: "CARED | المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي",
-    template: "%s | CARED",
+    default: "المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي | المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي",
+    template: "%s | المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي",
   },
   description:
     "نساهم في تطوير الاقتصاد من خلال التفكير والاقتراح وإبراز الفرص و تثمينها",
   keywords: [
-    "CARED",
+    "المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي",
     "الجزائر",
     "الاستشراف الاقتصادي",
     "الاستثمار",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     " Think Tank",
     "الاقتصاد الجزائري",
   ],
-  authors: [{ name: "CARED" }],
+  authors: [{ name: "المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي" }],
   icons: {
     icon: logo.src,
     shortcut: logo.src,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ar",
-    siteName: "CARED",
+    siteName: "المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي",
     images: ["/images/algiers-hero.png"],
   },
   twitter: { card: "summary_large_image", images: ["/images/algiers-hero.png"] },

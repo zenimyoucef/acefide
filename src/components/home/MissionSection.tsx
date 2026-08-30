@@ -29,7 +29,7 @@ export function MissionSection() {
             مجالات العمل
           </span>
           <h2 className="mt-6 text-3xl font-black tracking-tight text-[#0b1f33] sm:text-4xl md:text-[2.75rem]">
-            دوارنا
+            دورنا
           </h2>
           <div className="mx-auto mt-5 h-[3px] w-16 rounded-full bg-gradient-to-l from-turquoise via-primary to-turquoise" />
         </div>
