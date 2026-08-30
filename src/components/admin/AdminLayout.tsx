@@ -80,9 +80,7 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
       >
         <div className="p-4 border-b border-border/50 flex items-center justify-between">
           <div className="flex items-center gap-3">
-              <div className="relative h-8 w-8 flex items-center justify-center">
-              <Image src={logo} alt="المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي logo" fill sizes="32px" className="object-contain" />
-            </div>
+              <Image src={logo} alt="المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي" width={32} height={32} className="object-contain" />
             {!collapsed && (
               <span className="font-bold text-foreground text-lg">المركز الجزائري للتشبيك والاستثمار</span>
             )}
