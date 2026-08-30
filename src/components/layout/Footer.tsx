@@ -42,7 +42,7 @@ export function Footer() {
             {/* Brand + Description */}
             <div>
               <Link href="/" className="group mb-5 flex items-center gap-3">
-                <div className="relative h-14 w-14 shrink-0">
+                <div className="relative h-14 w-14 shrink-0 mix-blend-screen">
                   <Image
                     src={logo}
                     alt="المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي"
