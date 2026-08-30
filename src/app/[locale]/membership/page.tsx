@@ -86,6 +86,10 @@ export default function MembershipPage() {
 
     try {
       const response = await fetch("/api/membership", { method: "POST", body: formData });
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error("تعذر الاتصال بالخادم. يرجى تقليل حجم الملفات والمحاولة مرة أخرى.");
+      }
       const result = await response.json();
 
       if (!response.ok) {
@@ -169,7 +173,7 @@ export default function MembershipPage() {
               <label className="block text-sm font-bold md:col-span-2">العنوان <span className="text-red-600">*</span><Textarea name="address" rows={3} required className="mt-2" /></label>
               <label className="block text-sm font-bold">الولاية <span className="text-red-600">*</span><select name="wilaya" required className={fieldClass}><option value="">اختر الولاية</option>{ALGERIA_WILAYAS.map((wilaya) => <option key={wilaya}>{wilaya}</option>)}</select></label>
               <Field label="رقم الهاتف"><Input name="phone" type="tel" required /></Field>
-              <Field label="البريد الإلكتروني"><Input name="email" type="email" value={account.email || ""} readOnly required /></Field>
+              <Field label="البريد الإلكتروني"><Input name="email" type="email" defaultValue={account.email || ""} required /></Field>
             </div>
             <ChoiceGroup name="educationLevel" label="المستوى الدراسي" options={educationLevels} />
             <ChoiceGroup name="employmentStatus" label="الوضعية الإجتماعية والمهنية" options={employmentStatuses} />
@@ -191,6 +195,7 @@ export default function MembershipPage() {
             <label className="block text-sm font-bold">إذا كانت إجابتك نعم يرجى ذكر إسم النادي أو الجمعية التي كنت عضوا فيها أو الصفة التي تقلدتها<Textarea name="previousAssociationDetails" rows={3} className="mt-2" /></label>
             <Field label="يرجى تزويدنا بروابط حساباتك على مواقع التواصل الاجتماعي (فيسبوك، لينكدإن، إنستغرام، وغيرها)"><Input name="socialLinks" /></Field>
             <label className="block text-sm font-bold">يرجى، أن تشرح لنا في بضع كلمات دوافعك للانضمام إلى منظمتنا <span className="text-red-600">*</span><Textarea name="reason" rows={5} minLength={20} required className="mt-2" /></label>
+            <p className="text-xs text-muted-foreground">الحد الأقصى لحجم كل ملف هو 4 ميغابايت. الصيغ المقبولة: PDF, JPG, PNG</p>
             <div className="grid gap-4 md:grid-cols-2">
               {REQUIRED_MEMBERSHIP_FILES.map((document) => (
                 <label key={document.field} className="rounded-xl border border-dashed border-primary/25 bg-white p-4 text-sm font-bold">
