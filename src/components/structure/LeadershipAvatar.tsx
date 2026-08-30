@@ -21,14 +21,14 @@ export function LeadershipAvatar({ member, locale, size = "sm" }: LeadershipAvat
     sm: "h-12 w-12",
     md: "h-24 w-24",
     lg: "h-32 w-32",
-    team: "h-44 w-44 sm:h-[13.875rem] sm:w-[13.875rem]",
+    team: "h-28 w-28 sm:h-44 sm:w-44 md:h-[13.875rem] md:w-[13.875rem]",
     xl: "h-40 w-40",
   }[size];
   const imageSize = {
     sm: "48px",
     md: "96px",
     lg: "128px",
-    team: "(max-width: 639px) 176px, 222px",
+    team: "(max-width: 639px) 112px, (max-width: 1023px) 176px, 222px",
     xl: "160px",
   }[size];
 

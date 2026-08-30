@@ -28,7 +28,7 @@ async function main() {
     await prisma.event.upsert({ where: { slug: event.slug }, update: data, create: data });
   }
   const settings = [
-    ["site_name_ar", "المركز الجزائري للاستشراف الاقتصادي وتطوير الاستثمار والمقاولاتية"], ["site_name_en", "Algerian Center for Economic Foresight, Investment Development and Entrepreneurship"], ["site_name_fr", "Centre Algérien de Prospective Économique, de Développement de l’Investissement et de l’Entrepreneuriat"],
+    ["site_name_ar", "المركز الجزائري للتشبيك الاقتصادي والاستثمار التنموي"], ["site_name_en", "Algerian Center for Economic Networking and Developmental Investment"], ["site_name_fr", "Centre Algérien de Réseautage Économique et d'Investissement pour le Développement"],
     ["contact_email", ""], ["contact_phone", ""], ["contact_address_ar", "الجزائر العاصمة، الجزائر"], ["contact_address_en", "Algiers, Algeria"], ["contact_address_fr", "Alger, Algérie"], ["facebook_url", "https://www.facebook.com/ACEFIDEAlgeria"], ["linkedin_url", ""], ["youtube_url", ""], ["map_embed_url", ""],
   ];
   for (const [key, value] of settings) await prisma.siteSetting.upsert({ where: { key }, update: {}, create: { key, value } });

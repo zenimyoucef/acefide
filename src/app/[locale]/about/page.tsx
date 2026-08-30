@@ -3,7 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Building2, Eye, Target, Heart, Lightbulb, Award, FileCheck, TrendingUp } from "lucide-react";
-import aboutHeroBackground from "../../../../assets/480484075_3835887829965863_3326901755810918903_n.jpg";
+
 
 const valuesKeys = ["innovation", "excellence", "transparency", "development", "impact"] as const;
 const valueIcons = [Lightbulb, Award, FileCheck, TrendingUp, Heart] as const;
@@ -17,10 +17,8 @@ export default function AboutPage() {
     <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
       {/* Hero */}
       <section
-        className="relative overflow-hidden bg-primary-dark bg-cover bg-center py-20"
-        style={{ backgroundImage: `url(${aboutHeroBackground.src})` }}
+        className="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-primary-dark py-20"
       >
-        <div className="absolute inset-0 bg-primary-dark/70" />
         <div className="container-content relative text-center">
           <h1 className="mb-4 text-4xl font-bold text-white md:text-5xl">
             {t("title")}

@@ -1,15 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import { Mail, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function NewsletterSection() {
   const t = useTranslations("newsletter");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -33,47 +30,50 @@ export function NewsletterSection() {
 
   return (
     <section
-      className={cn(
-        "py-20 gradient-primary relative overflow-hidden",
-        isRtl && "font-arabic"
-      )}
-      dir={isRtl ? "rtl" : "ltr"}
+      className="relative overflow-hidden py-20 font-arabic md:py-24"
+      dir="rtl"
     >
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0b7a53] via-[#0b1f33] to-[#071b20]" />
+
       {/* Decorative elements */}
-      <div className="absolute top-10 -left-20 w-40 h-40 bg-turquoise/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 -right-20 w-60 h-60 bg-white/5 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute -start-20 top-10 h-64 w-64 rounded-full bg-turquoise/10 blur-[100px]" />
+      <div className="pointer-events-none absolute -end-16 bottom-10 h-48 w-48 rounded-full bg-accent/10 blur-[80px]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[.04] [background-image:radial-gradient(circle_at_center,white_1px,transparent_1px)] [background-size:32px_32px]" />
 
       <div className="container-content relative z-10 scroll-reveal">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="h-16 w-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-6">
-            <Mail className="h-8 w-8 text-white" />
+        <div className="mx-auto max-w-2xl text-center">
+          {/* Icon */}
+          <div className="mx-auto mb-7 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 shadow-[0_0_20px_rgba(32,205,181,0.15)] backdrop-blur-sm transition-all duration-300 hover:bg-white/15 hover:shadow-[0_0_30px_rgba(32,205,181,0.25)]">
+            <Mail className="h-7 w-7 text-turquoise-light" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+
+          <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">
             {t("title")}
           </h2>
-          <p className="text-white/70 text-lg mb-8">
+          <p className="mt-4 text-lg leading-8 text-white/65">
             {t("desc")}
           </p>
 
           {subscribed ? (
-            <div className="flex items-center justify-center gap-3 text-white bg-white/10 rounded-xl p-6">
+            <div className="mx-auto mt-10 flex max-w-sm items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur-sm">
               <CheckCircle className="h-6 w-6 text-turquoise-light" />
-              <span className="text-lg font-medium">{t("success")}</span>
+              <span className="text-lg font-medium text-white">{t("success")}</span>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <form onSubmit={handleSubmit} className="mx-auto mt-10 flex max-w-md flex-col gap-3 sm:flex-row">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t("placeholder")}
                 required
-                className="flex-1 h-12 rounded-xl border-0 bg-white/10 text-white placeholder:text-white/50 px-4 focus:outline-none focus:ring-2 focus:ring-white/30"
+                className="h-12 flex-1 rounded-xl border border-white/15 bg-white/[0.07] px-4 text-white placeholder:text-white/40 backdrop-blur-sm transition-all duration-300 focus:border-white/30 focus:bg-white/[0.12] focus:outline-none focus:ring-2 focus:ring-turquoise/30"
               />
               <Button
                 type="submit"
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90 rounded-xl font-semibold"
+                className="rounded-xl bg-white px-6 font-semibold text-primary shadow-[0_4px_15px_rgba(255,255,255,0.15)] transition-all duration-300 hover:bg-turquoise-light hover:text-[#052e2b] hover:shadow-[0_8px_25px_rgba(32,205,181,0.3)] hover:scale-[1.02] active:scale-[0.98]"
               >
                 {t("button")}
               </Button>

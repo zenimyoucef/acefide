@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0b7a53;
-  --color-primary-dark: #07583d;
-  --color-primary-light: #14966b;
-  --color-turquoise: #20cdb5;
-  --color-turquoise-light: #35e0c8;
+  --color-primary: #1a7a5e;
+  --color-primary-dark: #0d5a42;
+  --color-primary-light: #2a9a7a;
+  --color-turquoise: #3abfa5;
+  --color-turquoise-light: #50d4bb;
   --color-accent: #c8a24a;
   --color-background: #f7f8f4;
   --color-foreground: #111827;
@@ -20,11 +20,11 @@
 }
 
 :root {
-  --color-primary: #0b7a53;
-  --color-primary-dark: #07583d;
-  --color-primary-light: #14966b;
-  --color-turquoise: #20cdb5;
-  --color-turquoise-light: #35e0c8;
+  --color-primary: #1a7a5e;
+  --color-primary-dark: #0d5a42;
+  --color-primary-light: #2a9a7a;
+  --color-turquoise: #3abfa5;
+  --color-turquoise-light: #50d4bb;
   --color-accent: #c8a24a;
   --color-background: #f8faf7;
   --color-foreground: #111827;
@@ -200,9 +200,14 @@ svg {
   border-radius: 4px;
 }
 
+/* Smooth global transitions */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Card hover effects */
 .card-hover {
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .card-hover:hover {
@@ -425,8 +430,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes teamMarqueeScreen {
-  0% { transform: translateX(100vw); }
-  100% { transform: translateX(-100%); }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .team-marquee-mask {
@@ -515,6 +520,30 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-1px);
 }
 
-.team-marquee-mask:hover .team-marquee-track {
+.team-marquee-track:has(.team-member-card:hover) {
+  animation-play-state: paused;
+}
+
+/* Partners marquee */
+@keyframes partnersMarqueeScreen {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.partners-marquee-mask {
+  position: relative;
+  width: 100%;
+}
+
+.partners-marquee-track {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: max-content;
+  animation: partnersMarqueeScreen 25s linear infinite;
+  will-change: transform;
+}
+
+.partners-marquee-track:has(.partner-card:hover) {
   animation-play-state: paused;
 }

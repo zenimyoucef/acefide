@@ -5,9 +5,9 @@ import { ImpactSection } from "@/components/home/ImpactSection";
 import { MissionSection } from "@/components/home/MissionSection";
 import { UpcomingEvents } from "@/components/home/UpcomingEvents";
 import { PartnersSection } from "@/components/home/PartnersSection";
-import { NewsletterSection } from "@/components/home/NewsletterSection";
-import { AboutFocusSection } from "@/components/home/AboutFocusSection";
+
 import { LatestNews } from "@/components/home/LatestNews";
+import { AboutCenterSection } from "@/components/home/AboutCenterSection";
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -15,15 +15,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <HeroSection />
+      <LatestNews locale="ar" />
+      <AboutCenterSection locale="ar" />
       <PresidentSection />
       <LeadershipSection />
       <ImpactSection />
-      <AboutFocusSection />
       <MissionSection />
       <UpcomingEvents />
-      <LatestNews locale={locale as "ar" | "fr" | "en"} />
-      <PartnersSection locale={locale as "ar" | "fr" | "en"} />
-      <NewsletterSection />
+      <PartnersSection />
     </>
   );
 }

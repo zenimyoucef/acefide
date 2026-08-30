@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { MapPin, Phone, Mail, Facebook } from "lucide-react";
@@ -24,27 +24,22 @@ const socialLinks = [
 
 export function Footer() {
   const t = useTranslations();
-  const locale = useLocale();
   const pathname = usePathname();
-  const isRtl = locale === "ar";
-  const address = isRtl ? "المبنى رقم 60، الدابوس، العاشور، درارية، الجزائر العاصمة" : locale === "fr" ? "Bâtiment 60, Dely Ibrahim, El Achour, Draria, Alger" : "Building 60, Dely Ibrahim, El Achour, Draria, Algiers";
+  const address = "المبنى رقم 60، الدابوس، العاشور، درارية، الجزائر العاصمة";
 
   if (pathname.startsWith("/admin")) return null;
 
   return (
     <footer
-      className={cn(
-        "border-t border-border/40 bg-muted/50",
-        isRtl && "font-arabic"
-      )}
-      dir={isRtl ? "rtl" : "ltr"}
+      className="border-t border-border/40 bg-muted/50 font-arabic"
+      dir="rtl"
     >
       <div className="container-content py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="relative h-12 w-12 rounded-lg overflow-hidden flex items-center justify-center">
+              <div className="relative h-12 w-12 flex items-center justify-center">
                 <Image src={logo} alt="ACEFIDE logo" fill sizes="48px" className="object-contain" />
               </div>
               <span className="text-lg font-bold">ACEFIDE</span>

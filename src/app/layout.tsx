@@ -1,27 +1,24 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
-import { hasLocale } from "next-intl";
 import { PublicSiteShell } from "@/components/layout/PublicSiteShell";
-import { routing } from "@/routing";
 import logo from "../../assets/acefide.png";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: "ACEFIDE | Algerian Center for Economic Foresight",
+    default: "ACEFIDE | المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي",
     template: "%s | ACEFIDE",
   },
   description:
-    "Shaping Algeria's Economic Future Through Foresight, Investment and Entrepreneurship",
+    "نساهم في تطوير الاقتصاد من خلال التفكير والاقتراح وإبراز الفرص و تثمينها",
   keywords: [
     "ACEFIDE",
-    "Algeria",
-    "Economic Foresight",
-    "Investment",
-    "Entrepreneurship",
-    "Think Tank",
-    "Algerian Economy",
+    "الجزائر",
+    "الاستشراف الاقتصادي",
+    "الاستثمار",
+    "المقاولاتية",
+    " Think Tank",
+    "الاقتصاد الجزائري",
   ],
   authors: [{ name: "ACEFIDE" }],
   icons: {
@@ -31,7 +28,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "ar",
     siteName: "ACEFIDE",
     images: ["/images/algiers-hero.png"],
   },
@@ -43,13 +40,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const requestHeaders = await headers();
-  const requestLocale = requestHeaders.get("X-NEXT-INTL-LOCALE");
-  const locale = hasLocale(routing.locales, requestLocale) ? requestLocale : routing.defaultLocale;
-  const dir = locale === "ar" ? "rtl" : "ltr";
-
   return (
-    <html lang={locale} dir={dir} suppressHydrationWarning className="h-full">
+    <html lang="ar" dir="rtl" suppressHydrationWarning className="h-full">
       <body suppressHydrationWarning className="flex min-h-full flex-col bg-background text-foreground antialiased">
         <PublicSiteShell>{children}</PublicSiteShell>
       </body>

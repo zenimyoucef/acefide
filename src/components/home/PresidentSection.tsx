@@ -26,7 +26,6 @@ export async function PresidentSection() {
       dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="absolute inset-x-0 top-0 h-px bg-border" />
-      <div className="absolute inset-y-0 right-0 hidden w-[34%] bg-primary-dark rtl:left-0 rtl:right-auto lg:block" />
 
       <div className="container-content relative z-10">
         <div className="scroll-reveal grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">

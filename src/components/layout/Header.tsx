@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { ChevronDown, Menu, X } from "lucide-react";
 import logo from "../../../assets/acefide.png";
 import { Link, usePathname } from "@/lib/navigation";
@@ -14,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const primaryLinks = [
   { key: "home", href: "/" },
@@ -38,15 +37,14 @@ function isActivePath(pathname: string, href: string) {
 export function Header() {
   const t = useTranslations("nav");
   const tSite = useTranslations("site");
-  const locale = useLocale();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isRtl = locale === "ar";
+  const isRtl = true;
   const resourcesActive = resourceLinks.some(({ href }) => isActivePath(pathname, href));
 
   useEffect(() => {
     setMobileOpen(false);
-  }, [locale, pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -59,22 +57,19 @@ export function Header() {
 
   return (
     <header
-      className={cn(
-        "sticky top-0 z-50 h-[4.5rem] w-full border-b border-border/60 bg-background shadow-[0_1px_14px_rgba(11,31,51,0.06)]",
-        isRtl && "font-arabic"
-      )}
-      dir={isRtl ? "rtl" : "ltr"}
+      className="sticky top-0 z-50 h-[5rem] w-full border-b border-border/60 bg-background shadow-[0_1px_14px_rgba(11,31,51,0.06)] font-arabic"
+      dir="rtl"
     >
       <div className="container-content flex h-full items-center gap-3">
         <Link
           href="/"
-          className="flex min-w-0 shrink items-center gap-3 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="flex min-w-0 shrink items-center gap-3.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           aria-label={`${tSite("title")} — ${t("home")}`}
         >
-          <span className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5">
-            <Image src={logo} alt="ACEFIDE logo" fill sizes="44px" className="object-contain" priority />
+          <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden">
+            <Image src={logo} alt="ACEFIDE logo" fill sizes="56px" className="object-contain" priority />
           </span>
-          <span className="hidden min-w-0 max-w-[10rem] text-start text-[0.6875rem] font-bold leading-[1.35] text-[#0b1f33] lg:block xl:max-w-[15rem] xl:text-xs 2xl:max-w-[21rem]">
+          <span className="hidden min-w-0 max-w-[14rem] text-start text-sm font-bold leading-[1.35] text-[#0b1f33] lg:block xl:max-w-[18rem] xl:text-[0.9rem] 2xl:max-w-[24rem]">
             {tSite("title")}
           </span>
         </Link>
@@ -108,7 +103,7 @@ export function Header() {
               {t("resources")}
               <ChevronDown className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align={isRtl ? "start" : "end"} className="min-w-52 p-2">
+            <DropdownMenuContent align="start" className="min-w-52 p-2">
               {resourceLinks.map((item) => (
                 <DropdownMenuItem key={item.key} asChild className="cursor-pointer py-2.5">
                   <Link href={item.href}>{t(item.key)}</Link>
@@ -119,7 +114,6 @@ export function Header() {
         </nav>
 
         <div className="ms-auto flex shrink-0 items-center gap-1.5 lg:ms-2">
-          <LanguageSwitcher />
           <Button className="hidden rounded-full px-5 lg:inline-flex" size="sm" asChild>
             <Link href="/membership">{t("register")}</Link>
           </Button>

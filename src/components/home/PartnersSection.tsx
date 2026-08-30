@@ -1,65 +1,88 @@
 import Image from "next/image";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "@/lib/navigation";
 import { prisma } from "@/lib/prisma";
 
-type Locale = "ar" | "fr" | "en";
+const copy = {
+  title: "شركاؤنا",
+  intro: "المؤسسات والشركات التي نتعاون معها لتحقيق أثر اقتصادي مشترك.",
+  all: "عرض جميع الشركاء",
+};
 
-export async function PartnersSection({ locale }: { locale: Locale }) {
+export async function PartnersSection() {
   const partners = await prisma.partner.findMany({
     where: { published: true },
     orderBy: [{ order: "asc" }, { createdAt: "desc" }],
   }).catch(() => []);
-  const isRtl = locale === "ar";
-  const copy = isRtl
-    ? { title: "شركاؤنا", intro: "المؤسسات والشركات التي نتعاون معها لتحقيق أثر اقتصادي مشترك.", details: "اكتشف أهداف تعاوننا", all: "عرض جميع الشركاء" }
-    : locale === "fr"
-      ? { title: "Nos partenaires", intro: "Les institutions et entreprises avec lesquelles nous collaborons pour créer un impact économique commun.", details: "Découvrir notre collaboration", all: "Voir tous les partenaires" }
-      : { title: "Our partners", intro: "Organizations and companies we collaborate with to create shared economic impact.", details: "Explore our collaboration", all: "View all partners" };
-  const Arrow = isRtl ? ArrowLeft : ArrowRight;
 
   if (!partners.length) return null;
 
+  const hasMarquee = partners.length > 4;
+
+  const renderLogo = (partner: typeof partners[number], key: string) => {
+    const name = partner.nameAr;
+    if (!partner.logo) return null;
+
+    const img = (
+      <Image
+        src={partner.logo}
+        alt={`${name} logo`}
+        width={200}
+        height={100}
+        className="h-20 w-auto object-contain sm:h-24 transition-all duration-500 ease-out hover:scale-110"
+      />
+    );
+
+    const wrapperClass = "group flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
+
+    return partner.website ? (
+      <a key={key} href={partner.website} target="_blank" rel="noopener noreferrer" aria-label={name} title={name} className={wrapperClass}>
+        {img}
+      </a>
+    ) : (
+      <Link key={key} href={`/partners/${partner.slug}`} aria-label={name} title={name} className={wrapperClass}>
+        {img}
+      </Link>
+    );
+  };
+
   return (
-    <section className="bg-muted/50 py-20" dir={isRtl ? "rtl" : "ltr"}>
-      <div className="container-content scroll-reveal">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">{copy.title}</h2>
-          <p className="mt-4 leading-7 text-muted-foreground">{copy.intro}</p>
-          <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-turquoise" />
+    <section className="py-20 md:py-24" dir="rtl">
+      <div className="container-content">
+        {/* Header */}
+        <div className="mb-14 flex items-end justify-between gap-6">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl">{copy.title}</h2>
+            <p className="mt-4 leading-7 text-muted-foreground">{copy.intro}</p>
+            <div className="mt-5 h-[3px] w-16 rounded-full bg-gradient-to-l from-turquoise via-primary to-turquoise" />
+          </div>
+          <Link href="/partners" className="group hidden shrink-0 items-center gap-2 rounded-full border border-primary/15 px-5 py-2.5 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-[0_8px_25px_rgba(11,122,83,0.25)] sm:flex">
+            {copy.all}
+            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
+          </Link>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {partners.map((partner) => {
-            const name = locale === "ar" ? partner.nameAr : locale === "fr" ? partner.nameFr : partner.nameEn;
-            if (!partner.logo) return null;
+        {/* Partners display */}
+        {hasMarquee ? (
+          /* Marquee for 5+ partners */
+          <div className="partners-marquee-mask overflow-hidden py-1">
+            <div className="partners-marquee-track flex w-max items-center gap-12 py-2">
+              {partners.map((p, i) => renderLogo(p, `a-${p.id ?? i}`))}
+              {partners.map((p, i) => renderLogo(p, `b-${p.id ?? i}`))}
+            </div>
+          </div>
+        ) : (
+          /* Static grid for 1-4 partners */
+          <div className="flex flex-wrap items-center justify-center gap-10 sm:gap-14 md:gap-16">
+            {partners.map((p, i) => renderLogo(p, `c-${p.id ?? i}`))}
+          </div>
+        )}
 
-            const logo = (
-              <Image
-                src={partner.logo}
-                alt={`${name} logo`}
-                width={220}
-                height={120}
-                className="h-full w-full object-contain transition-transform duration-300 ease-out group-hover:scale-125 group-focus-visible:scale-125 group-active:scale-110"
-              />
-            );
-            const className = "group flex h-32 items-center justify-center p-3 focus-visible:rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
-
-            return partner.website ? (
-              <a key={partner.id} href={partner.website} target="_blank" rel="noopener noreferrer" aria-label={name} title={name} className={className}>
-                {logo}
-              </a>
-            ) : (
-              <Link key={partner.id} href={`/partners/${partner.slug}`} aria-label={name} title={name} className={className}>
-                {logo}
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className="mt-10 text-center">
-          <Link href="/partners" className="inline-flex items-center gap-2 rounded-full border border-primary px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary hover:text-white">
-            {copy.all}<Arrow className="h-4 w-4" />
+        {/* View all button */}
+        <div className="mt-12 text-center">
+          <Link href="/partners" className="group inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-6 py-3 text-sm font-bold text-primary shadow-[0_2px_8px_rgba(11,122,83,0.08)] transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white hover:shadow-[0_8px_25px_rgba(11,122,83,0.25)]">
+            {copy.all}
+            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
           </Link>
         </div>
       </div>

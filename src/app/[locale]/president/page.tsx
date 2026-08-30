@@ -7,7 +7,7 @@ import { ArrowDown, Calendar, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const timeline = [
-  { year: "2020", en: "Founded ACEFIDE", ar: "تأسيس المركز الجزائري للاستشراف الاقتصادي", fr: "Fondation du ACEFIDE" },
+  { year: "2020", en: "Founded ACEFIDE", ar: "تأسيس المركز الجزائري للتشبيك الاقتصادي", fr: "Fondation du ACEFIDE" },
   { year: "2021", en: "First Economic Study Published", ar: "إصدار أول دراسة اقتصادية", fr: "Première étude économique publiée" },
   { year: "2022", en: "First Strategic Partnership", ar: "أول شراكة استراتيجية", fr: "Premier partenariat stratégique" },
   { year: "2023", en: "International Recognition", ar: "اعتراف دولي", fr: "Reconnaissance internationale" },

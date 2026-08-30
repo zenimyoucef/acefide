@@ -36,7 +36,7 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
   const date = article.publishedAt || article.createdAt;
   const paragraphs = content.split(/\r?\n\s*\r?\n|\r?\n/).map(value => value.trim()).filter(Boolean);
 
-  return <main className="min-h-[75vh] bg-[#f5f2e9] pb-24 text-[#17211d]" dir={locale === "ar" ? "rtl" : "ltr"}>
+  return <main className="min-h-[75vh] bg-[#f7f8f4] pb-24 text-[#17211d]" dir="rtl">
     <header className="bg-[#0b1f33] text-white">
       <div className="container-content max-w-5xl py-12 sm:py-16 lg:py-20">
         <Link href="/news" className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white/75 transition hover:border-white/40 hover:text-white">
@@ -51,16 +51,16 @@ export default async function NewsDetail({ params }: { params: Promise<{ locale:
     </header>
 
     <article className="container-content max-w-5xl">
-      {article.coverImage ? <div className="relative -mt-1 aspect-[16/8] overflow-hidden rounded-b-2xl bg-slate-200 shadow-xl sm:mt-10 sm:rounded-2xl">
-        <div className="absolute inset-0 bg-cover bg-center" role="img" aria-label={title} style={{ backgroundImage: `url(${JSON.stringify(article.coverImage).slice(1,-1)})` }}/>
+      {article.coverImage ? <div className="relative -mt-1 flex items-center justify-center overflow-hidden rounded-b-2xl bg-muted p-6 shadow-xl sm:mt-10 sm:rounded-2xl">
+        <img src={article.coverImage} alt={title} className="max-h-[32rem] w-full object-contain" loading="lazy" />
       </div> : <div className="mt-10 flex min-h-40 items-center justify-center rounded-2xl border border-[#17211d]/10 bg-[linear-gradient(135deg,#dfe9e1,#f4efe1)] text-primary/30"><Newspaper className="h-16 w-16"/></div>}
 
       <div className="mx-auto max-w-3xl py-10 sm:py-14">
-        {excerpt && <p className="border-s-4 border-primary ps-5 text-xl font-semibold leading-9 text-[#263c34] sm:text-2xl sm:leading-10">{excerpt}</p>}
+        {excerpt && <p className="border-s-4 border-turquoise ps-5 text-xl font-semibold leading-9 text-[#263c34] sm:text-2xl sm:leading-10">{excerpt}</p>}
         <div className={`${excerpt ? "mt-10 border-t border-[#17211d]/15 pt-10" : ""} space-y-6 text-[1.05rem] leading-9 text-[#33443d] sm:text-lg sm:leading-10`}>
           {paragraphs.map((paragraph,index)=><p key={index}>{paragraph}</p>)}
         </div>
-        {article.galleryImages.filter(image=>image!==article.coverImage).length>0&&<div className="mt-12 grid gap-4 sm:grid-cols-2">{article.galleryImages.filter(image=>image!==article.coverImage).map((image,index)=><div key={image} className={`${index%3===0?"sm:col-span-2 aspect-[16/8]":"aspect-[4/3]"} overflow-hidden rounded-2xl bg-slate-200 shadow-sm`}><div className="h-full w-full bg-cover bg-center" role="img" aria-label={`${title} ${index+2}`} style={{backgroundImage:`url(${JSON.stringify(image).slice(1,-1)})`}}/></div>)}</div>}
+        {article.galleryImages.filter(image=>image!==article.coverImage).length>0&&<div className="mt-12 grid gap-4 sm:grid-cols-2">{article.galleryImages.filter(image=>image!==article.coverImage).map((image,index)=><div key={image} className={`${index%3===0?"sm:col-span-2 aspect-[16/8]":"aspect-[4/3]"} flex items-center justify-center overflow-hidden rounded-2xl bg-muted p-4 shadow-sm`}><img src={image} alt={`${title} ${index+2}`} className="max-h-full w-full object-contain" loading="lazy" /></div>)}</div>}
       </div>
     </article>
   </main>;
