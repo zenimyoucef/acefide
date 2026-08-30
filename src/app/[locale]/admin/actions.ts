@@ -228,7 +228,7 @@ function staleUrls(previous: Array<string | null | undefined>, current: Array<st
 
 export async function saveNews(locale: string, data: FormData) {
   const authorization = await authorizationError(locale); if (authorization) return authorization;
-  const errors = mergeErrors(requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["titleEn", label(locale, "titleEn")], ["titleFr", label(locale, "titleFr")], ["contentAr", label(locale, "contentAr")], ["contentEn", label(locale, "contentEn")], ["contentFr", label(locale, "contentFr")]]), validateGallery(locale, data, true));
+  const errors = mergeErrors(requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["contentAr", label(locale, "contentAr")]]), validateGallery(locale, data, true));
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "saveNews", async () => {
     const user = await editor();
@@ -248,7 +248,7 @@ export async function saveNews(locale: string, data: FormData) {
 
 export async function updateNews(locale: string, id: string, data: FormData) {
   const authorization = await authorizationError(locale); if (authorization) return authorization;
-  const errors = mergeErrors(requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["titleEn", label(locale, "titleEn")], ["titleFr", label(locale, "titleFr")], ["contentAr", label(locale, "contentAr")], ["contentEn", label(locale, "contentEn")], ["contentFr", label(locale, "contentFr")]]), validateGallery(locale, data, true));
+  const errors = mergeErrors(requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["contentAr", label(locale, "contentAr")]]), validateGallery(locale, data, true));
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "updateNews", async () => {
     await editor();
