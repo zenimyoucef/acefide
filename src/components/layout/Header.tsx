@@ -67,10 +67,10 @@ export function Header() {
           aria-label={`${tSite("title")} — ${t("home")}`}
         >
           <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden">
-            <Image src={logo} alt="كارد logo" fill sizes="56px" className="object-contain" priority />
+            <Image src={logo} alt="CARED logo" fill sizes="56px" className="object-contain" priority />
           </span>
-          <span className="hidden min-w-0 max-w-[14rem] text-start text-sm font-bold leading-[1.35] text-[#0b1f33] lg:block xl:max-w-[18rem] xl:text-[0.9rem] 2xl:max-w-[24rem]">
-            {tSite("title")}
+          <span className="min-w-0 max-w-[8rem] truncate text-start text-xs font-bold leading-[1.35] text-[#0b1f33] sm:max-w-[14rem] sm:text-sm lg:max-w-[18rem] lg:text-[0.9rem] 2xl:max-w-[24rem]">
+            CARED
           </span>
         </Link>
 

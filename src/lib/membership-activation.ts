@@ -36,7 +36,7 @@ export async function sendMembershipActivationEmail({ email, name, token, locale
   await transporter.sendMail({
     from,
     to: email,
-    subject: "Activate your كارد membership account",
+    subject: "Activate your CARED membership account",
     text: `Hello ${name},\n\nYour membership application has been approved. Set your password and activate your account here: ${activationUrl}\n\nThis link expires in 72 hours.`,
   });
 }

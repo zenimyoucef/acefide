@@ -19,7 +19,7 @@ async function main() {
   if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
     if (process.env.ADMIN_PASSWORD.length < 12) throw new Error("ADMIN_PASSWORD must contain at least 12 characters");
     const password = await hash(process.env.ADMIN_PASSWORD, 12);
-    const name = process.env.ADMIN_NAME || "كارد Administrator";
+    const name = process.env.ADMIN_NAME || "CARED Administrator";
     admin = await prisma.user.upsert({ where: { email: process.env.ADMIN_EMAIL.toLowerCase() }, update: { active: true, password, name, role: "SUPER_ADMIN" }, create: { email: process.env.ADMIN_EMAIL.toLowerCase(), password, name, role: "SUPER_ADMIN" } });
   } else console.warn("ADMIN_EMAIL/ADMIN_PASSWORD not set; administrator creation skipped.");
 
@@ -32,7 +32,7 @@ async function main() {
     ["contact_email", ""], ["contact_phone", ""], ["contact_address_ar", "الجزائر العاصمة، الجزائر"], ["contact_address_en", "Algiers, Algeria"], ["contact_address_fr", "Alger, Algérie"], ["facebook_url", "https://www.facebook.com/kardAlgeria"], ["linkedin_url", ""], ["youtube_url", ""], ["map_embed_url", ""],
   ];
   for (const [key, value] of settings) await prisma.siteSetting.upsert({ where: { key }, update: {}, create: { key, value } });
-  console.log(`Seeded ${events.length} كارد activities${admin ? " and the configured administrator" : ""}.`);
+  console.log(`Seeded ${events.length} CARED activities${admin ? " and the configured administrator" : ""}.`);
 }
 
 main().catch((error) => { console.error(error); process.exit(1); }).finally(() => prisma.$disconnect());

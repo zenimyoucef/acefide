@@ -11,7 +11,7 @@ export function HeroSection() {
   const t = useTranslations("hero");
   const badge = "منظمة غير حكومية";
   const inscription = "التسجيل";
-  const contact = "اتصل بنا";
+  const suggestion = "اقتراحات وملاحظات";
 
   return (
     <section className="relative min-h-[calc(100svh-4.5rem)] overflow-hidden bg-[#071b20] text-white" dir="rtl">
@@ -68,7 +68,7 @@ export function HeroSection() {
               className="w-full rounded-full border-white/30 bg-white/8 px-7 text-white backdrop-blur transition-all duration-300 hover:border-white/50 hover:bg-white/16 hover:text-white hover:shadow-[0_0_30px_rgba(255,255,255,0.08)] sm:w-auto"
               asChild
             >
-              <Link href="/contact">{contact}</Link>
+              <Link href="/suggestions">{suggestion}</Link>
             </Button>
           </div>
         </div>

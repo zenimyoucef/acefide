@@ -12,7 +12,7 @@ export default async function MembersPage({ params }: { params: Promise<{ locale
   return (
     <div>
       <div className="mb-6">
-        <p className="text-sm font-bold text-primary">كارد</p>
+        <p className="text-sm font-bold text-primary">CARED</p>
         <h1 className="mt-1 text-2xl font-bold">طلبات الإنخراط</h1>
       </div>
 
