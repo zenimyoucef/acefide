@@ -77,12 +77,33 @@ export default function MembershipPage() {
     fetch("/api/auth/status").then((response) => response.json()).then(setAccount).catch(() => setAccount({ state: "REGISTER" }));
   }, []);
 
+  async function compressImage(file: File, maxKB = 800): Promise<File> {
+    if (!file.type.startsWith("image/") || file.size / 1024 < maxKB) return file;
+    const bitmap = await createImageBitmap(file);
+    const canvas = document.createElement("canvas");
+    const scale = Math.min(1, Math.sqrt((maxKB * 1024) / file.size));
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext("2d")!;
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise<Blob>((resolve) => canvas.toBlob((b) => resolve(b!), "image/jpeg", 0.7));
+    return new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" });
+  }
+
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
     setLoading(true);
     setError("");
+
+    // Compress image files before upload
+    for (const [key, value] of Array.from(formData.entries())) {
+      if (value instanceof File && value.size > 0) {
+        const compressed = await compressImage(value);
+        formData.set(key, compressed);
+      }
+    }
 
     try {
       const response = await fetch("/api/membership", { method: "POST", body: formData });
