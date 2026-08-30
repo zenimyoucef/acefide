@@ -17,18 +17,16 @@ export async function PresidentSection() {
   const isRtl = locale === "ar";
   const Arrow = isRtl ? ArrowLeft : ArrowRight;
 
-  return (
-    <section
+  return (      <section
       className={cn(
-        "relative overflow-hidden bg-[#f3fbf6] py-20 text-foreground md:py-24",
+        "relative overflow-hidden bg-[#f3fbf6] py-14 text-foreground md:py-20 lg:py-24",
         isRtl && "font-arabic"
       )}
       dir={isRtl ? "rtl" : "ltr"}
     >
-      <div className="absolute inset-x-0 top-0 h-px bg-border" />
 
       <div className="container-content relative z-10">
-        <div className="scroll-reveal grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+        <div className="scroll-reveal grid grid-cols-1 items-center gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
           <div className="order-2 lg:order-1">
             <div className="mb-6 inline-flex items-center gap-2 border-b-2 border-turquoise pb-2 text-sm font-semibold uppercase tracking-[0.18em] text-primary">
               <Quote className="h-4 w-4" />
@@ -71,9 +69,9 @@ export async function PresidentSection() {
 
           <div className="order-1 lg:order-2">
             <div className="relative mx-auto max-w-[460px] lg:me-0">
-              <div className="absolute -inset-5 translate-x-4 translate-y-5 bg-primary-dark shadow-2xl rtl:-translate-x-4" />
-              <div className="absolute -bottom-5 -start-5 h-28 w-28 border-s-4 border-t-4 border-turquoise" />
-              <div className="relative aspect-[4/5] overflow-hidden bg-primary-dark shadow-2xl">
+              <div className="hidden lg:block absolute -inset-5 translate-x-4 translate-y-5 bg-primary-dark shadow-2xl rtl:-translate-x-4" />
+              <div className="hidden lg:block absolute -bottom-5 -start-5 h-28 w-28 border-s-4 border-t-4 border-turquoise" />
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
                 <Image
                   src={presidentImage}
                   alt={t("name")}
@@ -81,11 +79,6 @@ export async function PresidentSection() {
                   sizes="(min-width: 1024px) 460px, 86vw"
                   className="object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/30 via-transparent to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 bg-primary-dark/88 p-5 text-white backdrop-blur-sm">
-                  <p className="text-lg font-bold">{t("name")}</p>
-                  <p className="mt-1 text-sm text-turquoise-light">{t("title")}</p>
-                </div>
               </div>
             </div>
           </div>
