@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const name = formData.get("name") as string;
-    const email = formData.get("email") as string || null;
+    const email = (formData.get("email") as string) || "";
     const type = formData.get("type") as string;
     const subject = formData.get("subject") as string;
     const message = formData.get("message") as string;
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     await prisma.contactMessage.create({
       data: {
         name,
-        email: email || null,
+        email,
         subject: `[${type === "concern" ? "ملاحظة" : "اقتراح"}] ${subject}`,
         message: fullMessage,
       },
