@@ -144,8 +144,9 @@ export default function MembershipPage() {
     }
   }
 
-  if (account.state === "LOADING") return <main className="min-h-[60vh] bg-[#f5f8f4]" />;
-  if (account.state !== "APPLICATION") return <MembershipAccountGate state={account.state} email={account.email} locale={locale} />;
+  // Skip account gate — go directly to the form
+  // if (account.state === "LOADING") return <main className="min-h-[60vh] bg-[#f5f8f4]" />;
+  // if (account.state !== "APPLICATION") return <MembershipAccountGate state={account.state} email={account.email} locale={locale} />;
 
   if (submitted) {
     return (
