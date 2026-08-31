@@ -20,13 +20,13 @@ export async function PartnersSection() {
     const isLarge = name.includes("المصدرين الجزائريين");
 
     return (
-      <div key={key} className={`flex items-center justify-center rounded-xl border border-border/30 bg-white p-3 ${isLarge ? "col-span-2 aspect-[3/1]" : "aspect-[2/1]"}`} aria-label={name} title={name}>
+      <div key={key} className={`flex items-center justify-center rounded-xl border border-border/30 bg-white p-3 ${isLarge ? "col-span-2 aspect-[2.5/1] sm:col-span-2" : "aspect-[2/1]"}`} aria-label={name} title={name}>
         <Image
           src={partner.logo}
           alt={`${name} logo`}
-          width={isLarge ? 200 : 120}
-          height={isLarge ? 80 : 60}
-          className="h-full w-full object-contain"
+          width={isLarge ? 180 : 120}
+          height={isLarge ? 72 : 60}
+          className="max-h-full max-w-full object-contain"
         />
       </div>
     );
