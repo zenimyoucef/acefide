@@ -242,27 +242,9 @@ export default function MembershipPage() {
             </header>
 
             <div className="space-y-4">
-              {/* Line items */}
+              {/* Subscription info */}
               <div className="rounded-xl border border-border/50 bg-[#fafbfa] p-4">
-                <div className="flex items-center justify-between border-b border-border/40 pb-3">
-                  <span className="text-sm font-bold text-[#0b1f33]">اشتراك سنوي — منخرط عادي</span>
-                  <span className="text-sm font-bold text-[#0b1f33]">2.500,00 د.ج</span>
-                </div>
-                <div className="flex items-center justify-between pt-3">
-                  <span className="text-sm font-bold text-primary">المجموع الفرعي</span>
-                  <span className="text-sm font-bold text-primary">2.500,00 د.ج</span>
-                </div>
-              </div>
-
-              {/* Coupon */}
-              <div className="rounded-xl border border-border/50 bg-[#fafbfa] p-4">
-                <p className="text-sm text-muted-foreground">لديك كود خصم؟ <button type="button" className="font-bold text-primary hover:underline">أدخله هنا</button></p>
-              </div>
-
-              {/* Total */}
-              <div className="flex items-center justify-between rounded-xl border-2 border-primary/20 bg-primary/[0.03] px-4 py-3">
-                <span className="text-base font-black text-primary">الإجمالي</span>
-                <span className="text-lg font-black text-primary">2.500,00 د.ج</span>
+                <span className="text-sm font-bold text-[#0b1f33]">اشتراك سنوي — منخرط عادي</span>
               </div>
 
               {/* Payment method */}
