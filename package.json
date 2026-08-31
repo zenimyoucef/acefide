@@ -7,7 +7,7 @@
     "dev:turbo": "next dev --turbopack",
     "dev:no-turbo": "next dev --webpack",
     "build": "prisma generate && prisma migrate deploy && next build",
-    "vercel-build": "prisma generate && next build",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
