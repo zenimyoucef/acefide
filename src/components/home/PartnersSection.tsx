@@ -20,12 +20,12 @@ export async function PartnersSection() {
     const isLarge = name.includes("المصدرين الجزائريين");
 
     return (
-      <div key={key} className={`flex items-center justify-center rounded-xl border border-border/30 bg-white p-3 ${isLarge ? "col-span-2 aspect-[2.5/1] sm:col-span-2" : "aspect-[2/1]"}`} aria-label={name} title={name}>
+      <div key={key} className={`flex items-center justify-center rounded-xl border border-border/30 bg-white p-4 sm:p-5 ${isLarge ? "col-span-2 h-28 sm:h-36" : "h-24 sm:h-32"}`} aria-label={name} title={name}>
         <Image
           src={partner.logo}
           alt={`${name} logo`}
-          width={isLarge ? 180 : 120}
-          height={isLarge ? 72 : 60}
+          width={isLarge ? 200 : 140}
+          height={isLarge ? 100 : 80}
           className="max-h-full max-w-full object-contain"
         />
       </div>
@@ -43,7 +43,7 @@ export async function PartnersSection() {
         </div>
 
         {/* Partners static grid */}
-        <div className="grid grid-cols-3 gap-8 sm:grid-cols-4 sm:gap-10 lg:grid-cols-5">
+        <div className="grid grid-cols-3 gap-6 sm:grid-cols-4 sm:gap-8 lg:grid-cols-4">
           {partners.map((p, i) => renderLogo(p, `logo-${p.id ?? i}`))}
         </div>
 
