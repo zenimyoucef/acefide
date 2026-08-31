@@ -131,7 +131,7 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
         ) : (
           <>
             <Link href={lead.href} className="group grid gap-7 border-y border-[#17211d]/40 py-7 lg:grid-cols-12">
-              <ArticleCover item={lead} number={1} featured />
+              <ArticleCover item={lead} featured />
               <article className="flex flex-col justify-center border-s-4 border-primary ps-6 lg:col-span-5">
                 <span className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-primary">{lead.category}</span>
                 <JournalDate date={lead.date} locale={locale} />
@@ -149,7 +149,7 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
                     key={item.id}
                     className={`group py-7 md:px-6 ${index % 3 !== 2 ? "lg:border-e lg:border-[#17211d]/30" : ""} ${index >= 3 ? "border-t border-[#17211d]/30" : ""}`}
                   >
-                    <ArticleCover item={item} number={index + 2} />
+                    <ArticleCover item={item} />
                     <span className="mt-5 block text-[0.65rem] font-black uppercase tracking-[0.18em] text-primary">{item.category}</span>
                     <JournalDate date={item.date} locale={locale} />
                     <h2 className="mt-3 text-2xl font-black leading-8 transition-colors group-hover:text-primary">{item.title}</h2>
@@ -165,7 +165,7 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
   );
 }
 
-function ArticleCover({ item, number, featured = false }: { item: JournalItem; number: number; featured?: boolean }) {
+function ArticleCover({ item, featured = false }: { item: JournalItem; featured?: boolean }) {
   return (
     <div
       className={`relative overflow-hidden bg-[#dce3dc] ${featured ? "min-h-64 lg:col-span-7 lg:min-h-[28rem]" : "aspect-[16/9]"}`}
@@ -183,9 +183,6 @@ function ArticleCover({ item, number, featured = false }: { item: JournalItem; n
           <span className="mt-3 text-xs font-black uppercase tracking-[0.2em]">المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي</span>
         </div>
       )}
-      <span className="absolute start-3 top-3 flex h-10 min-w-10 items-center justify-center rounded-full border border-white/60 bg-[#102a22]/90 px-2 text-sm font-black text-white shadow-lg backdrop-blur">
-        {String(number).padStart(2, "0")}
-      </span>
     </div>
   );
 }

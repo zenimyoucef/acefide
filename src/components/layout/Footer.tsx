@@ -42,7 +42,7 @@ export function Footer() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-primary/3 blur-[120px]" />
         </div>
 
-        <div className="relative container-content py-20 sm:py-24">
+        <div className="relative container-content pt-28 pb-20 sm:pt-32 sm:pb-24">
           {/* Mobile: centered logo. Desktop: 4-col grid */}
           <div className="flex flex-col items-center text-center lg:items-start lg:text-start lg:grid lg:grid-cols-[1.2fr_1fr_1fr_1.1fr] lg:gap-8">
 

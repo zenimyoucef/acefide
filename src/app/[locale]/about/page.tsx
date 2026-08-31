@@ -80,15 +80,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Registration */}
-      <section className="bg-muted/30 py-20">
-        <div className="container-content max-w-4xl">
-          <div className="rounded-2xl border border-border/50 bg-card p-8">
-            <h2 className="mb-4 text-2xl font-bold text-foreground">{t("registration")}</h2>
-            <p className="text-muted-foreground">{t("registrationInfo")}</p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import { Lightbulb } from "lucide-react";
+
 
 const items = [
   "تشجيع الابتكار و ريادة الاعمال من خلال المساهمة في صناعة الفكر الاقتصادي",
@@ -24,12 +24,8 @@ export function MissionSection() {
       <div className="container-content relative z-10">
         {/* Header */}
         <div className="mx-auto mb-16 max-w-xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white/70 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-primary backdrop-blur-sm">
-            <Lightbulb className="h-3.5 w-3.5" />
-            مجالات العمل
-          </span>
-          <h2 className="mt-6 text-3xl font-black tracking-tight text-[#0b1f33] sm:text-4xl md:text-[2.75rem]">
-            دورنا
+          <h2 className="text-3xl font-black tracking-tight text-[#0b1f33] sm:text-4xl md:text-[2.75rem]">
+            أدوارنا
           </h2>
           <div className="mx-auto mt-5 h-[3px] w-16 rounded-full bg-gradient-to-l from-turquoise via-primary to-turquoise" />
         </div>
