@@ -233,6 +233,15 @@ export default function MembershipPage() {
           </FormSection>
 
           {error && <p role="alert" aria-live="assertive" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">{error}</p>}
+          <div className="flex items-center gap-4 rounded-xl border border-primary/15 bg-primary/[0.03] p-4">
+            <div className="flex h-12 w-20 shrink-0 items-center justify-center rounded-lg bg-white border border-border/50">
+              <span className="text-sm font-black tracking-tight text-[#0b1f33]">CIB</span>
+            </div>
+            <div className="text-sm leading-6 text-muted-foreground">
+              <p className="font-bold text-[#0b1f33]">الدفع عبر بطاقة CIB</p>
+              <p>سيتم إرسال معلومات الدفع عبر البريد الإلكتروني بعد مراجعة طلبك.</p>
+            </div>
+          </div>
           <Button type="submit" size="xl" disabled={loading} className="w-full rounded-full md:w-auto md:min-w-56"><Send className="h-5 w-5" />{loading ? "جارٍ إرسال الطلب..." : "إرسال طلب الإنخراط"}</Button>
         </form>
       </div>
