@@ -165,22 +165,7 @@ export default function MembershipPage() {
       <div className="container-content max-w-5xl">
         <section className="overflow-hidden rounded-2xl bg-[#0b1f33] p-7 text-white shadow-xl md:p-10">
           <SectionHeading number="01" title="إستمارة الإنخراط في المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي" light />
-          <div className="mt-6 space-y-5 text-sm leading-8 text-white/80">
-            <p>المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي "حاليا" (المركز الجزائري للاستشراف الاقتصادي و و تطوير الاستثمار و المقاولاتية سابقا ) هو مؤسسة تم تأسيسها بتاريخ 22 مارس 2022 في اطار قانون الجمعيات 12-06</p>
-            <p>جاء التفكير في تأسيس هذا الفضاء بهدف مواكبة الاصلاحات الوطنية بما فيها الاصلاحات الاقتصادية من خلال التفكير الاقتصادي و رفع المقترحات التي من شأنها تعزيز المسار التنموي</p>
-          </div>
-          <div className="mt-6 rounded-xl border border-white/15 bg-white/10 p-5 text-sm leading-8 text-white/85">
-            <p className="font-bold">ملف الإنخراط:</p>
-            <ul className="list-inside list-disc">
-              <li>إستمارة الإنخراط في المركز.</li>
-              <li>نسخة من بطاقة التعريف الوطنية أو جواز سفر.</li>
-              <li>صور شخصية 3.</li>
-              <li>سيرة ذاتية.</li>
-              <li>نسخة من شهادة المؤهل العلمي أو المهني.</li>
-              <li>نسخة من صحيفة السوابق العدلية سارية الصلاحية.</li>
-              <li>وصل تسديد مستحقات الإنخراط.</li>
-            </ul>
-          </div>
+
         </section>
 
         <form onSubmit={submit} className="mt-7 space-y-7">
