@@ -21,7 +21,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <LeadershipSection />
       <ImpactSection />
       <MissionSection />
-      <UpcomingEvents />
+      <UpcomingEvents locale={locale as "ar" | "fr" | "en"} />
       <PartnersSection />
     </>
   );
