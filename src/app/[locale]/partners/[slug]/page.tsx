@@ -6,14 +6,8 @@ import { prisma } from "@/lib/prisma";
 
 export default async function PartnerDetailsPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  let partner;
-  try {
-    partner = await prisma.partner.findUnique({ where: { slug } });
-    if (partner && !partner.published) partner = null;
-  } catch {
-    partner = null;
-  }
-  if (!partner) notFound();
+  const partner = await prisma.partner.findUnique({ where: { slug } });
+  if (!partner || !partner.published) notFound();
 
   const isRtl = locale === "ar";
   const name = isRtl ? partner.nameAr : locale === "fr" ? partner.nameFr : partner.nameEn;
