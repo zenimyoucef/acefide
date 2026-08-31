@@ -17,8 +17,6 @@ export async function PartnersSection() {
 
   if (!partners.length) return null;
 
-  const hasMarquee = partners.length > 4;
-
   const renderLogo = (partner: typeof partners[number], key: string) => {
     const name = partner.nameAr;
     if (!partner.logo) return null;
@@ -33,7 +31,7 @@ export async function PartnersSection() {
       />
     );
 
-    const wrapperClass = "group flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
+    const wrapperClass = "partner-card group flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
 
     return partner.website ? (
       <a key={key} href={partner.website} target="_blank" rel="noopener noreferrer" aria-label={name} title={name} className={wrapperClass}>
@@ -62,21 +60,13 @@ export async function PartnersSection() {
           </Link>
         </div>
 
-        {/* Partners display */}
-        {hasMarquee ? (
-          /* Marquee for 5+ partners */
-          <div className="partners-marquee-mask overflow-hidden py-1">
-            <div className="partners-marquee-track flex w-max items-center gap-12 py-2">
-              {partners.map((p, i) => renderLogo(p, `a-${p.id ?? i}`))}
-              {partners.map((p, i) => renderLogo(p, `b-${p.id ?? i}`))}
-            </div>
+        {/* Partners marquee — always scroll */}
+        <div className="partners-marquee-mask overflow-hidden py-1">
+          <div className="partners-marquee-track flex w-max items-center gap-12 py-2">
+            {partners.map((p, i) => renderLogo(p, `a-${p.id ?? i}`))}
+            {partners.map((p, i) => renderLogo(p, `b-${p.id ?? i}`))}
           </div>
-        ) : (
-          /* Static grid for 1-4 partners */
-          <div className="flex flex-wrap items-center justify-center gap-10 sm:gap-14 md:gap-16">
-            {partners.map((p, i) => renderLogo(p, `c-${p.id ?? i}`))}
-          </div>
-        )}
+        </div>
 
         {/* View all button */}
         <div className="mt-12 text-center">
