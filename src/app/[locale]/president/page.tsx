@@ -63,7 +63,9 @@ export default function PresidentPage() {
             <div className="relative z-10">
               <h2 className="mb-6 text-3xl font-black text-[#10241d]">{t("message")}</h2>
               <div className="max-w-none space-y-4 text-base leading-8 text-[#385047] md:text-lg">
-                <p>{t("fullBio")}</p>
+                {t("fullBio").split("\n\n").filter(Boolean).map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
                 <p>
                   {locale === "ar"
                     ? "يؤمن المركز بأن الاستشراف الاقتصادي العلمي هو الأساس لبناء مستقبل اقتصادي مزدهر للجزائر، ونسعى من خلال عملنا إلى تقديم إسهامات ملموسة في مسيرة التنمية الوطنية."
