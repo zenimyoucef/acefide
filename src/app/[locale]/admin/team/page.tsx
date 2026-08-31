@@ -1,7 +1,7 @@
 import { UserPlus } from "lucide-react";
 import { addLeadershipMember } from "../actions";
 import { LeadershipEditor } from "@/components/admin/LeadershipEditor";
-import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { AvatarPositionField } from "@/components/admin/AvatarPositionField";
 import { getLeadershipMembers } from "@/lib/leadership-data";
 import { AdminForm } from "@/components/admin/AdminForm";
 
@@ -41,7 +41,7 @@ export default async function TeamPage({ params }: { params: Promise<{ locale: s
             <label className="mt-3 block text-xs font-semibold">Achievements<textarea name="achievementsEn" className={area} /></label>
           </fieldset>
         </div>
-        <div className="mt-5"><ImageUploadField name="imageFile" preserveName="imageUrl" label="اختيار صورة العضو" /></div>
+        <div className="mt-6 flex justify-center"><AvatarPositionField label="اختيار صورة العضو" /></div>
         <div className="mt-5 flex justify-end"><button className="w-full rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white sm:w-auto">إضافة العضو</button></div>
       </AdminForm>
 

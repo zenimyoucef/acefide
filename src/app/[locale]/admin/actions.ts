@@ -21,6 +21,12 @@ const text = (data: FormData, key: string) => {
 };
 const slugify = (value: string) => value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
 const automaticSlug = (data: FormData, ...sources: string[]) => text(data, "slug") || slugify(sources.map((s) => text(data, s)).find(Boolean) || "");
+const imagePositionValue = (data: FormData, key = "imagePosition") => {
+  const match = text(data, key).match(/^(\d{1,3}(?:\.\d+)?)%\s+(\d{1,3}(?:\.\d+)?)%$/);
+  if (!match) return "50% 50%";
+  const clamp = (value: string) => Math.min(100, Math.max(0, Math.round(Number(value) * 100) / 100));
+  return `${clamp(match[1])}% ${clamp(match[2])}%`;
+};
 
 const actionCopy = {
   ar: { invalid: "يرجى تصحيح الحقول المبيّنة.", saved: "تم الحفظ بنجاح.", deleted: "تم الحذف بنجاح.", unexpected: "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.", duplicate: "اسم الرابط مستخدم بالفعل.", schema: "قاعدة البيانات غير جاهزة لهذه الميزة. يرجى الاتصال بالمسؤول.", blob: "تعذر رفع الملف. يرجى التحقق منه والمحاولة مجددًا.", url: "يرجى إدخال رابط صالح.", image: "يرجى رفع صورة صالحة.", document: "يرجى رفع ملف PDF أو مستند صالح.", date: "يرجى اختيار تاريخ صالح للفعالية.", endDate: "يجب أن يكون تاريخ النهاية بعد تاريخ البداية.", required: "مطلوب" },
@@ -478,7 +484,7 @@ export async function saveLeadershipMember(locale: string, memberId: string, dat
     const members = await getLeadershipMembers();
     const previous = members.find((member) => member.id === memberId)?.imageUrl;
     const image = await uploadedFile(data, "imageFile", "imageUrl", "members", { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" }, 8);
-    const updated = members.map((member) => member.id === memberId ? { ...member, imageUrl: image.url || undefined, name: { ar: text(data, "nameAr"), fr: text(data, "nameFr"), en: text(data, "nameEn") }, role: { ar: text(data, "roleAr"), fr: text(data, "roleFr"), en: text(data, "roleEn") }, achievements: { ar: text(data, "achievementsAr"), fr: text(data, "achievementsFr"), en: text(data, "achievementsEn") } } : member);
+    const updated = members.map((member) => member.id === memberId ? { ...member, imageUrl: image.url || undefined, imagePosition: imagePositionValue(data), name: { ar: text(data, "nameAr"), fr: text(data, "nameFr"), en: text(data, "nameEn") }, role: { ar: text(data, "roleAr"), fr: text(data, "roleFr"), en: text(data, "roleEn") }, achievements: { ar: text(data, "achievementsAr"), fr: text(data, "achievementsFr"), en: text(data, "achievementsEn") } } : member);
     try {
       await prisma.siteSetting.upsert({ where: { key: "leadership_members" }, update: { value: JSON.stringify(updated) }, create: { key: "leadership_members", value: JSON.stringify(updated) } });
     } catch (error) {
@@ -501,7 +507,7 @@ export async function addLeadershipMember(locale: string, data: FormData) {
     const members = await getLeadershipMembers();
     const image = await uploadedFile(data, "imageFile", "imageUrl", "members", { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" }, 8);
     const initials = nameEn.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
-    members.push({ id: randomUUID(), initials: initials || "TM", accent: "from-primary to-turquoise", imageUrl: image.url || undefined, name: { ar: text(data, "nameAr"), fr: text(data, "nameFr"), en: nameEn }, role: { ar: text(data, "roleAr"), fr: text(data, "roleFr"), en: text(data, "roleEn") }, summary: { ar: "", fr: "", en: "" }, achievements: { ar: text(data, "achievementsAr"), fr: text(data, "achievementsFr"), en: text(data, "achievementsEn") }, reportsTo: "president" });
+    members.push({ id: randomUUID(), initials: initials || "TM", accent: "from-primary to-turquoise", imageUrl: image.url || undefined, imagePosition: imagePositionValue(data), name: { ar: text(data, "nameAr"), fr: text(data, "nameFr"), en: nameEn }, role: { ar: text(data, "roleAr"), fr: text(data, "roleFr"), en: text(data, "roleEn") }, summary: { ar: "", fr: "", en: "" }, achievements: { ar: text(data, "achievementsAr"), fr: text(data, "achievementsFr"), en: text(data, "achievementsEn") }, reportsTo: "president" });
     try {
       await prisma.siteSetting.upsert({ where: { key: "leadership_members" }, update: { value: JSON.stringify(members) }, create: { key: "leadership_members", value: JSON.stringify(members) } });
     } catch (error) {

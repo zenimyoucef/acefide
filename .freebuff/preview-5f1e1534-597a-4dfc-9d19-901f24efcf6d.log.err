@@ -1,0 +1,24 @@
+Error: ENVIRONMENT_FALLBACK: There is no `timeZone` configured, this can lead to markup mismatches caused by environment differences. Consider adding a global default: https://next-intl.dev/docs/configuration#time-zone
+    at Header (src\components\layout\Header.tsx:38:28)
+  36 |
+  37 | export function Header() {
+> 38 |   const t = useTranslations("nav");
+     |                            ^
+  39 |   const tSite = useTranslations("site");
+  40 |   const pathname = usePathname();
+  41 |   const [mobileOpen, setMobileOpen] = useState(false); {
+  code: 'ENVIRONMENT_FALLBACK',
+  originalMessage: 'There is no `timeZone` configured, this can lead to markup mismatches caused by environment differences. Consider adding a global default: https://next-intl.dev/docs/configuration#time-zone'
+}
+Error: ENVIRONMENT_FALLBACK: There is no `timeZone` configured, this can lead to markup mismatches caused by environment differences. Consider adding a global default: https://next-intl.dev/docs/configuration#time-zone
+    at Header (src\components\layout\Header.tsx:38:28)
+  36 |
+  37 | export function Header() {
+> 38 |   const t = useTranslations("nav");
+     |                            ^
+  39 |   const tSite = useTranslations("site");
+  40 |   const pathname = usePathname();
+  41 |   const [mobileOpen, setMobileOpen] = useState(false); {
+  code: 'ENVIRONMENT_FALLBACK',
+  originalMessage: 'There is no `timeZone` configured, this can lead to markup mismatches caused by environment differences. Consider adding a global default: https://next-intl.dev/docs/configuration#time-zone'
+}

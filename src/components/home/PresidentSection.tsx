@@ -13,7 +13,9 @@ export async function PresidentSection() {
     getLocale(),
     getLeadershipMembers(),
   ]);
-  const presidentImage = members.find((member) => member.id === "president")?.imageUrl || akram;
+  const president = members.find((member) => member.id === "president");
+  const presidentImage = president?.imageUrl || akram;
+  const presidentPosition = president?.imagePosition || "50% 50%";
   const isRtl = locale === "ar";
   const Arrow = isRtl ? ArrowLeft : ArrowRight;
 
@@ -77,7 +79,8 @@ export async function PresidentSection() {
                   alt={t("name")}
                   fill
                   sizes="(min-width: 1024px) 460px, 86vw"
-                  className="object-cover object-center"
+                  style={{ objectPosition: presidentPosition }}
+                  className="object-cover"
                 />
               </div>
             </div>

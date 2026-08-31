@@ -47,7 +47,8 @@ export function LeadershipAvatar({ member, locale, size = "sm" }: LeadershipAvat
           fill
           sizes={imageSize}
           onError={() => setImageFailed(true)}
-          className="z-10 h-full w-full rounded-full object-cover object-center opacity-100 [filter:none] [mix-blend-mode:normal]"
+          style={{ objectPosition: member.imagePosition || "50% 50%" }}
+          className="z-10 h-full w-full rounded-full object-cover opacity-100 [filter:none] [mix-blend-mode:normal]"
         />
       ) : (
         <span className={cn("relative z-10 flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br text-lg font-extrabold text-white", member.accent)}>

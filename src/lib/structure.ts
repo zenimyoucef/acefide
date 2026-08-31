@@ -9,6 +9,8 @@ export type LeadershipMember = {
   summary: Record<Locale, string>;
   achievements?: Record<Locale, string>;
   imageUrl?: string;
+  /** CSS object-position value (e.g. "50% 30%") controlling how the photo is framed inside the circle. */
+  imagePosition?: string;
   image?: "akram";
   reportsTo?: string;
 };
