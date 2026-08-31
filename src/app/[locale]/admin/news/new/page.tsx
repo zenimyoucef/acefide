@@ -1,7 +1,6 @@
-import { ArrowLeft, FileText, Globe2, ImagePlus, Languages } from "lucide-react";
+import { ArrowLeft, FileText, ImagePlus, Languages } from "lucide-react";
 import { Link } from "@/lib/navigation";
 import { saveNews, updateNews } from "../../actions";
-import { FriendlySlugField } from "@/components/admin/FriendlySlugField";
 import { MultiImageUploadField } from "@/components/admin/MultiImageUploadField";
 import { prisma } from "@/lib/prisma";
 import { AdminForm } from "@/components/admin/AdminForm";
@@ -15,8 +14,6 @@ const t = {
   back: "العودة إلى الأخبار",
   heading: "إنشاء مقال إخباري",
   intro: "أضف المقال بالعربية. احفظه كمسودة حتى يصبح جاهزًا.",
-  address: "عنوان الصفحة",
-  addressHelp: "تُستخدم هذه القيمة لإنشاء رابط المقال، ويجب أن تكون قصيرة وفريدة.",
   titles: "العنوان والملخص",
   titlesHelp: "يظهر العنوان والملخص القصير في بطاقات الأخبار وصفحات القوائم.",
   title: "عنوان المقال",
@@ -53,17 +50,6 @@ export default async function NewNews({ params, searchParams }: { params: Promis
       </div>
 
       <AdminForm action={article ? updateNews.bind(null, locale, article.id) : saveNews.bind(null, locale)} locale={locale} successRedirect={`/${locale}/admin/news`} className="space-y-6">
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-5 flex items-start gap-3">
-            <div className="rounded-lg bg-primary/10 p-2 text-primary"><Globe2 className="h-5 w-5" /></div>
-            <div>
-              <h2 className="font-bold text-slate-950">{t.address}</h2>
-              <p className="mt-1 text-sm text-slate-500">{t.addressHelp}</p>
-            </div>
-          </div>
-          <FriendlySlugField />
-        </section>
-
         <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-6 flex items-start gap-3">
             <div className="rounded-lg bg-primary/10 p-2 text-primary"><Languages className="h-5 w-5" /></div>

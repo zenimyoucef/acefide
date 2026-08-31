@@ -19,8 +19,24 @@ const text = (data: FormData, key: string) => {
   const value = data.get(key);
   return typeof value === "string" ? value.trim() : "";
 };
-const slugify = (value: string) => value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
-const automaticSlug = (data: FormData, ...sources: string[]) => text(data, "slug") || slugify(sources.map((s) => text(data, s)).find(Boolean) || "");
+// Build a URL-friendly slug that also keeps Arabic letters (the site is Arabic-only now).
+const slugifyLoose = (value: string) => value.normalize("NFKC").trim().toLowerCase()
+  .replace(/[\s_]+/g, "-")
+  .replace(/[^a-z0-9\u0600-\u06ff\u0750-\u077f\u08a0-\u08ff\ufb50-\ufdff\ufe70-\ufeff-]+/g, "")
+  .replace(/-{2,}/g, "-")
+  .replace(/^-+|-+$/g, "")
+  .slice(0, 80)
+  .replace(/-+$/g, "");
+// Generate a unique slug from a title, appending a numeric (then random) suffix if taken.
+async function uniqueSlug(base: string, exists: (slug: string) => Promise<boolean>): Promise<string> {
+  const root = slugifyLoose(base) || "item";
+  let candidate = root;
+  for (let i = 2; i <= 6; i += 1) {
+    if (!(await exists(candidate))) return candidate;
+    candidate = `${root}-${i}`;
+  }
+  return `${root}-${randomUUID().slice(0, 8)}`;
+}
 const imagePositionValue = (data: FormData, key = "imagePosition") => {
   const match = text(data, key).match(/^(\d{1,3}(?:\.\d+)?)%\s+(\d{1,3}(?:\.\d+)?)%$/);
   if (!match) return "50% 50%";
@@ -239,8 +255,7 @@ export async function saveNews(locale: string, data: FormData) {
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "saveNews", async () => {
     const user = await editor();
-    const slug = automaticSlug(data, "titleEn", "titleAr");
-    if (!slug) return invalid(locale, { slug: "يرجى إدخال عنوان المقال." });
+    const slug = await uniqueSlug(text(data, "titleAr"), async (candidate) => Boolean(await prisma.news.findUnique({ where: { slug: candidate }, select: { id: true } })));
     const previous = await prisma.news.findUnique({ where: { slug }, select: { coverImage: true, galleryImages: true } });
     const gallery = await contentGallery(data, "news");
     try {
@@ -296,7 +311,7 @@ export async function deleteEvent(locale: string, id: string, _data?: FormData) 
 
 export async function saveEvent(locale: string, data: FormData) {
   const authorization = await authorizationError(locale); if (authorization) return authorization;
-  const errors = mergeErrors(requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["titleEn", label(locale, "titleEn")], ["titleFr", label(locale, "titleFr")], ["category", label(locale, "category")], ["date", label(locale, "date")]]), validateGallery(locale, data, true));
+  const errors = mergeErrors(requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["category", label(locale, "category")], ["date", label(locale, "date")]]), validateGallery(locale, data, true));
   if (!(["ORGANIZED", "PARTICIPATION", "MEETING", "MEDIA"] as string[]).includes(text(data, "category"))) errors.category = requiredMessage(locale, label(locale, "category"));
   const date = dateValue(data, "date"); const endDate = dateValue(data, "endDate");
   if (!date) errors.date = messages(locale).date;
@@ -305,7 +320,7 @@ export async function saveEvent(locale: string, data: FormData) {
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "saveEvent", async () => {
     await editor();
-    const slug = automaticSlug(data, "titleEn", "titleAr");
+    const slug = await uniqueSlug(text(data, "titleAr"), async (candidate) => Boolean(await prisma.event.findUnique({ where: { slug: candidate }, select: { id: true } })));
     const previous = await prisma.event.findUnique({ where: { slug }, select: { coverImage: true, galleryImages: true } });
     const published = data.get("published") === "on";
     const gallery = await contentGallery(data, "events");
@@ -323,7 +338,7 @@ export async function saveEvent(locale: string, data: FormData) {
 
 export async function updateEvent(locale: string, id: string, data: FormData) {
   const authorization = await authorizationError(locale); if (authorization) return authorization;
-  const errors = mergeErrors(requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["titleEn", label(locale, "titleEn")], ["titleFr", label(locale, "titleFr")], ["category", label(locale, "category")], ["date", label(locale, "date")]]), validateGallery(locale, data, true));
+  const errors = mergeErrors(requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["category", label(locale, "category")], ["date", label(locale, "date")]]), validateGallery(locale, data, true));
   if (!(["ORGANIZED", "PARTICIPATION", "MEETING", "MEDIA"] as string[]).includes(text(data, "category"))) errors.category = requiredMessage(locale, label(locale, "category"));
   const date = dateValue(data, "date"); const endDate = dateValue(data, "endDate");
   if (!date) errors.date = messages(locale).date;
@@ -349,7 +364,7 @@ export async function updateEvent(locale: string, id: string, data: FormData) {
 export async function savePublication(locale: string, fixedCategory: PublicationCategory | null, data: FormData) {
   const authorization = await authorizationError(locale); if (authorization) return authorization;
   const category = fixedCategory || text(data, "category") as PublicationCategory;
-  const errors = requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["titleEn", label(locale, "titleEn")], ["titleFr", label(locale, "titleFr")], ["summaryAr", label(locale, "summaryAr")], ["summaryEn", label(locale, "summaryEn")], ["summaryFr", label(locale, "summaryFr")]]);
+  const errors = requiredFields(locale, data, [["titleAr", label(locale, "titleAr")], ["summaryAr", label(locale, "summaryAr")]]);
   if (!fixedCategory && !category) errors.category = requiredMessage(locale, label(locale, "category"));
   if (!(["REPORT", "STUDY", "ANALYSIS", "POLICY_BRIEF"] as string[]).includes(category)) errors.category = requiredMessage(locale, label(locale, "category"));
   const coverError = validateFile(locale, data, "coverImageFile", imageTypes, 8, true, "coverImage"); if (coverError) errors.coverImageFile = coverError;
@@ -358,7 +373,7 @@ export async function savePublication(locale: string, fixedCategory: Publication
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "savePublication", async () => {
     const user = await editor();
-    const slug = automaticSlug(data, "titleEn", "titleAr");
+    const slug = await uniqueSlug(text(data, "titleAr"), async (candidate) => Boolean(await prisma.publication.findUnique({ where: { slug: candidate }, select: { id: true } })));
     const previous = await prisma.publication.findUnique({ where: { slug }, select: { coverImage: true, pdfUrl: true } });
     const uploads: string[] = [];
     try {
@@ -390,7 +405,7 @@ export async function deletePublication(locale: string, id: string, _data?: Form
 
 export async function savePartner(locale: string, data: FormData) {
   const authorization = await authorizationError(locale); if (authorization) return authorization;
-  const errors = requiredFields(locale, data, [["nameAr", label(locale, "nameAr")], ["nameEn", label(locale, "nameEn")], ["nameFr", label(locale, "nameFr")], ["category", label(locale, "category")]]);
+  const errors = requiredFields(locale, data, [["nameAr", label(locale, "nameAr")], ["category", label(locale, "category")]]);
   if (!(["INSTITUTIONAL", "GOVERNMENT", "INTERNATIONAL", "UNIVERSITY", "PRIVATE"] as string[]).includes(text(data, "category"))) errors.category = requiredMessage(locale, label(locale, "category"));
   const logoError = validateFile(locale, data, "logoFile", imageTypes, 4, true, "logo"); if (logoError) errors.logoFile = logoError;
   const website = text(data, "website"); if (website && !validUrl(website)) errors.website = messages(locale).url;
@@ -398,7 +413,7 @@ export async function savePartner(locale: string, data: FormData) {
   if (Object.keys(errors).length) return invalid(locale, errors);
   return runAdminAction(locale, "savePartner", async () => {
     await editor();
-    const slug = automaticSlug(data, "nameEn", "nameAr");
+    const slug = await uniqueSlug(text(data, "nameAr"), async (candidate) => Boolean(await prisma.partner.findUnique({ where: { slug: candidate }, select: { id: true } })));
     const previous = await prisma.partner.findUnique({ where: { slug }, select: { logo: true } });
     const logo = await uploadedFile(data, "logoFile", "logo", "partners", imageTypes, 4);
     try {
