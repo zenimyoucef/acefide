@@ -16,14 +16,14 @@ const items = [
 
 export function MissionSection() {
   return (
-    <section className="relative overflow-hidden bg-[#f7f8f4] py-14 sm:py-20" dir="rtl">
+    <section className="relative overflow-hidden bg-[#f7f8f4] py-10 sm:py-20" dir="rtl">
       {/* Soft decorative blobs */}
       <div className="pointer-events-none absolute -start-32 top-10 h-[28rem] w-[28rem] rounded-full bg-primary/[0.04] blur-[120px]" />
       <div className="pointer-events-none absolute -end-20 bottom-10 h-72 w-72 rounded-full bg-turquoise/[0.06] blur-[100px]" />
 
       <div className="container-content relative z-10">
         {/* Header */}
-        <div className="mx-auto mb-16 max-w-xl text-center">
+        <div className="mx-auto mb-10 sm:mb-16 max-w-xl text-center">
           <h2 className="text-[1.75rem] sm:text-3xl font-black tracking-tight text-[#0b1f33]">
             أدوارنا
           </h2>
@@ -31,22 +31,22 @@ export function MissionSection() {
         </div>
 
         {/* Items */}
-        <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 sm:gap-5">
+        <div className="mx-auto grid max-w-5xl gap-3 sm:gap-5 sm:grid-cols-2">
           {items.map((item, index) => (
             <div
               key={index}
-              className="group relative flex items-start gap-4 overflow-hidden rounded-2xl border border-border/40 bg-white/80 p-5 shadow-[0_1px_3px_rgba(11,31,51,0.04)] backdrop-blur-sm transition-all duration-[400ms] ease-out hover:border-primary/20 hover:bg-white hover:shadow-[0_8px_30px_rgba(11,122,83,0.08)] hover:-translate-y-[3px] sm:p-6"
+              className="group relative flex items-start gap-3 sm:gap-4 overflow-hidden rounded-2xl border border-border/40 bg-white/80 p-4 sm:p-5 shadow-[0_1px_3px_rgba(11,31,51,0.04)] backdrop-blur-sm transition-all duration-[400ms] ease-out hover:border-primary/20 hover:bg-white hover:shadow-[0_8px_30px_rgba(11,122,83,0.08)] hover:-translate-y-[3px] sm:p-6"
             >
               {/* Left accent bar */}
               <div className="absolute inset-y-0 end-0 w-[3px] rounded-l-full bg-gradient-to-b from-turquoise/0 via-primary/50 to-turquoise/0 opacity-0 transition-all duration-400 group-hover:opacity-100" />
 
               {/* Number badge */}
-              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-turquoise text-sm font-extrabold text-white shadow-[0_4px_12px_rgba(11,122,83,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_6px_18px_rgba(11,122,83,0.35)]">
+              <span className="relative flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-primary to-turquoise text-xs sm:text-sm font-extrabold text-white shadow-[0_4px_12px_rgba(11,122,83,0.25)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_6px_18px_rgba(11,122,83,0.35)]">
                 {index + 1}
               </span>
 
               {/* Text */}
-              <p className="pt-2 text-[0.94rem] leading-[2] text-[#455a4e] transition-colors duration-300 group-hover:text-[#1a2e24]">
+              <p className="pt-1 sm:pt-2 text-[0.85rem] sm:text-[0.94rem] leading-[1.7] sm:leading-[2] text-[#455a4e] transition-colors duration-300 group-hover:text-[#1a2e24]">
                 {item}
               </p>
             </div>
