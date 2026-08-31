@@ -233,15 +233,57 @@ export default function MembershipPage() {
           </FormSection>
 
           {error && <p role="alert" aria-live="assertive" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">{error}</p>}
-          <div className="flex items-center gap-4 rounded-xl border border-primary/15 bg-primary/[0.03] p-4">
-            <div className="flex h-12 w-20 shrink-0 items-center justify-center rounded-lg bg-white border border-border/50">
-              <span className="text-sm font-black tracking-tight text-[#0b1f33]">CIB</span>
+
+          {/* Payment Summary */}
+          <section className="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm md:p-7">
+            <header className="mb-6 flex items-center gap-3 border-b pb-4">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-xs font-black text-white">05</span>
+              <h2 className="text-xl font-black text-[#0b1f33]">الدفع و المصاريف</h2>
+            </header>
+
+            <div className="space-y-4">
+              {/* Line items */}
+              <div className="rounded-xl border border-border/50 bg-[#fafbfa] p-4">
+                <div className="flex items-center justify-between border-b border-border/40 pb-3">
+                  <span className="text-sm font-bold text-[#0b1f33]">اشتراك سنوي — منخرط عادي</span>
+                  <span className="text-sm font-bold text-[#0b1f33]">2.500,00 د.ج</span>
+                </div>
+                <div className="flex items-center justify-between pt-3">
+                  <span className="text-sm font-bold text-primary">المجموع الفرعي</span>
+                  <span className="text-sm font-bold text-primary">2.500,00 د.ج</span>
+                </div>
+              </div>
+
+              {/* Coupon */}
+              <div className="rounded-xl border border-border/50 bg-[#fafbfa] p-4">
+                <p className="text-sm text-muted-foreground">لديك كود خصم؟ <button type="button" className="font-bold text-primary hover:underline">أدخله هنا</button></p>
+              </div>
+
+              {/* Total */}
+              <div className="flex items-center justify-between rounded-xl border-2 border-primary/20 bg-primary/[0.03] px-4 py-3">
+                <span className="text-base font-black text-primary">الإجمالي</span>
+                <span className="text-lg font-black text-primary">2.500,00 د.ج</span>
+              </div>
+
+              {/* Payment method */}
+              <div className="rounded-xl border border-border/50 bg-[#fafbfa] p-4">
+                <p className="mb-3 text-sm font-bold text-[#0b1f33]">طريقة الدفع</p>
+                <div className="space-y-2">
+                  <label className="flex items-center gap-3 rounded-lg border-2 border-primary/30 bg-white p-3 text-sm cursor-pointer">
+                    <input type="radio" name="paymentMethod" value="cib" defaultChecked className="h-4 w-4 accent-primary" />
+                    <span className="flex items-center gap-2">
+                      <span className="rounded bg-[#0054a6] px-2 py-0.5 text-[0.65rem] font-black text-white tracking-wider">CIB</span>
+                      <span className="font-bold text-[#0b1f33]">/</span>
+                      <span className="rounded bg-[#d4a843] px-2 py-0.5 text-[0.65rem] font-black text-white tracking-wider">EDAHABIA</span>
+                    </span>
+                    <span className="text-xs text-muted-foreground">(Slick-Pay)</span>
+                  </label>
+                </div>
+                <p className="mt-3 text-xs text-muted-foreground">سيتم توجيهك لصفحة الدفع الآمن بعد إرسال الطلب.</p>
+              </div>
             </div>
-            <div className="text-sm leading-6 text-muted-foreground">
-              <p className="font-bold text-[#0b1f33]">الدفع عبر بطاقة CIB</p>
-              <p>سيتم إرسال معلومات الدفع عبر البريد الإلكتروني بعد مراجعة طلبك.</p>
-            </div>
-          </div>
+          </section>
+
           <Button type="submit" size="xl" disabled={loading} className="w-full rounded-full md:w-auto md:min-w-56"><Send className="h-5 w-5" />{loading ? "جارٍ إرسال الطلب..." : "إرسال طلب الإنخراط"}</Button>
         </form>
       </div>
