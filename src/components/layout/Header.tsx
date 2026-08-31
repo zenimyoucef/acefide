@@ -159,9 +159,6 @@ export function Header() {
               );
             })}
 
-            <p className="px-4 pb-1 pt-4 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              {t("resources")}
-            </p>
             {resourceLinks.map((item) => {
               const active = isActivePath(pathname, item.href);
               return (
