@@ -164,12 +164,12 @@ export default function MembershipPage() {
     <main className="bg-[#f5f8f4] py-12 md:py-16" dir="rtl">
       <div className="container-content max-w-5xl">
         <section className="overflow-hidden rounded-2xl bg-[#0b1f33] p-7 text-white shadow-xl md:p-10">
-          <SectionHeading number="01" title="إستمارة الإنخراط في المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي" light />
+          <SectionHeading title="إستمارة الإنخراط في المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي" light />
 
         </section>
 
         <form onSubmit={submit} className="mt-7 space-y-7">
-          <FormSection number="02" title="المعلومات الشخصية" icon={<UserRound className="h-5 w-5" />}>
+          <FormSection title="المعلومات الشخصية" icon={<UserRound className="h-5 w-5" />}>
             <div className="grid gap-5 md:grid-cols-2">
               <Field label="الإسم واللقب"><Input name="name" required /></Field>
               <Field label="تاريخ الميلاد"><Input name="dateOfBirth" type="date" required /></Field>
@@ -188,7 +188,7 @@ export default function MembershipPage() {
             </div>
           </FormSection>
 
-          <FormSection number="03" title="يرجى إختيار فئة إنخراطك معنا" icon={<UserRound className="h-5 w-5" />}>
+          <FormSection title="يرجى إختيار فئة إنخراطك معنا" icon={<UserRound className="h-5 w-5" />}>
             <ChoiceGroup name="membershipCategory" label="فئة الإنخراط" options={membershipCategories} columns />
             <fieldset>
               <legend className="mb-3 text-sm font-bold">مجالات الإهتمام <span className="text-red-600">*</span></legend>
@@ -212,7 +212,7 @@ export default function MembershipPage() {
             <label className="flex items-start gap-3 rounded-xl border bg-white p-4 text-sm font-bold"><input name="declarationAccepted" type="checkbox" required className="mt-1 h-4 w-4 accent-primary" />أصرح بصحة المعلومات الواردة في هذه الإستمارة</label>
           </FormSection>
 
-          <FormSection number="04" title="خاص بإدارة المركز والمنخرط" icon={<ShieldCheck className="h-5 w-5" />}>
+          <FormSection title="خاص بإدارة المركز والمنخرط" icon={<ShieldCheck className="h-5 w-5" />}>
             <div className="rounded-xl border-s-4 border-primary bg-primary/[0.04] p-5 text-sm leading-8 text-muted-foreground">تتعهد إدارة المركز بالحفاظ على سرية وأمن المعلومات الشخصية الواردة في هذه الإستمارة وعدم استخدامها إلا في إطار تسيير شؤون العضوية والأنشطة المرتبطة بأهداف المركز وعدم الإفصاح عنها للغير إلا في الحالات التي يقتضيها القانون أو بموافقة صاحبها. يحق للمنخرط الإطلاع على بياناته الشخصية وطلب تحديثها عند الحاجة. تسلم نسخة من إستمارة الإنخراط للمنخرط في المركز.</div>
           </FormSection>
 
@@ -221,7 +221,6 @@ export default function MembershipPage() {
           {/* Payment Summary */}
           <section className="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm md:p-7">
             <header className="mb-6 flex items-center gap-3 border-b pb-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-xs font-black text-white">05</span>
               <h2 className="text-xl font-black text-[#0b1f33]">دفع حقوق الاشتراك</h2>
             </header>
 
@@ -257,17 +256,16 @@ export default function MembershipPage() {
   );
 }
 
-function SectionHeading({ number, title, light = false }: { number: string; title: string; light?: boolean }) {
+function SectionHeading({ title, light = false }: { title: string; light?: boolean }) {
   return (
-    <header className="flex items-start gap-3">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-black text-white">{number}</span>
+    <header>
       <h1 className={`${light ? "text-white" : "text-[#0b1f33]"} text-2xl font-black leading-tight md:text-3xl`}>{title}</h1>
     </header>
   );
 }
 
-function FormSection({ number, title, icon, children }: { number: string; title: string; icon: React.ReactNode; children: React.ReactNode }) {
-  return <section className="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm md:p-7"><header className="mb-6 flex items-center gap-3 border-b pb-4"><span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-xs font-black text-white">{number}</span><span className="text-primary">{icon}</span><h2 className="text-xl font-black text-[#0b1f33]">{title}</h2></header><div className="space-y-6">{children}</div></section>;
+function FormSection({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
+  return <section className="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm md:p-7"><header className="mb-6 flex items-center gap-3 border-b pb-4"><span className="text-primary">{icon}</span><h2 className="text-xl font-black text-[#0b1f33]">{title}</h2></header><div className="space-y-6">{children}</div></section>;
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
