@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, UsersRound } from "lucide-react";
+import { UsersRound } from "lucide-react";
 import { Link } from "@/lib/navigation";
 import { leadershipMembers, structureCopy, type LeadershipMember } from "@/lib/structure";
 import { LeadershipAvatar } from "./LeadershipAvatar";
@@ -14,7 +14,6 @@ type LeadershipPreviewProps = {
 export function LeadershipPreview({ fullBleed = false, members: providedMembers }: LeadershipPreviewProps) {
   const locale = "ar" as const;
   const copy = structureCopy.ar;
-  const Arrow = ArrowLeft;
   const members = (providedMembers || leadershipMembers).filter((member) => member.id !== "president");
 
   const renderMember = (member: LeadershipMember, key: string) => (      <Link key={key} href={`/team/${member.id}`} className="team-member-card group flex w-56 shrink-0 flex-col items-center rounded-3xl text-center outline-none transition focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 sm:w-72" dir="rtl" aria-label={`${member.name.ar} - ${member.role.ar}`}>
@@ -34,10 +33,7 @@ export function LeadershipPreview({ fullBleed = false, members: providedMembers 
           </span>
           <span className="mt-1 block text-base font-bold text-[#10241d]">{copy.previewTitle}</span>
         </span>
-        <Link href="/structure" className="inline-flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary-dark" aria-label={copy.previewCta}>
-          {copy.previewCta}
-          <Arrow className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
-        </Link>
+
       </div>
 
       <div
