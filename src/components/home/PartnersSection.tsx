@@ -1,12 +1,9 @@
 import Image from "next/image";
-import { ArrowLeft } from "lucide-react";
-import { Link } from "@/lib/navigation";
 import { prisma } from "@/lib/prisma";
 
 const copy = {
   title: "شركاؤنا",
   intro: "المؤسسات والشركات التي نتعاون معها لتحقيق أثر اقتصادي مشترك.",
-  all: "عرض جميع الشركاء",
 };
 
 export async function PartnersSection() {
@@ -22,7 +19,7 @@ export async function PartnersSection() {
     if (!partner.logo) return null;
 
     return (
-      <div key={key} className="flex h-20 w-32 sm:h-24 sm:w-40 shrink-0 items-center justify-center" aria-label={name} title={name}>
+      <div key={key} className="flex aspect-[2/1] items-center justify-center rounded-xl border border-border/30 bg-white p-3" aria-label={name} title={name}>
         <Image
           src={partner.logo}
           alt={`${name} logo`}
@@ -38,20 +35,14 @@ export async function PartnersSection() {
     <section className="py-14 sm:py-20" dir="rtl">
       <div className="container-content">
         {/* Header */}
-        <div className="mb-14 flex items-end justify-between gap-6">
-          <div className="max-w-2xl">
-            <h2 className="text-[1.75rem] sm:text-3xl font-black tracking-tight text-foreground">{copy.title}</h2>
-            <p className="mt-4 leading-7 text-muted-foreground">{copy.intro}</p>
-            <div className="mt-5 h-[3px] w-16 rounded-full bg-gradient-to-l from-turquoise via-primary to-turquoise" />
-          </div>
-          <Link href="/partners" className="group hidden shrink-0 items-center gap-2 rounded-full border border-primary/15 px-5 py-2.5 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-[0_8px_25px_rgba(11,122,83,0.25)] sm:flex">
-            {copy.all}
-            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
-          </Link>
+        <div className="mb-14">
+          <h2 className="text-[1.75rem] sm:text-3xl font-black tracking-tight text-foreground">{copy.title}</h2>
+          <p className="mt-4 leading-7 text-muted-foreground">{copy.intro}</p>
+          <div className="mt-5 h-[3px] w-16 rounded-full bg-gradient-to-l from-turquoise via-primary to-turquoise" />
         </div>
 
         {/* Partners static grid */}
-        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-10">
+        <div className="grid grid-cols-3 gap-8 sm:grid-cols-4 sm:gap-10 lg:grid-cols-5">
           {partners.map((p, i) => renderLogo(p, `logo-${p.id ?? i}`))}
         </div>
 
