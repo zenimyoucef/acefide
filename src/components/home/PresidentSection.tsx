@@ -21,23 +21,23 @@ export async function PresidentSection() {
 
   return (      <section
       className={cn(
-        "relative overflow-hidden bg-[#f3fbf6] py-14 text-foreground md:py-20 lg:py-24",
+        "relative overflow-hidden bg-[#f3fbf6] py-14 text-foreground sm:py-20",
         isRtl && "font-arabic"
       )}
       dir={isRtl ? "rtl" : "ltr"}
     >
 
       <div className="container-content relative z-10">
-        <div className="scroll-reveal grid grid-cols-1 items-center gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+        <div className="scroll-reveal grid grid-cols-1 items-center gap-8 sm:grid-cols-[1.08fr_0.92fr] sm:gap-16">
           <div className="order-2 lg:order-1">
             <div className="mb-6 inline-flex items-center gap-2 border-b-2 border-turquoise pb-2 text-sm font-semibold uppercase tracking-[0.18em] text-primary">
               <Quote className="h-4 w-4" />
               {t("message")}
             </div>
-            <h2 className="max-w-2xl text-3xl font-bold leading-tight text-[#10241d] md:text-5xl">
+            <h2 className="max-w-2xl text-[1.75rem] sm:text-3xl font-bold leading-tight text-[#10241d]">
               {t("name")}
             </h2>
-            <p className="mt-4 text-lg font-semibold text-primary md:text-xl">
+            <p className="mt-4 text-base sm:text-lg font-semibold text-primary">
               {t("title")}
             </p>
 
@@ -70,15 +70,15 @@ export async function PresidentSection() {
           </div>
 
           <div className="order-1 lg:order-2">
-            <div className="relative mx-auto max-w-[460px] lg:me-0">
-              <div className="hidden lg:block absolute -inset-5 translate-x-4 translate-y-5 bg-primary-dark shadow-2xl rtl:-translate-x-4" />
-              <div className="hidden lg:block absolute -bottom-5 -start-5 h-28 w-28 border-s-4 border-t-4 border-turquoise" />
+            <div className="relative mx-auto max-w-[460px] sm:me-0">
+              <div className="hidden sm:block absolute -inset-5 translate-x-4 translate-y-5 bg-primary-dark shadow-2xl rtl:-translate-x-4" />
+              <div className="hidden sm:block absolute -bottom-5 -start-5 h-28 w-28 border-s-4 border-t-4 border-turquoise" />
               <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
                 <Image
                   src={presidentImage}
                   alt={t("name")}
                   fill
-                  sizes="(min-width: 1024px) 460px, 86vw"
+                  sizes="(min-width: 640px) 460px, 86vw"
                   style={{ objectPosition: presidentPosition }}
                   className="object-cover"
                 />

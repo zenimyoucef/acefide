@@ -15,7 +15,7 @@ export function ImpactSection() {
       {/* Subtle ambient glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(32,205,181,0.06)_0%,transparent_70%)]" />
 
-      <div className="container-content relative z-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-white/[0.08] md:grid-cols-4">
+      <div className="container-content relative z-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-white/[0.08] sm:grid-cols-4">
         {items.map(({ icon: Icon, value, label }) => (
           <div
             key={label}

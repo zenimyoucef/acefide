@@ -16,7 +16,7 @@ const items = [
 
 export function MissionSection() {
   return (
-    <section className="relative overflow-hidden bg-[#f7f8f6] py-20 md:py-28" dir="rtl">
+    <section className="relative overflow-hidden bg-[#f7f8f4] py-14 sm:py-20" dir="rtl">
       {/* Soft decorative blobs */}
       <div className="pointer-events-none absolute -start-32 top-10 h-[28rem] w-[28rem] rounded-full bg-primary/[0.04] blur-[120px]" />
       <div className="pointer-events-none absolute -end-20 bottom-10 h-72 w-72 rounded-full bg-turquoise/[0.06] blur-[100px]" />
@@ -24,7 +24,7 @@ export function MissionSection() {
       <div className="container-content relative z-10">
         {/* Header */}
         <div className="mx-auto mb-16 max-w-xl text-center">
-          <h2 className="text-3xl font-black tracking-tight text-[#0b1f33] sm:text-4xl md:text-[2.75rem]">
+          <h2 className="text-[1.75rem] sm:text-3xl font-black tracking-tight text-[#0b1f33]">
             أدوارنا
           </h2>
           <div className="mx-auto mt-5 h-[3px] w-16 rounded-full bg-gradient-to-l from-turquoise via-primary to-turquoise" />

@@ -13,9 +13,9 @@ export default async function PartnersPage({ params }: { params: Promise<{ local
       : { kicker: "Institutional cooperation", title: "Our partners", body: "Institutions and organizations collaborating with the center.", empty: "Partners will be published here soon.", website: "Explore collaboration" };
 
   return <div dir={locale === "ar" ? "rtl" : "ltr"}>
-    <header className="bg-[#0b1f33] py-20 text-white"><div className="container-content max-w-4xl"><p className="section-kicker !text-[#e5c978]">{copy.kicker}</p><h1 className="mt-4 text-4xl font-bold md:text-5xl">{copy.title}</h1><p className="mt-5 max-w-2xl text-lg leading-8 text-white/70">{copy.body}</p></div></header>
-    <section className="bg-[#f3f6f1] py-16 md:py-20"><div className="container-content">
-      {partners.length ? <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{partners.map(partner => {
+    <header className="bg-[#0b1f33] py-20 text-white"><div className="container-content max-w-4xl"><p className="section-kicker !text-[#e5c978]">{copy.kicker}</p><h1 className="mt-4 text-[1.75rem] sm:text-4xl font-bold">{copy.title}</h1><p className="mt-5 max-w-2xl text-lg leading-8 text-white/70">{copy.body}</p></div></header>
+    <section className="bg-[#f3f6f1] py-14 sm:py-20"><div className="container-content">
+      {partners.length ? <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{partners.map(partner => {
         const name = locale === "ar" ? partner.nameAr : locale === "fr" ? partner.nameFr : partner.nameEn;
         const description = locale === "ar" ? partner.descriptionAr : locale === "fr" ? partner.descriptionFr : partner.descriptionEn;
         const Arrow = locale === "ar" ? ArrowLeft : ArrowRight;

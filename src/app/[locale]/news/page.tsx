@@ -99,7 +99,7 @@ export default async function NewsPage({ params, searchParams }: NewsPageProps) 
 
   return (
     <main className="min-h-screen bg-[#f5f2e9] text-[#17211d]" dir={locale === "ar" ? "rtl" : "ltr"}>
-      <div className="container-content py-10 md:py-14">
+      <div className="container-content py-10 sm:py-14">
         <header className="border-y-4 border-double border-[#17211d] py-5 text-center">
           <p className="text-[0.65rem] font-black uppercase tracking-[0.3em] text-primary">المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي · {text.latest}</p>
           <h1 className="mt-3 text-4xl font-black tracking-[-0.045em] sm:text-6xl lg:text-7xl">{text.masthead}</h1>

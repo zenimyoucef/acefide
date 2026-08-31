@@ -15,7 +15,7 @@ export function UpcomingEvents() {
   const [featured, ...rest] = activities;
 
   return (
-    <section className="bg-white py-20 md:py-28" dir="rtl">
+    <section className="bg-white py-14 sm:py-20" dir="rtl">
       <div className="container-content">
         {/* Header */}
         <div className="mb-14 flex items-end justify-between gap-6">
@@ -30,9 +30,9 @@ export function UpcomingEvents() {
           </Link>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[1.2fr_.8fr]">
+        <div className="grid gap-5 sm:grid-cols-[1.2fr_.8fr]">
           {/* Featured card */}
-          <Link href={`/events/${featured.slug}`} className="group relative flex min-h-[360px] flex-col justify-end overflow-hidden rounded-[1.75rem] bg-[#0b1f33] p-7 text-white shadow-[0_22px_60px_rgba(11,31,51,.16)] transition-all duration-500 hover:shadow-[0_28px_70px_rgba(11,31,51,.24)] hover:-translate-y-1 md:p-10">
+          <Link href={`/events/${featured.slug}`} className="group relative flex min-h-[360px] flex-col justify-end overflow-hidden rounded-[1.75rem] bg-[#0b1f33] p-7 text-white shadow-[0_22px_60px_rgba(11,31,51,.16)] transition-all duration-500 hover:shadow-[0_28px_70px_rgba(11,31,51,.24)] hover:-translate-y-1 sm:p-10">
             <div className="absolute -end-20 -top-24 h-72 w-72 rounded-full bg-turquoise/25 blur-3xl transition-all duration-700 group-hover:scale-125 group-hover:bg-turquoise/35" />
             <div className="absolute inset-0 opacity-[.07] [background-image:radial-gradient(circle_at_center,white_1px,transparent_1px)] [background-size:24px_24px]" />
             <div className="relative">

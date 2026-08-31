@@ -17,14 +17,14 @@ export default function PresidentPage() {
     <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
       <section className="relative overflow-hidden bg-[#f7f8f4] text-[#0b1f33]">
         <div className="absolute inset-x-0 top-0 h-64 bg-[#073f31]" />
-        <div className="container-content relative z-10 py-12 md:py-16 lg:py-20">
-          <div className="grid min-h-[calc(100vh-8rem)] items-center gap-10 lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="container-content relative z-10 py-10 sm:py-16">
+          <div className="grid min-h-[calc(100vh-8rem)] items-center gap-10 sm:grid-cols-[0.92fr_1.08fr]">
             <article className="order-2 lg:order-1">
               <p className="text-sm font-black uppercase tracking-[0.2em] text-primary">المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي</p>
-              <h1 className="mt-5 text-4xl font-black leading-tight text-[#0b1f33] md:text-6xl">
+              <h1 className="mt-5 text-[1.75rem] sm:text-4xl font-black leading-tight text-[#0b1f33]">
                 {t("name")}
               </h1>
-              <p className="mt-4 max-w-xl text-xl font-bold leading-8 text-primary md:text-2xl">
+              <p className="mt-4 max-w-xl text-lg sm:text-xl font-bold leading-8 text-primary">
                 {t("title")}
               </p>
               <p className="mt-8 max-w-2xl text-lg font-medium leading-9 text-[#43534d]">
@@ -42,7 +42,7 @@ export default function PresidentPage() {
                     alt={t("name")}
                     fill
                     priority
-                    sizes="(min-width: 1024px) 520px, 88vw"
+                    sizes="(min-width: 640px) 520px, 88vw"
                     className="object-cover object-center"
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#062f26]/90 via-[#062f26]/36 to-transparent p-6 text-white">
@@ -56,13 +56,13 @@ export default function PresidentPage() {
         </div>
       </section>
 
-      <section id="president-message" className="bg-[#f3fbf6] py-20 text-[#10241d]">
+      <section id="president-message" className="bg-[#f3fbf6] py-14 sm:py-20 text-[#10241d]">
         <div className="container-content max-w-4xl">
-          <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-white p-8 shadow-[0_18px_50px_rgba(13,107,79,0.08)] md:p-12">
+          <div className="relative overflow-hidden rounded-2xl border border-primary/15 bg-white p-8 shadow-[0_18px_50px_rgba(13,107,79,0.08)] sm:p-12">
             <Quote className="absolute end-6 top-6 h-16 w-16 text-turquoise/15" />
             <div className="relative z-10">
-              <h2 className="mb-6 text-3xl font-black text-[#10241d]">{t("message")}</h2>
-              <div className="max-w-none space-y-4 text-base leading-8 text-[#385047] md:text-lg">
+              <h2 className="mb-6 text-[1.75rem] sm:text-3xl font-black text-[#10241d]">{t("message")}</h2>
+              <div className="max-w-none space-y-4 text-base leading-8 text-[#385047] sm:text-lg">
                 {t("fullBio").split("\n\n").filter(Boolean).map((paragraph, i) => (
                   <p key={i}>{paragraph}</p>
                 ))}

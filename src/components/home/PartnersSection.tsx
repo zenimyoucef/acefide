@@ -35,12 +35,12 @@ export async function PartnersSection() {
   };
 
   return (
-    <section className="py-20 md:py-24" dir="rtl">
+    <section className="py-14 sm:py-20" dir="rtl">
       <div className="container-content">
         {/* Header */}
         <div className="mb-14 flex items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl">{copy.title}</h2>
+            <h2 className="text-[1.75rem] sm:text-3xl font-black tracking-tight text-foreground">{copy.title}</h2>
             <p className="mt-4 leading-7 text-muted-foreground">{copy.intro}</p>
             <div className="mt-5 h-[3px] w-16 rounded-full bg-gradient-to-l from-turquoise via-primary to-turquoise" />
           </div>

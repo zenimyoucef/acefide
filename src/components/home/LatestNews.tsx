@@ -57,7 +57,7 @@ export async function LatestNews({ locale }: LatestNewsProps) {
   }));
 
   return (
-    <section className="bg-[#f7f8f4] py-16 md:py-20" dir={isRtl ? "rtl" : "ltr"}>
+    <section className="bg-[#f7f8f4] py-14 sm:py-20" dir={isRtl ? "rtl" : "ltr"}>
       <div className="container-content">
         {/* Header */}
         <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -66,7 +66,7 @@ export async function LatestNews({ locale }: LatestNewsProps) {
               <Newspaper className="h-4 w-4" />
               {text.edition}
             </span>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0b1f33] md:text-4xl">
+            <h2 className="mt-3 text-[1.75rem] sm:text-3xl font-black tracking-tight text-[#0b1f33]">
               {text.title}
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">

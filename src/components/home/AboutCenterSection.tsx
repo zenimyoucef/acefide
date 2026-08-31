@@ -47,7 +47,7 @@ export function AboutCenterSection({ locale }: AboutCenterProps) {
 
   return (
     <section
-      className="relative overflow-hidden py-20 text-white md:py-28"
+      className="relative overflow-hidden py-14 text-white sm:py-20"
       dir={isRtl ? "rtl" : "ltr"}
     >
       {/* Gradient background */}
@@ -67,7 +67,7 @@ export function AboutCenterSection({ locale }: AboutCenterProps) {
           </span>
 
           {/* Title */}
-          <h2 className="mt-8 text-3xl font-black leading-tight tracking-tight md:text-4xl lg:text-5xl">
+          <h2 className="mt-8 text-[1.75rem] sm:text-3xl font-black leading-tight tracking-tight">
             {text.title}
           </h2>
 

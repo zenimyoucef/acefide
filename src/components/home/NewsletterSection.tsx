@@ -30,7 +30,7 @@ export function NewsletterSection() {
 
   return (
     <section
-      className="relative overflow-hidden py-20 font-arabic md:py-24"
+      className="relative overflow-hidden py-14 font-arabic sm:py-20"
       dir="rtl"
     >
       {/* Gradient background */}
@@ -48,7 +48,7 @@ export function NewsletterSection() {
             <Mail className="h-7 w-7 text-turquoise-light" />
           </div>
 
-          <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">
+          <h2 className="text-[1.75rem] sm:text-3xl font-black tracking-tight text-white">
             {t("title")}
           </h2>
           <p className="mt-4 text-lg leading-8 text-white/65">

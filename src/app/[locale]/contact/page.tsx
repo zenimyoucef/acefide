@@ -60,18 +60,18 @@ export default function ContactPage() {
 
   return (
     <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
-      <section className="gradient-primary py-20">
+      <section className="gradient-primary py-14 sm:py-20">
         <div className="container-content text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{t("title")}</h1>
+          <h1 className="text-[1.75rem] sm:text-4xl font-bold text-white mb-4">{t("title")}</h1>
           <div className="w-16 h-1 bg-turquoise mx-auto rounded-full" />
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-14 sm:py-20">
         <div className="container-content">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
             {/* Contact Form */}
-            <div className="lg:col-span-2">
+            <div className="sm:col-span-2">
               <Card>
                 <CardContent className="p-8">
                   {submitted ? (

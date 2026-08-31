@@ -17,10 +17,10 @@ export default function AboutPage() {
     <div className={cn(isRtl && "font-arabic")} dir={isRtl ? "rtl" : "ltr"}>
       {/* Hero */}
       <section
-        className="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-primary-dark py-20"
+        className="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-primary-dark py-14 sm:py-20"
       >
         <div className="container-content relative text-center">
-          <h1 className="mb-4 text-4xl font-bold text-white md:text-5xl">
+          <h1 className="mb-4 text-[1.75rem] sm:text-4xl font-bold text-white">
             {t("title")}
           </h1>
           <div className="mx-auto h-1 w-16 rounded-full bg-turquoise" />
@@ -28,7 +28,7 @@ export default function AboutPage() {
       </section>
 
       {/* History */}
-      <section className="py-20">
+      <section className="py-14 sm:py-20">
         <div className="container-content max-w-4xl">
           <div className="mb-12 flex items-start gap-6">
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10">
@@ -43,7 +43,7 @@ export default function AboutPage() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="bg-muted/30 py-20">
+      <section className="bg-muted/30 py-14 sm:py-20">
         <div className="container-content max-w-4xl">
           <div className="grid grid-cols-1 gap-8">
             <div className="rounded-2xl border border-border/50 bg-card p-8">
@@ -56,10 +56,10 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="py-20">
+      <section className="py-14 sm:py-20">
         <div className="container-content max-w-4xl">
           <h2 className="mb-12 text-center text-3xl font-bold text-foreground">{t("values")}</h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {valuesKeys.map((key, i) => {
               const Icon = valueIcons[i];
               return (
