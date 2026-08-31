@@ -2,7 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
-import { Building2, Eye, Target, Heart, Lightbulb, Award, FileCheck, TrendingUp } from "lucide-react";
+import { Building2, Target, Heart, Lightbulb, Award, FileCheck, TrendingUp } from "lucide-react";
 
 
 const valuesKeys = ["innovation", "excellence", "transparency", "development", "impact"] as const;
@@ -45,12 +45,7 @@ export default function AboutPage() {
       {/* Vision & Mission */}
       <section className="bg-muted/30 py-20">
         <div className="container-content max-w-4xl">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <div className="rounded-2xl border border-border/50 bg-card p-8">
-              <Eye className="mb-4 h-10 w-10 text-turquoise" />
-              <h2 className="mb-4 text-2xl font-bold text-foreground">{t("vision")}</h2>
-              <p className="leading-relaxed text-muted-foreground">{t("visionDesc")}</p>
-            </div>
+          <div className="grid grid-cols-1 gap-8">
             <div className="rounded-2xl border border-border/50 bg-card p-8">
               <Target className="mb-4 h-10 w-10 text-primary" />
               <h2 className="mb-4 text-2xl font-bold text-foreground">{t("mission")}</h2>
