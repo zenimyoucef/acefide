@@ -25,7 +25,6 @@ const primaryLinks = [
 const resourceLinks = [
   { key: "president", href: "/president" },
   { key: "publications", href: "/publications" },
-  { key: "partners", href: "/partners" },
 ] as const;
 
 function isActivePath(pathname: string, href: string) {
