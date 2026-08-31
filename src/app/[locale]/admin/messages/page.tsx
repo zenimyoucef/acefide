@@ -1,44 +1,22 @@
 import { prisma } from "@/lib/prisma";
-export default async function MessagesPage() {
-  const items = await prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" }, take: 200 });
-  return (
-    <AdminTable
-      title="رسائل الاتصال"
-      headers={["الاسم", "البريد الإلكتروني", "الموضوع", "التاريخ"]}
-      rows={items.map((x) => [x.name, x.email, x.subject, x.createdAt.toLocaleDateString("ar-DZ")])}
-    />
-  );
-}
+import { MessagesInbox } from "@/components/admin/MessagesInbox";
 
-function AdminTable({ title, headers, rows }: { title: string; headers: string[]; rows: string[][] }) {
-  return (
-    <div>
-      <h1 className="mb-6 text-2xl font-bold">{title}</h1>
-      <div className="overflow-x-auto rounded-xl border bg-white">
-        <table className="w-full min-w-[700px] text-sm">
-          <thead className="bg-muted">
-            <tr>
-              {headers.map((h) => (
-                <th key={h} className="px-4 py-3 text-start">{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {rows.map((r, i) => (
-              <tr key={i}>
-                {r.map((c, j) => (
-                  <td key={j} className="px-4 py-4">{c}</td>
-                ))}
-              </tr>
-            ))}
-            {!rows.length && (
-              <tr>
-                <td colSpan={headers.length} className="p-10 text-center text-muted-foreground">لا توجد رسائل بعد.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+export default async function MessagesPage() {
+  const items = await prisma.contactMessage
+    .findMany({ orderBy: { createdAt: "desc" }, take: 200 })
+    .catch(() => []);
+
+  const messages = items.map((x) => ({
+    id: x.id,
+    name: x.name,
+    email: x.email,
+    phone: x.phone,
+    organization: x.organization,
+    subject: x.subject,
+    message: x.message,
+    read: x.read,
+    createdAt: x.createdAt.toISOString(),
+  }));
+
+  return <MessagesInbox messages={messages} />;
 }

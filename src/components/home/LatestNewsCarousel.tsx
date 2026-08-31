@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "@/lib/navigation";
-import { CalendarDays, ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
+import { CalendarDays, ArrowLeft, ArrowRight } from "lucide-react";
 
 type NewsItem = {
   id: string;
@@ -26,7 +26,7 @@ const categoryLabels: Record<string, string> = {
   ANALYSIS: "تحليل",
 };
 
-const INTERVAL_MS = 15000;
+const INTERVAL_MS = 5000;
 
 export function LatestNewsCarousel({ items, locale }: Props) {
   const [current, setCurrent] = useState(0);
@@ -98,26 +98,12 @@ export function LatestNewsCarousel({ items, locale }: Props) {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      {/* Progress bar */}
-      {total > 1 && !paused && (
-        <div className="absolute top-0 left-0 right-0 z-10 h-[3px] overflow-hidden rounded-full bg-border/30">
-          <div
-            key={current}
-            className="h-full bg-primary"
-            style={{
-              animation: `newsProgress ${INTERVAL_MS}ms linear`,
-              width: "100%",
-            }}
-          />
-        </div>
-      )}
-
       {/* Main card */}
       <Link
         href={`/news/${item.slug}`}
         className="group block rounded-2xl border border-border/50 bg-white shadow-[0_1px_3px_rgba(11,31,51,0.04)] transition-all duration-500 hover:-translate-y-1 hover:border-primary/15 hover:shadow-[0_16px_45px_rgba(11,31,51,0.1)]"
       >
-        <div className="grid gap-0 lg:grid-cols-[1.1fr_1fr]">
+        <div key={current} className="grid gap-0 lg:grid-cols-[1.1fr_1fr]" style={{ animation: "newsCardIn 0.5s ease-out" }}>
           {/* Image */}
           {item.coverImage && (
             <div className="flex w-full items-center justify-center overflow-hidden rounded-t-2xl bg-muted p-6 transition-all duration-500 group-hover:bg-muted/80 lg:rounded-t-none lg:rounded-s-2xl">
@@ -169,7 +155,7 @@ export function LatestNewsCarousel({ items, locale }: Props) {
           {/* Previous */}
           <button
             onClick={(e) => { e.preventDefault(); prev(); }}
-            className="h-9 w-9 rounded-full border border-border/60 bg-white text-muted-foreground flex items-center justify-center transition-all hover:border-primary/30 hover:text-primary hover:bg-primary/5"
+            className="hidden h-9 w-9 rounded-full border border-border/60 bg-white text-muted-foreground items-center justify-center transition-all hover:border-primary/30 hover:text-primary hover:bg-primary/5 lg:flex"
             aria-label="السابق"
           >
             {isRtl ? <ArrowRight className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}
@@ -194,19 +180,10 @@ export function LatestNewsCarousel({ items, locale }: Props) {
           {/* Next */}
           <button
             onClick={(e) => { e.preventDefault(); next(); }}
-            className="h-9 w-9 rounded-full border border-border/60 bg-white text-muted-foreground flex items-center justify-center transition-all hover:border-primary/30 hover:text-primary hover:bg-primary/5"
+            className="hidden h-9 w-9 rounded-full border border-border/60 bg-white text-muted-foreground items-center justify-center transition-all hover:border-primary/30 hover:text-primary hover:bg-primary/5 lg:flex"
             aria-label="التالي"
           >
             {isRtl ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-          </button>
-
-          {/* Pause/Play */}
-          <button
-            onClick={(e) => { e.preventDefault(); setPaused((p) => !p); }}
-            className="h-9 w-9 rounded-full border border-border/60 bg-white text-muted-foreground flex items-center justify-center transition-all hover:border-primary/30 hover:text-primary hover:bg-primary/5"
-            aria-label={paused ? "تشغيل" : "إيقاف مؤقت"}
-          >
-            {paused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
           </button>
         </div>
       )}

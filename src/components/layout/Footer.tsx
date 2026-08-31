@@ -109,12 +109,12 @@ export function Footer() {
             </div>
 
             {/* Contact Information */}
-            <div className="text-center lg:text-start">
+            <div className="w-full text-start lg:w-auto">
               <h3 className="relative mb-5 text-sm font-bold">
                 <span className="relative z-10 text-turquoise">معلومات الاتصال</span>
               </h3>
               <ul className="space-y-4">
-                <li className="flex items-start gap-3 justify-center lg:justify-start">
+                <li className="flex items-start gap-3 justify-start">
                   <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-turquoise/20 bg-turquoise/[0.06]">
                     <MapPin className="h-3.5 w-3.5 text-turquoise/70" />
                   </span>
@@ -122,7 +122,7 @@ export function Footer() {
                     {address}
                   </span>
                 </li>
-                <li className="flex items-center gap-3 justify-center lg:justify-start">
+                <li className="flex items-center gap-3 justify-start">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-turquoise/20 bg-turquoise/[0.06]">
                     <Phone className="h-3.5 w-3.5 text-turquoise/70" />
                   </span>
@@ -130,7 +130,7 @@ export function Footer() {
                     023 29 88 88
                   </span>
                 </li>
-                <li className="flex items-center gap-3 justify-center lg:justify-start">
+                <li className="flex items-center gap-3 justify-start">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-turquoise/20 bg-turquoise/[0.06]">
                     <Mail className="h-3.5 w-3.5 text-turquoise/70" />
                   </span>

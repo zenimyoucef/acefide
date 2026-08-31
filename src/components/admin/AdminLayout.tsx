@@ -42,7 +42,7 @@ const sidebarItems = [
   { key: "content", icon: Settings, href: "/admin/content" },
 ];
 
-export function AdminLayout({ children, user }: { children: React.ReactNode; user: SessionUser }) {
+export function AdminLayout({ children, user, unreadMessages = 0 }: { children: React.ReactNode; user: SessionUser; unreadMessages?: number }) {
   const t = useTranslations("admin");
   const locale = useLocale();
   const isRtl = locale === "ar";
@@ -98,20 +98,33 @@ export function AdminLayout({ children, user }: { children: React.ReactNode; use
           </button>
         </div>
         <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
-          {sidebarItems.map((item) => (
-            <Link
-              key={item.key}
-              href={item.href}
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors",
-                collapsed && "lg:justify-center lg:px-0"
-              )}
-            >
-              <item.icon className="h-5 w-5 shrink-0" />
-              {!collapsed && <span>{item.key === "team" ? "فريق العمل" : t(item.key)}</span>}
-            </Link>
-          ))}
+          {sidebarItems.map((item) => {
+            const badge = item.key === "messages" ? unreadMessages : 0;
+            return (
+              <Link
+                key={item.key}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors",
+                  collapsed && "lg:justify-center lg:px-0"
+                )}
+              >
+                <span className="relative flex shrink-0">
+                  <item.icon className="h-5 w-5 shrink-0" />
+                  {badge > 0 && collapsed && (
+                    <span className="absolute -end-1.5 -top-1.5 hidden h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white lg:block" />
+                  )}
+                </span>
+                {!collapsed && <span>{item.key === "team" ? "فريق العمل" : t(item.key)}</span>}
+                {badge > 0 && !collapsed && (
+                  <span className="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-bold text-white">
+                    {badge > 99 ? "99+" : badge}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
         </nav>
         <div className="p-2 border-t border-border/50">
           <button

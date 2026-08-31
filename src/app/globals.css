@@ -123,6 +123,12 @@ svg {
   to { width: 100%; }
 }
 
+/* Subtle entrance replayed each time the featured news changes */
+@keyframes newsCardIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 @keyframes revealSoft {
   from { opacity: 0; filter: blur(8px); transform: translateY(18px); }
   to { opacity: 1; filter: blur(0); transform: translateY(0); }
