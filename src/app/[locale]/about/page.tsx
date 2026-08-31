@@ -2,11 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
-import { Building2, Target, Heart, Lightbulb, Award, FileCheck, TrendingUp } from "lucide-react";
-
-
-const valuesKeys = ["innovation", "excellence", "transparency", "development", "impact"] as const;
-const valueIcons = [Lightbulb, Award, FileCheck, TrendingUp, Heart] as const;
+import { Building2, Target } from "lucide-react";
 
 export default function AboutPage() {
   const t = useTranslations("about");
@@ -55,23 +51,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values */}
+      {/* Roles */}
       <section className="py-14 sm:py-20">
         <div className="container-content max-w-4xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-foreground">{t("values")}</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {valuesKeys.map((key, i) => {
-              const Icon = valueIcons[i];
-              return (
-                <div key={key} className="flex flex-col items-center rounded-xl border border-border/50 bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-md">
-                  <Icon className="mb-3 h-8 w-8 text-primary" />
-                  <span className="text-center text-sm font-medium text-foreground">
-                    {t(`values_list.${key}`)}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+          <h2 className="mb-12 text-center text-[1.75rem] sm:text-3xl font-bold text-foreground">{t("roles")}</h2>
+          <ol className="grid gap-4 sm:grid-cols-2">
+            {t.raw("roles_list").map((role: string, i: number) => (
+              <li key={i} className="flex items-start gap-3 rounded-xl border border-border/50 bg-card p-5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">{i + 1}</span>
+                <span className="text-sm leading-relaxed text-muted-foreground">{role}</span>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
