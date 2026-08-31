@@ -11,7 +11,17 @@ const copy = {
 } as const;
 
 async function getArticle(id: string) {
-  return prisma.news.findFirst({ where: { published: true, OR: [{ id }, { slug: id }] } }).catch(() => null);
+  try {
+    // Try slug lookup first (most common case from links)
+    const bySlug = await prisma.news.findUnique({ where: { slug: id } });
+    if (bySlug && bySlug.published) return bySlug;
+    // Fallback: try by cuid id
+    const byId = await prisma.news.findUnique({ where: { id } });
+    if (byId && byId.published) return byId;
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; id: string }> }): Promise<Metadata> {
