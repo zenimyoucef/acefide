@@ -3,7 +3,7 @@
 import Image from "next/image";
 import akram from "../../../../assets/akram.jpeg";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowDown, Quote } from "lucide-react";
+import { Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 
@@ -30,16 +30,7 @@ export default function PresidentPage() {
               <p className="mt-8 max-w-2xl text-lg font-medium leading-9 text-[#43534d]">
                 {t("shortBio")}
               </p>
-              <div className="mt-9 flex flex-wrap items-center gap-4">
-                <a
-                  href="#president-message"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-bold text-white shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                >
-                  {t("readMore")}
-                  <ArrowDown className="h-4 w-4" />
-                </a>
-                <span className="h-px w-16 bg-primary/30" />
-              </div>
+
             </article>
 
             <div className="order-1 lg:order-2">
