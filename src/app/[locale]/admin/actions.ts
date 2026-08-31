@@ -261,7 +261,8 @@ export async function saveNews(locale: string, data: FormData) {
     try {
       const publishedAtRaw = text(data, "publishedAt");
       const publishedAtValue = publishedAtRaw ? new Date(publishedAtRaw) : null;
-      await prisma.news.upsert({ where: { slug }, update: { titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? (publishedAtValue || new Date()) : null }, create: { slug, titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? (publishedAtValue || new Date()) : null, authorId: user.id } });
+      const facebookUrl = text(data, "facebookUrl") || null;
+      await prisma.news.upsert({ where: { slug }, update: { titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? (publishedAtValue || new Date()) : null, facebookUrl }, create: { slug, titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? (publishedAtValue || new Date()) : null, facebookUrl, authorId: user.id } });
     } catch (error) {
       await deleteBlobsSafely(gallery.uploaded);
       throw error;
@@ -283,7 +284,8 @@ export async function updateNews(locale: string, id: string, data: FormData) {
     const publishedAtRaw = text(data, "publishedAt");
     const publishedAtValue = publishedAtRaw ? new Date(publishedAtRaw) : null;
     try {
-      await prisma.news.update({ where: { id }, data: { titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published, publishedAt: published ? (publishedAtValue || new Date()) : null } });
+      const facebookUrl = text(data, "facebookUrl") || null;
+      await prisma.news.update({ where: { id }, data: { titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published, publishedAt: published ? (publishedAtValue || new Date()) : null, facebookUrl } });
     } catch (error) {
       await deleteBlobsSafely(gallery.uploaded);
       throw error;
@@ -328,7 +330,8 @@ export async function saveEvent(locale: string, data: FormData) {
     const previous = await prisma.event.findUnique({ where: { slug }, select: { coverImage: true, galleryImages: true } });
     const published = data.get("published") === "on";
     const gallery = await contentGallery(data, "events");
-    const values = { titleAr: text(data, "titleAr"), titleFr: text(data, "titleFr"), titleEn: text(data, "titleEn"), descriptionAr: text(data, "descriptionAr") || null, descriptionFr: text(data, "descriptionFr") || null, descriptionEn: text(data, "descriptionEn") || null, locationAr: text(data, "locationAr") || null, locationFr: text(data, "locationFr") || null, locationEn: text(data, "locationEn") || null, category: text(data, "category") as EventCategory, date: date!, endDate, speakers: text(data, "speakers") || null, registrationLink: registrationLink || null, coverImage: gallery.coverImage, galleryImages: gallery.images, published };
+    const externalUrl = text(data, "externalUrl") || null;
+    const values = { titleAr: text(data, "titleAr"), titleFr: text(data, "titleFr"), titleEn: text(data, "titleEn"), descriptionAr: text(data, "descriptionAr") || null, descriptionFr: text(data, "descriptionFr") || null, descriptionEn: text(data, "descriptionEn") || null, locationAr: text(data, "locationAr") || null, locationFr: text(data, "locationFr") || null, locationEn: text(data, "locationEn") || null, category: text(data, "category") as EventCategory, date: date!, endDate, speakers: text(data, "speakers") || null, registrationLink: registrationLink || null, externalUrl, coverImage: gallery.coverImage, galleryImages: gallery.images, published };
     try {
       await prisma.event.upsert({ where: { slug }, update: values, create: { slug, ...values } });
     } catch (error) {
@@ -355,7 +358,8 @@ export async function updateEvent(locale: string, id: string, data: FormData) {
     const gallery = await contentGallery(data, "events");
     const published = data.get("published") === "on";
     try {
-      await prisma.event.update({ where: { id }, data: { titleAr: text(data, "titleAr"), titleFr: text(data, "titleFr"), titleEn: text(data, "titleEn"), descriptionAr: text(data, "descriptionAr") || null, descriptionFr: text(data, "descriptionFr") || null, descriptionEn: text(data, "descriptionEn") || null, locationAr: text(data, "locationAr") || null, locationFr: text(data, "locationFr") || null, locationEn: text(data, "locationEn") || null, category: text(data, "category") as EventCategory, date: date!, endDate, speakers: text(data, "speakers") || null, registrationLink: registrationLink || null, coverImage: gallery.coverImage, galleryImages: gallery.images, published } });
+      const externalUrl = text(data, "externalUrl") || null;
+      await prisma.event.update({ where: { id }, data: { titleAr: text(data, "titleAr"), titleFr: text(data, "titleFr"), titleEn: text(data, "titleEn"), descriptionAr: text(data, "descriptionAr") || null, descriptionFr: text(data, "descriptionFr") || null, descriptionEn: text(data, "descriptionEn") || null, locationAr: text(data, "locationAr") || null, locationFr: text(data, "locationFr") || null, locationEn: text(data, "locationEn") || null, category: text(data, "category") as EventCategory, date: date!, endDate, speakers: text(data, "speakers") || null, registrationLink: registrationLink || null, externalUrl, coverImage: gallery.coverImage, galleryImages: gallery.images, published } });
     } catch (error) {
       await deleteBlobsSafely(gallery.uploaded);
       throw error;

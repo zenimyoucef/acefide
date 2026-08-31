@@ -12,6 +12,7 @@ type NewsItem = {
   coverImage: string | null;
   category: string;
   date: string;
+  facebookUrl?: string | null;
 };
 
 type Props = {
@@ -27,6 +28,56 @@ const categoryLabels: Record<string, string> = {
 };
 
 const INTERVAL_MS = 5000;
+
+function CardContent({ item, date, locale }: { item: NewsItem; date: Date; locale: string }) {
+  const isRtl = locale === "ar";
+  return (
+    <div className="grid gap-0 lg:grid-cols-[1.1fr_1fr]">
+      {/* Image */}
+      {item.coverImage && (
+        <div className="flex w-full items-center justify-center overflow-hidden rounded-t-2xl bg-muted p-6 transition-all duration-500 group-hover:bg-muted/80 lg:rounded-t-none lg:rounded-s-2xl">
+          <img
+            src={item.coverImage}
+            alt={item.title}
+            className="max-h-[22rem] w-full object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+            loading="lazy"
+          />
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+        <p className="flex flex-wrap items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-primary">
+          <span>{categoryLabels[item.category] || item.category}</span>
+          <span className="text-border">/</span>
+          <time dateTime={item.date} className="inline-flex items-center gap-1.5 text-muted-foreground">
+            <CalendarDays className="h-3.5 w-3.5" />
+            {date.toLocaleDateString(locale, { day: "2-digit", month: "long", year: "numeric" })}
+          </time>
+        </p>
+
+        <h3 className="mt-4 text-xl font-black leading-tight tracking-[-0.02em] text-[#0b1f33] transition-colors duration-300 group-hover:text-primary sm:text-2xl lg:text-3xl">
+          {item.title}
+        </h3>
+
+        {item.excerpt && (
+          <p className="mt-4 text-sm leading-7 text-muted-foreground sm:text-base line-clamp-3">
+            {item.excerpt}
+          </p>
+        )}
+
+        <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary transition-all duration-300 group-hover:gap-3">
+          اقرأ الخبر
+          {isRtl ? (
+            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
+          ) : (
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          )}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export function LatestNewsCarousel({ items, locale }: Props) {
   const [current, setCurrent] = useState(0);
@@ -86,6 +137,19 @@ export function LatestNewsCarousel({ items, locale }: Props) {
   const item = items[current];
   const date = new Date(item.date);
 
+  const slideClass =
+    animDir === "init"
+      ? "news-slide-fade"
+      : animDir === "next"
+        ? isRtl
+          ? "news-slide-from-left"
+          : "news-slide-from-right"
+        : isRtl
+          ? "news-slide-from-right"
+          : "news-slide-from-left";
+
+  const cardClassName = `group block rounded-2xl border border-border/50 bg-white shadow-[0_1px_3px_rgba(11,31,51,0.04)] transition-all duration-500 hover:-translate-y-1 hover:border-primary/15 hover:shadow-[0_16px_45px_rgba(11,31,51,0.1)] ${slideClass}`;
+
   return (
     <div
       className="relative"
@@ -96,66 +160,25 @@ export function LatestNewsCarousel({ items, locale }: Props) {
       onTouchEnd={onTouchEnd}
     >
       {/* Main card */}
-      <Link
-        key={current}
-        href={`/news/${item.slug}`}
-        className={`group block rounded-2xl border border-border/50 bg-white shadow-[0_1px_3px_rgba(11,31,51,0.04)] transition-all duration-500 hover:-translate-y-1 hover:border-primary/15 hover:shadow-[0_16px_45px_rgba(11,31,51,0.1)] ${
-          animDir === "init"
-            ? "news-slide-fade"
-            : animDir === "next"
-              ? isRtl
-                ? "news-slide-from-left"
-                : "news-slide-from-right"
-              : isRtl
-                ? "news-slide-from-right"
-                : "news-slide-from-left"
-        }`}
-      >
-        <div className="grid gap-0 lg:grid-cols-[1.1fr_1fr]">
-          {/* Image */}
-          {item.coverImage && (
-            <div className="flex w-full items-center justify-center overflow-hidden rounded-t-2xl bg-muted p-6 transition-all duration-500 group-hover:bg-muted/80 lg:rounded-t-none lg:rounded-s-2xl">
-              <img
-                src={item.coverImage}
-                alt={item.title}
-                className="max-h-[22rem] w-full object-contain transition-transform duration-700 group-hover:scale-[1.02]"
-                loading="lazy"
-              />
-            </div>
-          )}
-
-          {/* Content */}
-          <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
-            <p className="flex flex-wrap items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-primary">
-              <span>{categoryLabels[item.category] || item.category}</span>
-              <span className="text-border">/</span>
-              <time dateTime={item.date} className="inline-flex items-center gap-1.5 text-muted-foreground">
-                <CalendarDays className="h-3.5 w-3.5" />
-                {date.toLocaleDateString(locale, { day: "2-digit", month: "long", year: "numeric" })}
-              </time>
-            </p>
-
-            <h3 className="mt-4 text-xl font-black leading-tight tracking-[-0.02em] text-[#0b1f33] transition-colors duration-300 group-hover:text-primary sm:text-2xl lg:text-3xl">
-              {item.title}
-            </h3>
-
-            {item.excerpt && (
-              <p className="mt-4 text-sm leading-7 text-muted-foreground sm:text-base line-clamp-3">
-                {item.excerpt}
-              </p>
-            )}
-
-            <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary transition-all duration-300 group-hover:gap-3">
-              اقرأ الخبر
-              {isRtl ? (
-                <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
-              ) : (
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              )}
-            </span>
-          </div>
-        </div>
-      </Link>
+      {item.facebookUrl ? (
+        <a
+          key={current}
+          href={item.facebookUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cardClassName}
+        >
+          <CardContent item={item} date={date} locale={locale} />
+        </a>
+      ) : (
+        <Link
+          key={current}
+          href={`/news/${item.slug}`}
+          className={cardClassName}
+        >
+          <CardContent item={item} date={date} locale={locale} />
+        </Link>
+      )}
 
       {/* Controls */}
       {total > 1 && (
@@ -195,8 +218,6 @@ export function LatestNewsCarousel({ items, locale }: Props) {
           </button>
         </div>
       )}
-
-
     </div>
   );
 }

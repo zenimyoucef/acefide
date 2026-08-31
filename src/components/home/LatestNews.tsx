@@ -53,6 +53,7 @@ export async function LatestNews({ locale }: LatestNewsProps) {
     coverImage: item.coverImage,
     category: item.category,
     date: (item.publishedAt ?? item.createdAt).toISOString(),
+    facebookUrl: item.facebookUrl,
   }));
 
   return (

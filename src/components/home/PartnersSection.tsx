@@ -21,26 +21,16 @@ export async function PartnersSection() {
     const name = partner.nameAr;
     if (!partner.logo) return null;
 
-    const img = (
-      <Image
-        src={partner.logo}
-        alt={`${name} logo`}
-        width={160}
-        height={80}
-        className="h-16 w-40 object-contain sm:h-20 sm:w-48 transition-all duration-500 ease-out hover:scale-110"
-      />
-    );
-
-    const wrapperClass = "partner-card group flex h-24 w-48 sm:h-28 sm:w-56 shrink-0 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
-
-    return partner.website ? (
-      <a key={key} href={partner.website} target="_blank" rel="noopener noreferrer" aria-label={name} title={name} className={wrapperClass}>
-        {img}
-      </a>
-    ) : (
-      <Link key={key} href={`/partners/${partner.slug}`} aria-label={name} title={name} className={wrapperClass}>
-        {img}
-      </Link>
+    return (
+      <div key={key} className="partner-card flex h-24 w-48 sm:h-28 sm:w-56 shrink-0 items-center justify-center" aria-label={name} title={name}>
+        <Image
+          src={partner.logo}
+          alt={`${name} logo`}
+          width={160}
+          height={80}
+          className="h-full w-full object-contain"
+        />
+      </div>
     );
   };
 

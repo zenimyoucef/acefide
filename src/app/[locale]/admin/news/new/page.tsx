@@ -109,6 +109,11 @@ export default async function NewNews({ params, searchParams }: { params: Promis
             <input id="publishedAt" name="publishedAt" type="date" defaultValue={article?.publishedAt ? article.publishedAt.toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10)} className={inputClass} />
             <span className="mt-1 block text-xs text-slate-500">يُستخدم تاريخ النشر هذا في الموقع. اتركه كما هو للتاريخ الحالي.</span>
           </label>
+          <label htmlFor="facebookUrl" className="mt-4 block text-sm font-semibold text-slate-800">
+            رابط فيسبوك <span className="font-normal text-slate-500">({t.optional})</span>
+            <input id="facebookUrl" name="facebookUrl" type="url" defaultValue={article?.facebookUrl || ""} placeholder="https://facebook.com/..." className={inputClass} />
+            <span className="mt-1 block text-xs text-slate-500">عند الضغط على \"اقرأ المزيد\" سيتم توجيهك إلى هذا الرابط.</span>
+          </label>
         </section>
 
         <section className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">

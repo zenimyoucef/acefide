@@ -47,9 +47,10 @@ model News {
   contentFr   String
   category    NewsCategory @default(NEWS)
   coverImage  String?
-  galleryImages String[] @default([])
+  galleryImages String[] @default ([])
   published   Boolean  @default(false)
   publishedAt DateTime?
+  facebookUrl String?
   authorId    String
   author      User     @relation(fields: [authorId], references: [id])
   seoTitle    String?
@@ -112,7 +113,8 @@ model Event {
   speakers    String?
   coverImage  String?
   registrationLink String?
-  galleryImages String[] @default([])
+  externalUrl  String?
+  galleryImages String[] @default ([])
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
