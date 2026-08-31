@@ -129,6 +129,26 @@ svg {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* Directional slide animations for the news carousel */
+@keyframes slideFromRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideFromLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.news-slide-from-right {
+  animation: slideFromRight 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.news-slide-from-left {
+  animation: slideFromLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.news-slide-fade {
+  animation: newsCardIn 0.45s ease-out;
+}
+
 @keyframes revealSoft {
   from { opacity: 0; filter: blur(8px); transform: translateY(18px); }
   to { opacity: 1; filter: blur(0); transform: translateY(0); }

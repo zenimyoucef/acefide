@@ -37,7 +37,7 @@ export default async function AdminNews({ params }: { params: Promise<{ locale: 
                     {x.published ? "منشور" : "مسودة"}
                   </span>
                 </td>
-                <td className="text-slate-500">{x.createdAt.toLocaleDateString("ar")}</td>
+                <td className="text-slate-500">{(x.publishedAt ?? x.createdAt).toLocaleDateString("ar")}</td>
                 <td>
                   <div className="flex items-center gap-3">
                     <Link href={`/admin/news/new?edit=${x.id}`} className="flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark">

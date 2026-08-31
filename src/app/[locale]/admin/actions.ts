@@ -259,7 +259,9 @@ export async function saveNews(locale: string, data: FormData) {
     const previous = await prisma.news.findUnique({ where: { slug }, select: { coverImage: true, galleryImages: true } });
     const gallery = await contentGallery(data, "news");
     try {
-      await prisma.news.upsert({ where: { slug }, update: { titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? new Date() : null }, create: { slug, titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? new Date() : null, authorId: user.id } });
+      const publishedAtRaw = text(data, "publishedAt");
+      const publishedAtValue = publishedAtRaw ? new Date(publishedAtRaw) : null;
+      await prisma.news.upsert({ where: { slug }, update: { titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? (publishedAtValue || new Date()) : null }, create: { slug, titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published: data.get("published") === "on", publishedAt: data.get("published") === "on" ? (publishedAtValue || new Date()) : null, authorId: user.id } });
     } catch (error) {
       await deleteBlobsSafely(gallery.uploaded);
       throw error;
@@ -278,8 +280,10 @@ export async function updateNews(locale: string, id: string, data: FormData) {
     const previous = await prisma.news.findUniqueOrThrow({ where: { id }, select: { coverImage: true, galleryImages: true } });
     const gallery = await contentGallery(data, "news");
     const published = data.get("published") === "on";
+    const publishedAtRaw = text(data, "publishedAt");
+    const publishedAtValue = publishedAtRaw ? new Date(publishedAtRaw) : null;
     try {
-      await prisma.news.update({ where: { id }, data: { titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published, publishedAt: published ? new Date() : null } });
+      await prisma.news.update({ where: { id }, data: { titleAr: text(data, "titleAr"), titleEn: text(data, "titleEn"), titleFr: text(data, "titleFr"), excerptAr: text(data, "excerptAr"), excerptEn: text(data, "excerptEn"), excerptFr: text(data, "excerptFr"), contentAr: text(data, "contentAr"), contentEn: text(data, "contentEn"), contentFr: text(data, "contentFr"), coverImage: gallery.coverImage, galleryImages: gallery.images, published, publishedAt: published ? (publishedAtValue || new Date()) : null } });
     } catch (error) {
       await deleteBlobsSafely(gallery.uploaded);
       throw error;

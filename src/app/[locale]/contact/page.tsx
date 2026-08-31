@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Send, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Send, CheckCircle, Paperclip, X } from "lucide-react";
 
 export default function ContactPage() {
   const t = useTranslations("contact");
@@ -30,19 +30,28 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+  const [file, setFile] = useState<File | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true); setError("");
     try {
+      const fd = new FormData();
+      fd.set("name", formData.name);
+      fd.set("email", formData.email);
+      fd.set("phone", formData.phone);
+      fd.set("organization", formData.organization);
+      fd.set("subject", formData.subject);
+      fd.set("message", formData.message);
+      if (file) fd.set("file", file);
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: fd,
       });
       if (res.ok) {
         setSubmitted(true);
         setFormData({ name: "", email: "", phone: "", organization: "", subject: "", message: "" });
+        setFile(null);
       } else setError("تعذر إرسال الرسالة. يرجى مراجعة البيانات والمحاولة مجدداً.");
     } catch {
       setError("تعذر الاتصال بالخادم.");
@@ -131,6 +140,26 @@ export default function ContactPage() {
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                           required
                         />
+                      </div>
+                      <div>
+                        <Label htmlFor="file" className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:text-primary">
+                          <Paperclip className="h-4 w-4" /> إرفاق ملف (اختياري)
+                        </Label>
+                        <input
+                          id="file"
+                          type="file"
+                          className="mt-2 block w-full text-sm text-muted-foreground file:mr-4 file:rounded-lg file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary hover:file:bg-primary/20"
+                          onChange={(e) => setFile(e.target.files?.[0] || null)}
+                        />
+                        {file && (
+                          <div className="mt-2 flex items-center gap-2 rounded-lg bg-primary/5 px-3 py-2 text-sm">
+                            <Paperclip className="h-3.5 w-3.5 text-primary" />
+                            <span className="truncate flex-1">{file.name}</span>
+                            <button type="button" onClick={() => setFile(null)} className="text-red-500 hover:text-red-700">
+                              <X className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        )}
                       </div>
                       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
                       <Button type="submit" size="lg" disabled={loading} className="rounded-full w-full md:w-auto">

@@ -31,26 +31,23 @@ const INTERVAL_MS = 5000;
 export function LatestNewsCarousel({ items, locale }: Props) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [animDir, setAnimDir] = useState<"next" | "prev" | "init">("init");
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
   const isRtl = locale === "ar";
   const total = items.length;
 
   const goTo = useCallback(
-    (index: number) => {
-      if (isTransitioning) return;
-      setIsTransitioning(true);
+    (index: number, dir: "next" | "prev") => {
+      setAnimDir(dir);
       setCurrent((index + total) % total);
-      setTimeout(() => setIsTransitioning(false), 500);
     },
-    [total, isTransitioning]
+    [total]
   );
 
-  const next = useCallback(() => goTo(current + 1), [current, goTo]);
-  const prev = useCallback(() => goTo(current - 1), [current, goTo]);
+  const next = useCallback(() => goTo(current + 1, "next"), [current, goTo]);
+  const prev = useCallback(() => goTo(current - 1, "prev"), [current, goTo]);
 
   // Auto-advance
   useEffect(() => {
@@ -100,10 +97,21 @@ export function LatestNewsCarousel({ items, locale }: Props) {
     >
       {/* Main card */}
       <Link
+        key={current}
         href={`/news/${item.slug}`}
-        className="group block rounded-2xl border border-border/50 bg-white shadow-[0_1px_3px_rgba(11,31,51,0.04)] transition-all duration-500 hover:-translate-y-1 hover:border-primary/15 hover:shadow-[0_16px_45px_rgba(11,31,51,0.1)]"
+        className={`group block rounded-2xl border border-border/50 bg-white shadow-[0_1px_3px_rgba(11,31,51,0.04)] transition-all duration-500 hover:-translate-y-1 hover:border-primary/15 hover:shadow-[0_16px_45px_rgba(11,31,51,0.1)] ${
+          animDir === "init"
+            ? "news-slide-fade"
+            : animDir === "next"
+              ? isRtl
+                ? "news-slide-from-left"
+                : "news-slide-from-right"
+              : isRtl
+                ? "news-slide-from-right"
+                : "news-slide-from-left"
+        }`}
       >
-        <div key={current} className="grid gap-0 lg:grid-cols-[1.1fr_1fr]" style={{ animation: "newsCardIn 0.5s ease-out" }}>
+        <div className="grid gap-0 lg:grid-cols-[1.1fr_1fr]">
           {/* Image */}
           {item.coverImage && (
             <div className="flex w-full items-center justify-center overflow-hidden rounded-t-2xl bg-muted p-6 transition-all duration-500 group-hover:bg-muted/80 lg:rounded-t-none lg:rounded-s-2xl">
@@ -166,7 +174,7 @@ export function LatestNewsCarousel({ items, locale }: Props) {
             {items.map((_, i) => (
               <button
                 key={i}
-                onClick={(e) => { e.preventDefault(); goTo(i); }}
+                onClick={(e) => { e.preventDefault(); goTo(i, i > current ? "next" : "prev"); }}
                 className={`rounded-full transition-all duration-300 ${
                   i === current
                     ? "h-2.5 w-2.5 bg-primary scale-110"

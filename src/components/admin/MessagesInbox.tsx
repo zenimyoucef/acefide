@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
-import { markContactMessageRead, markAllContactMessagesRead } from "@/app/[locale]/admin/messages/actions";
-import { Paperclip, Download, ChevronDown, Mail, Phone, Building2, Inbox } from "lucide-react";
+import { markContactMessageRead, markAllContactMessagesRead, deleteContactMessage } from "@/app/[locale]/admin/messages/actions";
+import { Paperclip, Download, ChevronDown, Mail, Phone, Building2, Inbox, Trash2 } from "lucide-react";
 
 type Message = {
   id: string;
@@ -121,6 +121,12 @@ export function MessagesInbox({ messages }: { messages: Message[] }) {
     router.refresh();
   }
 
+  async function handleDelete(id: string) {
+    if (!confirm("هل أنت متأكد من حذف هذه الرسالة؟")) return;
+    await deleteContactMessage(id);
+    router.refresh();
+  }
+
   return (
     <div dir="rtl">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -184,7 +190,14 @@ export function MessagesInbox({ messages }: { messages: Message[] }) {
                   </span>
                   <span className="flex shrink-0 flex-col items-end gap-1.5">
                     <span className="whitespace-nowrap text-[0.7rem] text-muted-foreground">{fmtDate(m.createdAt)}</span>
-                    <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", open && "rotate-180")} />
+                    <div className="flex items-center gap-1">
+                      {attachments.length > 0 && (
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-primary">
+                          <Paperclip className="h-3 w-3" />
+                        </span>
+                      )}
+                      <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", open && "rotate-180")} />
+                    </div>
                   </span>
                 </button>
 
@@ -216,6 +229,16 @@ export function MessagesInbox({ messages }: { messages: Message[] }) {
                         ))}
                       </div>
                     )}
+
+                    <div className="mt-4 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); handleDelete(m.id); }}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-100"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" /> حذف
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>

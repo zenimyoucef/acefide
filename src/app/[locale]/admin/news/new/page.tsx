@@ -96,7 +96,7 @@ export default async function NewNews({ params, searchParams }: { params: Promis
           </label>
         </section>
 
-        <section className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <label className="flex cursor-pointer items-start gap-3">
             <input type="checkbox" name="published" defaultChecked={article?.published} className="mt-1 h-4 w-4 rounded border-slate-300 accent-primary" />
             <span>
@@ -104,6 +104,14 @@ export default async function NewNews({ params, searchParams }: { params: Promis
               <span className="mt-1 block text-xs text-slate-500">{t.publishHelp}</span>
             </span>
           </label>
+          <label htmlFor="publishedAt" className="mt-4 block text-sm font-semibold text-slate-800">
+            تاريخ النشر <span className="font-normal text-slate-500">({t.optional})</span>
+            <input id="publishedAt" name="publishedAt" type="date" defaultValue={article?.publishedAt ? article.publishedAt.toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10)} className={inputClass} />
+            <span className="mt-1 block text-xs text-slate-500">يُستخدم تاريخ النشر هذا في الموقع. اتركه كما هو للتاريخ الحالي.</span>
+          </label>
+        </section>
+
+        <section className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <Link href="/admin/news" className="rounded-lg border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">{t.cancel}</Link>
             <button type="submit" className="rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-primary/90">{t.save}</button>
