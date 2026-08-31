@@ -157,24 +157,10 @@ export function Footer() {
           <div className="my-10 h-px bg-gradient-to-l from-transparent via-white/10 to-transparent" />
 
           {/* Bottom bar */}
-          <div className="flex flex-col items-center justify-between gap-4 pb-2 md:flex-row">
+          <div className="flex justify-center pb-2">
             <p className="text-xs text-white/25">
               {t("footer.copyright", { year: new Date().getFullYear() })}
             </p>
-            <div className="flex items-center gap-6">
-              <Link
-                href="#"
-                className="text-xs text-white/25 hover:text-turquoise/60 transition-colors"
-              >
-                {t("footer.privacy")}
-              </Link>
-              <Link
-                href="#"
-                className="text-xs text-white/25 hover:text-turquoise/60 transition-colors"
-              >
-                {t("footer.terms")}
-              </Link>
-            </div>
           </div>
         </div>
       </div>
