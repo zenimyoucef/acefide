@@ -17,14 +17,15 @@ export async function PartnersSection() {
   const renderLogo = (partner: typeof partners[number], key: string) => {
     const name = partner.nameAr;
     if (!partner.logo) return null;
+    const isLarge = name.includes("المصدرين الجزائريين");
 
     return (
-      <div key={key} className="flex aspect-[2/1] items-center justify-center rounded-xl border border-border/30 bg-white p-3" aria-label={name} title={name}>
+      <div key={key} className={`flex items-center justify-center rounded-xl border border-border/30 bg-white p-3 ${isLarge ? "col-span-2 aspect-[3/1]" : "aspect-[2/1]"}`} aria-label={name} title={name}>
         <Image
           src={partner.logo}
           alt={`${name} logo`}
-          width={120}
-          height={60}
+          width={isLarge ? 200 : 120}
+          height={isLarge ? 80 : 60}
           className="h-full w-full object-contain"
         />
       </div>
