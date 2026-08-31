@@ -151,9 +151,10 @@ async function authorizationError(locale: string): Promise<AdminActionResult | n
   catch (error) { return toAdminActionError(locale, error); }
 }
 
-async function runAdminAction(locale: string, name: string, action: () => Promise<void>, successMessage: string = messages(locale).saved): Promise<AdminActionResult> {
+async function runAdminAction(locale: string, name: string, action: () => Promise<AdminActionResult | void>, successMessage: string = messages(locale).saved): Promise<AdminActionResult> {
   try {
-    await action();
+    const result = await action();
+    if (result) return result;
     return { success: true, message: successMessage };
   } catch (error) {
     console.error(`Admin action ${name} failed:`, error);
