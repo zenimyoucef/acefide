@@ -558,7 +558,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Partners marquee */
 @keyframes partnersMarqueeScreen {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-25%); }
 }
 
 .partners-marquee-mask {
@@ -571,7 +571,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
   display: flex;
   width: max-content;
-  animation: partnersMarqueeScreen 25s linear infinite;
+  animation: partnersMarqueeScreen 20s linear infinite;
   will-change: transform;
 }
 

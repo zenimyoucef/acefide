@@ -25,13 +25,13 @@ export async function PartnersSection() {
       <Image
         src={partner.logo}
         alt={`${name} logo`}
-        width={200}
-        height={100}
-        className="h-20 w-auto object-contain sm:h-24 transition-all duration-500 ease-out hover:scale-110"
+        width={160}
+        height={80}
+        className="h-16 w-40 object-contain sm:h-20 sm:w-48 transition-all duration-500 ease-out hover:scale-110"
       />
     );
 
-    const wrapperClass = "partner-card group flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
+    const wrapperClass = "partner-card group flex h-24 w-48 sm:h-28 sm:w-56 shrink-0 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
 
     return partner.website ? (
       <a key={key} href={partner.website} target="_blank" rel="noopener noreferrer" aria-label={name} title={name} className={wrapperClass}>
@@ -60,21 +60,16 @@ export async function PartnersSection() {
           </Link>
         </div>
 
-        {/* Partners marquee — always scroll */}
+        {/* Partners marquee — always scroll, 4x duplication for seamless loop */}
         <div className="partners-marquee-mask overflow-hidden py-1">
-          <div className="partners-marquee-track flex w-max items-center gap-12 py-2">
-            {partners.map((p, i) => renderLogo(p, `a-${p.id ?? i}`))}
-            {partners.map((p, i) => renderLogo(p, `b-${p.id ?? i}`))}
+          <div className="partners-marquee-track flex w-max items-center gap-10 py-2">
+            {[0,1,2,3].map(set =>
+              partners.map((p, i) => renderLogo(p, `${set}-${p.id ?? i}`))
+            )}
           </div>
         </div>
 
-        {/* View all button */}
-        <div className="mt-12 text-center">
-          <Link href="/partners" className="group inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-6 py-3 text-sm font-bold text-primary shadow-[0_2px_8px_rgba(11,122,83,0.08)] transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white hover:shadow-[0_8px_25px_rgba(11,122,83,0.25)]">
-            {copy.all}
-            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
-          </Link>
-        </div>
+
       </div>
     </section>
   );
