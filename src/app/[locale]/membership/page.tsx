@@ -238,7 +238,7 @@ export default function MembershipPage() {
           <section className="rounded-2xl border border-primary/10 bg-white p-5 shadow-sm md:p-7">
             <header className="mb-6 flex items-center gap-3 border-b pb-4">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-xs font-black text-white">05</span>
-              <h2 className="text-xl font-black text-[#0b1f33]">الدفع و المصاريف</h2>
+              <h2 className="text-xl font-black text-[#0b1f33]">دفع حقوق الاشتراك</h2>
             </header>
 
             <div className="space-y-4">
