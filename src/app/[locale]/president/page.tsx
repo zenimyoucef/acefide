@@ -3,16 +3,10 @@
 import Image from "next/image";
 import akram from "../../../../assets/akram.jpeg";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowDown, Calendar, Quote } from "lucide-react";
+import { ArrowDown, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const timeline = [
-  { year: "2020", en: "تأسيس المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي", ar: "تأسيس المركز الجزائري للتشبيك الاقتصادي", fr: "Fondation de المركز الجزائري للتشبيك الاقتصادي و الاستثمار التنموي" },
-  { year: "2021", en: "First Economic Study Published", ar: "إصدار أول دراسة اقتصادية", fr: "Première étude économique publiée" },
-  { year: "2022", en: "First Strategic Partnership", ar: "أول شراكة استراتيجية", fr: "Premier partenariat stratégique" },
-  { year: "2023", en: "International Recognition", ar: "اعتراف دولي", fr: "Reconnaissance internationale" },
-  { year: "2024", en: "Expansion of Programs", ar: "توسيع البرامج", fr: "Expansion des programmes" },
-];
+
 
 export default function PresidentPage() {
   const t = useTranslations("president");
@@ -92,28 +86,7 @@ export default function PresidentPage() {
         </div>
       </section>
 
-      <section className="bg-[#eef2f4] py-20">
-        <div className="container-content max-w-4xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-[#172638]">
-            {t("timeline")}
-          </h2>
-          <div className="space-y-6">
-            {timeline.map((item) => (
-              <div key={item.year} className="flex items-start gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                  <Calendar className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <span className="text-lg font-bold text-primary">{item.year}</span>
-                  <p className="mt-1 text-[#172638]">
-                    {locale === "ar" ? item.ar : locale === "fr" ? item.fr : item.en}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }
