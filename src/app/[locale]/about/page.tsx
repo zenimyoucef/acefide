@@ -54,7 +54,7 @@ export default function AboutPage() {
             <div className="rounded-2xl border border-border/50 bg-card p-8">
               <Target className="mb-4 h-10 w-10 text-primary" />
               <h2 className="mb-4 text-2xl font-bold text-foreground">{t("mission")}</h2>
-              <p className="leading-relaxed text-muted-foreground">{t("missionDesc")}</p>
+              <div className="space-y-4 leading-relaxed text-muted-foreground">{t("missionDesc").split("\n\n").filter(Boolean).map((p, i) => <p key={i}>{p}</p>)}</div>
             </div>
           </div>
         </div>
